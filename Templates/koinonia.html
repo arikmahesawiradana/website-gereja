@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dewan Koinonia HKBP Purwokerto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #F4F7FC;
+        }
+
+        /* Header */
+        header {
+            background-color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        header img {
+            width: 50px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: black;
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            color: #0066cc;
+        }
+
+        /* Section Title */
+        .section-title {
+            padding: 40px;
+            text-align: center;
+            color: #003366;
+        }
+
+        .section-title h1 {
+            font-size: 2.5rem;
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        /* Profile Cards */
+        .profiles {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 0 40px;
+        }
+
+        .profile-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            text-align: center;
+            width: 260px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-card img {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+        }
+
+        .profile-card h3 {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            color: #003366;
+        }
+
+        .profile-card p {
+            color: #555;
+            font-size: 1rem;
+        }
+
+        /* Social Icons */
+        .social-icons {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .social-icons a {
+            color: #003366;
+            font-size: 1.2rem;
+            text-decoration: none;
+        }
+
+        /* Subsections */
+        .subsection {
+            padding: 0 40px;
+            margin-bottom: 40px;
+        }
+
+        .subsection h2 {
+            font-size: 1.8rem;
+            color: #003366;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .subsection ul {
+            list-style-type: none;
+            padding-left: 0;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .subsection ul li {
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #003366;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        footer .footer-menu {
+            margin-bottom: 40px;
+        }
+
+        .footer-menu ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-menu ul li {
+            margin: 10px 0;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        footer .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        footer .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <img src="logo.png" alt="Logo HKBP Purwokerto">
+        <nav>
+            <ul>
+                <li><a href="#">Beranda</a></li>
+                <li><a href="#">Warta</a></li>
+                <li><a href="#">Koinonia</a></li>
+                <li><a href="#">Marturia</a></li>
+                <li><a href="#">Diakonia</a></li>
+                <li><a href="#">Organisasi</a></li>
+                <li><a href="#">Masuk</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Title Section -->
+    <section class="section-title">
+        <h1>Dewan Koinonia</h1>
+        <p>Dewan Koinonia adalah organ yang memediasi dan melaksanakan pelayanan-pelayanan untuk membangun persekutuan yang sehat.</p>
+    </section>
+
+    <!-- Pengurus Dewan Koinonia -->
+    <section class="subsection">
+        <h2>Pengurus Dewan Koinonia</h2>
+        <div class="profiles">
+            <div class="profile-card">
+                <img src="profile1.jpg" alt="Profile Picture">
+                <h3>St. BL Sidabaleik</h3>
+                <p>Ketua Dewan</p>
+                <div class="social-icons">
+                    <a href="#">🔗</a>
+                    <a href="#">🔗</a>
+                    <a href="#">🔗</a>
+                </div>
+            </div>
+            <!-- Repeat for each member -->
+        </div>
+    </section>
+
+    <!-- Seksi Sekolah Minggu -->
+    <section class="subsection">
+        <h2>Seksi Sekolah Minggu</h2>
+        <ul>
+            <li>Memahami dan mengevaluasi layanan Sekolah Minggu</li>
+            <li>Melaksanakan rapat pengurus Sekolah Minggu</li>
+            <li>Mengatur pelaksanaan ibadah dan acara sekolah Minggu</li>
+        </ul>
+        <div class="profiles">
+            <div class="profile-card">
+                <img src="profile2.jpg" alt="Profile Picture">
+                <h3>St. BL Sidabaleik</h3>
+                <p>Ketua Seksi</p>
+                <div class="social-icons">
+                    <a href="#">🔗</a>
+                    <a href="#">🔗</a>
+                    <a href="#">🔗</a>
+                </div>
+            </div>
+            <!-- Repeat for each member -->
+        </div>
+    </section>
+
+    <!-- Repeat for other subsections (Seksi Remaja, NHKBP, etc.) -->
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-menu">
+            <ul>
+                <li><a href="#">Beranda</a></li>
+                <li><a href="#">Warta</a></li>
+                <li><a href="#">Koinonia</a></li>
+                <li><a href="#">Marturia</a></li>
+                <li><a href="#">Diakonia</a></li>
+            </ul>
+        </div>
+        <p>2024 HKBP Purwokerto. All rights reserved.</p>
+        <p>Jl. Sarwo Endah V No.1, Karanganyar, Purwokerto Kidul, Banyumas, Jawa Tengah 53147</p>
+        <div class="social-icons">
+            <a href="#">🔗 Facebook</a>
+            <a href="#">🔗 Instagram</a>
+            <a href="#">🔗 YouTube</a>
+        </div>
+    </footer>
+</body>
+</html>

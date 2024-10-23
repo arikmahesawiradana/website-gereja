@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HKBP Purwokerto</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #003366;
+  color: white;
+}
+
+header .logo h1 {
+  margin-left: 10px;
+  font-size: 18px;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav ul li {
+  margin: 0 15px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  text-align: center;
+}
+
+.hero img {
+  width: 100%;
+  height: auto;
+}
+
+.hero-info {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px;
+}
+
+.info-box {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.info-box h2 {
+  margin: 0;
+  color: #003366;
+}
+
+/* Main Section */
+main {
+  padding: 40px;
+}
+
+.warta-section, .pelayan-section, .jadwal-section, .berita-section {
+  margin-bottom: 40px;
+}
+
+.card-container, .pelayan-container, .jadwal-container, .berita-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.card, .pelayan-card, .jadwal-box, .berita-card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  width: 300px;
+  margin: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.card img, .pelayan-card img, .berita-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+button, .load-more {
+  background-color: #003366;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.social-icons a {
+  margin: 0 5px;
+  color: #003366;
+  font-size: 18px;
+}
+
+/* Footer */
+footer {
+  background-color: #003366;
+  color: white;
+  padding: 40px;
+  text-align: center;
+}
+
+.footer-menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-menu ul li {
+  margin: 10px 0;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="church-logo.png" alt="Church Logo">
+      <h1>Gereja Kristen Batak Protestan HKBP Purwokerto</h1>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#">Beranda</a></li>
+        <li><a href="#">Warta</a></li>
+        <li><a href="#">Koinonia</a></li>
+        <li><a href="#">Diakonia</a></li>
+        <li><a href="#">Marturia</a></li>
+        <li><a href="#">Organisasi</a></li>
+        <li><a href="#">Masuk</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <img src="church-building.jpg" alt="Church">
+    <div class="hero-info">
+      <div class="info-box">
+        <h2>1200 Jemaat</h2>
+      </div>
+      <div class="info-box">
+        <h2>500 Keluarga</h2>
+      </div>
+      <div class="info-box">
+        <h2>7 WIJK</h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Section -->
+  <main>
+    <!-- Warta Jemaat Mingguan -->
+    <section class="warta-section">
+      <h2>Warta Jemaat Mingguan</h2>
+      <div class="card-container">
+        <!-- Example of one card, repeat for each -->
+        <div class="card">
+          <img src="service-image.jpg" alt="Warta Jemaat">
+          <h3>Warta Jemaat Minggu XVII Dung Trinitatis</h3>
+          <p>Persiapkan hati, liturgi, dan bacaan Alkitab untuk Ibadah Minggu ini.</p>
+          <button>Download</button>
+        </div>
+        <!-- Add more cards here -->
+      </div>
+      <button class="load-more">Lihat Lebih</button>
+    </section>
+
+    <!-- Pelayan Tahbisan -->
+    <section class="pelayan-section">
+      <h2>Pelayan Tahbisan HKBP Purwokerto</h2>
+      <div class="pelayan-container">
+        <div class="pelayan-card">
+          <img src="pelayan-image.jpg" alt="Pelayan Tahbisan">
+          <p>Jetro Ulang Tampubolon, S.Th. - Penatua Jemaat</p>
+          <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Jadwal Ibadah -->
+    <section class="jadwal-section">
+      <h2>Jadwal Ibadah</h2>
+      <div class="jadwal-container">
+        <div class="jadwal-box">
+          <h3>10:00 WIB</h3>
+          <p>Ibadah Sekolah Minggu</p>
+        </div>
+        <div class="jadwal-box">
+          <h3>10:00 WIB</h3>
+          <p>Ibadah Bahasa Batak</p>
+        </div>
+        <div class="jadwal-box">
+          <h3>17:00 WIB</h3>
+          <p>Ibadah Bahasa Indonesia</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Berita Section -->
+    <section class="berita-section">
+      <h2>Berita Seputar HKBP Purwokerto</h2>
+      <div class="berita-container">
+        <div class="berita-card">
+          <img src="news-image.jpg" alt="Berita HKBP">
+          <h3>HKBP Purwokerto Sukses Menjalankan PNB Tahun 2024</h3>
+          <p>Persiapkan hati dan liturgi dalam melayani sesama dan beribadah di gereja HKBP Purwokerto.</p>
+          <button>Baca Selengkapnya</button>
+        </div>
+        <!-- Add more news cards here -->
+      </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section">
+      <h2>Alamat Kami</h2>
+      <div id="map">
+        <!-- Embed map iframe here -->
+        <iframe src="https://www.google.com/maps/embed?pb=..." width="100%" height="450" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-info">
+      <h3>Hubungi Kami</h3>
+      <p>Jl. Senak Endah IV No.1, Grendeng, Purwokerto</p>
+      <p>Email: info@hkbppurwokerto.com</p>
+    </div>
+    <div class="social-links">
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="footer-menu">
+      <h3>Menu Utama</h3>
+      <ul>
+        <li><a href="#">Beranda</a></li>
+        <li><a href="#">Warta</a></li>
+        <li><a href="#">Marturia</a></li>
+        <li><a href="#">Diakonia</a></li>
+        <li><a href="#">Koinonia</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HKBP Hamauliateon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fb;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: flex;
+        }
+        .sidebar {
+            background-color: #082b73;
+            width: 20%;
+            height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 15px 0;
+        }
+        .sidebar ul li:hover {
+            cursor: pointer;
+            color: #c0c0c0;
+        }
+        .content {
+            width: 80%;
+            padding: 40px;
+        }
+        .box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .box h2 {
+            color: #082b73;
+        }
+        .form {
+            margin-top: 30px;
+        }
+        .form-group {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .form-group label {
+            width: 20%;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        .form-group input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 300px;
+        }
+        .upload-box {
+            border: 2px dashed #ccc;
+            padding: 30px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .total {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: right;
+        }
+        .btn {
+            background-color: #082b73;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn:hover {
+            background-color: #0a3ca1;
+        }
+        .info-box {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .info-box div {
+            width: 45%;
+            background-color: #f0f0f5;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .info-box div p {
+            font-size: 18px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Huria Kristen Batak Protestan</h2>
+            <ul>
+                <li>Dashboard</li>
+                <li>Anggota Keluarga</li>
+                <li>Persembahan Bulanan</li>
+                <li>Hamauliateon</li>
+                <li>Layanan</li>
+                <li>Diakonia</li>
+                <li>Pelayananku</li>
+                <li>Keluar</li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="box">
+                <h2>Hamauliateon / Persembahan Ucapan Syukur</h2>
+                <div class="info-box">
+                    <div>
+                        <p>Dalam Proses Verifikasi</p>
+                        <p>1</p>
+                    </div>
+                    <div>
+                        <p>Jumlah Hamauliateon</p>
+                        <p>Rp1,200,000</p>
+                    </div>
+                </div>
+                <form class="form">
+                    <div class="form-group">
+                        <label for="name">Nama/Keluarga</label>
+                        <input type="text" id="name" value="St. Lamrotua Simarmata / Hotmawati Manik" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="huria">Pos Hamauliateon</label>
+                        <input type="text" id="huria" value="Rp300,000" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="pembangunan">Pembangunan</label>
+                        <input type="text" id="pembangunan" value="Rp300,000" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="diakonia">Diakonia</label>
+                        <input type="text" id="diakonia" value="Rp200,000" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="pendeta">Pendeta</label>
+                        <input type="text" id="pendeta" value="Rp100,000" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="sintua">Sintua</label>
+                        <input type="text" id="sintua" value="Rp100,000" disabled>
+                    </div>
+                    <div class="upload-box">
+                        <p>Pindahkan atau Upload Bukti Hamauliateon</p>
+                        <p>jpeg, jpg, png</p>
+                    </div>
+                    <div class="total">
+                        Total Persembahan Rp1,000,000
+                    </div>
+                    <button class="btn">Kirim</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

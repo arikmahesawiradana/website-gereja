@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #002855;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            color: white;
+        }
+        .sidebar h2 {
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            transition: background 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #004080;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .main-content h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .stats-container {
+            display: flex;
+            gap: 20px;
+        }
+        .stat-box {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 200px;
+        }
+        .stat-box h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .stat-box p {
+            font-size: 20px;
+            font-weight: bold;
+            color: #002855;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>Huria Kristen Batak Protestan</h2>
+        <a href="#">Dashboard</a>
+        <a href="#">Anggota Keluarga</a>
+        <a href="#">Penentuan Bulanan</a>
+        <a href="#">Humaslization</a>
+        <a href="#">Layanan</a>
+        <a href="#">Doketol</a>
+        <a href="#">Pelyaananku</a>
+        <a href="#">Keluar</a>
+    </div>
+
+    <div class="main-content">
+        <h1>Hello, Username!</h1>
+        <p>Welcome back! Here is your overview for today:</p>
+
+        <div class="stats-container">
+            <div class="stat-box">
+                <h3>Jumlah Anggota Keluarga</h3>
+                <p>5</p>
+            </div>
+            <div class="stat-box">
+                <h3>Jumlah Tanggungan</h3>
+                <p>1</p>
+            </div>
+            <div class="stat-box">
+                <h3>Pelyaanan Ku</h3>
+                <p>1</p>
+            </div>
+            <div class="stat-box">
+                <h3>Penentuan Bulanan</h3>
+                <p>Rp1,200,000</p>
+            </div>
+            <div class="stat-box">
+                <h3>Penyetiahan</h3>
+                <p>Rp1,200,000</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

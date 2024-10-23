@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Warta Jemaat HKBP Purwokerto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #F4F7FC;
+        }
+
+        /* Header */
+        header {
+            background-color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        header img {
+            width: 50px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: black;
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            color: #0066cc;
+        }
+
+        /* Warta Jemaat Section */
+        .warta-section {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .warta-section h1 {
+            font-size: 2rem;
+            color: #003366;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .warta-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .warta-table th, .warta-table td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .warta-table th {
+            background-color: #003366;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .warta-table td {
+            background-color: #EAF0FF;
+            font-size: 1rem;
+        }
+
+        .warta-table td .download-btn {
+            background-color: #003366;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .warta-table td .download-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Jadwal Ibadah Section */
+        .jadwal-ibadah {
+            background-color: #003366;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-left: 40px;
+        }
+
+        .jadwal-ibadah h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .jadwal-ibadah div {
+            margin: 10px 0;
+        }
+
+        .jadwal-ibadah .icon {
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+
+        .jadwal-ibadah .time {
+            font-size: 1.1rem;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+
+        .pagination a {
+            color: black;
+            padding: 10px 20px;
+            margin: 0 5px;
+            text-decoration: none;
+            background-color: #EAF0FF;
+            border-radius: 4px;
+        }
+
+        .pagination a.active {
+            background-color: #003366;
+            color: white;
+        }
+
+        .pagination a:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #003366;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        footer .footer-menu {
+            margin-bottom: 40px;
+        }
+
+        .footer-menu ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-menu ul li {
+            margin: 10px 0;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        footer .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        footer .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <img src="logo.png" alt="Logo HKBP Purwokerto">
+        <nav>
+            <ul>
+                <li><a href="#">Beranda</a></li>
+                <li><a href="#">Warta</a></li>
+                <li><a href="#">Koinonia</a></li>
+                <li><a href="#">Marturia</a></li>
+                <li><a href="#">Diakonia</a></li>
+                <li><a href="#">Organisasi</a></li>
+                <li><a href="#">Masuk</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Warta Jemaat Section -->
+    <section class="warta-section">
+        <h1>Warta Jemaat</h1>
+
+        <table class="warta-table">
+            <tr>
+                <th>Judul Warta Jemaat</th>
+                <th>Pilih Aksi</th>
+            </tr>
+            <tr>
+                <td>Warta Jemaat Minggu XVIII Dung Trinitatis</td>
+                <td><a href="#" class="download-btn">Download</a></td>
+            </tr>
+            <!-- Repeat similar rows for more entries -->
+            <tr>
+                <td>Warta Jemaat Minggu XVIII Dung Trinitatis</td>
+                <td><a href="#" class="download-btn">Download</a></td>
+            </tr>
+            <tr>
+                <td>Warta Jemaat Minggu XVIII Dung Trinitatis</td>
+                <td><a href="#" class="download-btn">Download</a></td>
+            </tr>
+            <!-- Repeat until necessary -->
+        </table>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <a href="#">Prev</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">Next</a>
+        </div>
+    </section>
+
+    <!-- Jadwal Ibadah Section -->
+    <aside class="jadwal-ibadah">
+        <h2>Jadwal Ibadah HKBP Purwokerto</h2>
+        <div class="time">
+            <span class="icon">⛪</span>
+            10.00 WIB - Ibadah Sekolah Minggu
+        </div>
+        <div class="time">
+            <span class="icon">⛪</span>
+            10.00 WIB - Ibadah Bahasa Batak
+        </div>
+        <div class="time">
+            <span class="icon">⛪</span>
+            17.00 WIB - Ibadah Bahasa Indonesia
+        </div>
+    </aside>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-menu">
+            <ul>
+                <li><a href="#">Beranda</a></li>
+                <li><a href="#">Warta</a></li>
+                <li><a href="#">Koinonia</a></li>
+                <li><a href="#">Marturia</a></li>
+                <li><a href="#">Diakonia</a></li>
+            </ul>
+        </div>
+        <p>2024 HKBP Purwokerto. All rights reserved.</p>
+        <p>Jl. Sarwo Endah V No.1, Karanganyar, Purwokerto Kidul, Banyumas, Jawa Tengah 53147</p>
+        <div class="social-icons">
+            <a href="#">🔗 Facebook</a>
+            <a href="#">🔗 Instagram</a>
+            <a href="#">🔗 YouTube</a>
+        </div>
+    </footer>
+</body>
+</html>

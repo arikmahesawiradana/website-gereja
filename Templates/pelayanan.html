@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendataan Pelayan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #333;
+            display: flex;
+            height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            display: flex;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #002366;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 30px;
+            font-size: 20px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+        }
+
+        .sidebar ul li {
+            margin: 15px 0;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #fff;
+            display: block;
+            font-size: 16px;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 40px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .header button {
+            background-color: #002366;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .header button:hover {
+            background-color: #001844;
+        }
+
+        .table-container {
+            background-color: #e9ecf3;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px dashed #d1d1d1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+            text-align: left;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #002366;
+            color: white;
+        }
+
+        .form-container {
+            margin-top: 20px;
+            display: none;
+            background-color: #e9ecf3;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px dashed #d1d1d1;
+        }
+
+        .form-container input,
+        .form-container select,
+        .form-container textarea,
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-container button {
+            background-color: #002366;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #001844;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50px;
+            right: 30px;
+            cursor: pointer;
+        }
+
+        /* Popup Styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            width: 50%;
+            max-height: 70vh;
+            overflow-y: auto;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            z-index: 1000;
+        }
+
+        .popup-header {
+            background-color: #002366;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .popup-content {
+            padding: 20px;
+        }
+
+        .popup-content div {
+            margin-bottom: 15px;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .popup-content div:nth-child(odd) {
+            background-color: #d9e1f2;
+        }
+
+        .popup-close {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #ccc;
+            text-align: center;
+            cursor: pointer;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        .popup-close:hover {
+            background-color: #bbb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Anggota Keluarga</a></li>
+                <li><a href="#">Penyerahan Anak</a></li>
+                <li><a href="#">Pelayanan</a></li>
+                <li><a href="#">Keluar</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="header">
+                <h2>Pelayananku</h2>
+                <button onclick="toggleForm()">Tambah Data</button>
+            </div>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr>
+                        <td>Pendeta</td>
+                        <td>Aktif</td>
+                    </tr>
+                    <tr>
+                        <td>Tim Ibadah</td>
+                        <td>Tidak Aktif</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="form-container" id="formContainer">
+                <h2>Form Pendataan Pelayan</h2>
+                <form>
+                    <input type="text" placeholder="Nama Lengkap" required>
+                    <span class="search-icon" onclick="showPopup()">🔍</span>
+                    <select required>
+                        <option value="">Jenis Kelamin</option>
+                        <option value="laki-laki">Laki-laki</option>
+                        <option value="perempuan">Perempuan</option>
+                    </select>
+                    <textarea placeholder="Jenis Pelayanan yang Diinginkan"></textarea>
+                    <button type="submit">Kirim</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup -->
+    <div class="popup" id="popup">
+        <div class="popup-header">Daftar Anggota Keluarga</div>
+        <div class="popup-content">
+            <div>
+                <p><strong>Nama:</strong> A. Setiawan</p>
+                <p><strong>Jenis Kelamin:</strong> Laki-laki</p>
+                <p><strong>Tanggal Lahir:</strong> 15 Januari 1990</p>
+            </div>
+            <div>
+                <p><strong>Nama:</strong> B. Yulianti</p>
+                <p><strong>Jenis Kelamin:</strong> Perempuan</p>
+                <p><strong>Tanggal Lahir:</strong> 20 Maret 1995</p>
+            </div>
+        </div>
+        <div class="popup-close" onclick="hidePopup()">Tutup</div>
+    </div>
+
+    <script>
+        function toggleForm() {
+            const form = document.getElementById('formContainer');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function showPopup() {
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function hidePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

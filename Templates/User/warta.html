@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Warta Jemaat HKBP Purwokerto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: white;
+            color: #003366;
+        }
+        
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        
+        nav ul li {
+            margin: 0 15px;
+        }
+        
+        nav ul li a {
+            color: #003366;
+            text-decoration: none;
+            font-size: 20px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-container img {
+            height: 60px;
+            margin-right: 15px;
+        }
+
+        .logo-container h1 {
+            font-size: 20px;
+            color: #002060;
+            margin: 0;
+        }
+        .footer {
+            background-color: #002366;
+            color: white;
+            padding: 20px 0;
+        }
+        .footer a {
+            color: white;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .footer .social-icons a {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+        .footer hr {
+            border-top: 1px solid white;
+        }
+        .footer {
+            background-color: #002366;
+            color: white;
+            padding: 40px 0;
+        }
+
+        .footer h5 {
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+        }
+
+        .footer ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .footer ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        .warta-section, .jadwal-ibadah {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Warta Jemaat Table */
+        .warta-table {
+            width: 100%;
+            text-align: left;
+        }
+        .warta-table th {
+            background-color: #2f3a6b;
+            color: white;
+            padding: 15px;
+            /* border-top-left-radius: 10px; */
+            /* border-top-right-radius: 10px; */
+        }
+        .warta-table td, .warta-table th {
+            padding: 15px;
+            border: none;
+        }
+        .warta-table tr:nth-child(even) {
+            background-color: #f0f2fa;
+        }
+        .warta-table tr:nth-child(odd) {
+            background-color: #e8ecf9;
+        }
+        .download-btn {
+            color: #fff;
+            background-color: #2f3a6b;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 15px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .download-btn:hover {
+            background-color: #1c2552;
+        }
+
+        /* Pagination */
+        .pagination a {
+            color: #2f3a6b;
+            padding: 8px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 2px;
+            border: 1px solid #2f3a6b;
+        }
+        .pagination a.active {
+            background-color: #2f3a6b;
+            color: white;
+            border: none;
+        }
+
+        /* Jadwal Ibadah */
+        .jadwal-ibadah {
+            background-color: #2f3a6b;
+            color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            font-weight: bold;
+        }
+        .jadwal-ibadah h2 {
+            color: #ffffff;
+        }
+        .jadwal-ibadah .time {
+            background-color: #ffffff;
+            color: #2f3a6b;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .jadwal-ibadah .time .icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+          <img src="{{ url_for('static', filename='foto/logo.png') }}" alt="Church Logo">
+          <h1>Gereja Kristen Batak Protestan <br> HKBP Purwokerto</h1>
+        </div>
+        <nav>
+          <ul>
+            <li><a href="/">Beranda</a></li>
+            <li><a href="/warta">Warta</a></li>
+            <li><a href="#">Koinonia</a></li>
+            <li><a href="#">Diakonia</a></li>
+            <li><a href="#">Marturia</a></li>
+            <li><a href="#">Organisasi</a></li>
+            <li><a href="#">Masuk</a></li>
+          </ul>
+        </nav>
+    </header>
+
+
+    <div class="container my-5">
+        <div class="row">
+            <!-- Warta Jemaat Section -->
+            <div class="col-md-8 mb-4">
+                <section class="warta-section">
+                    <h1>Warta Jemaat</h1>
+                    <table class="warta-table">
+                        <thead>
+                            <tr>
+                                <th>Judul Warta Jemaat</th>
+                                <th>Pilih Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if data %}
+                            {% for datum in data %}
+                            <tr>
+                                <td>{{ datum.judul }}</td>
+                                <td><a href="#" class="{{ datum.file }}">Download</a></td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="2">Data Warta Jemaat Tidak Ditemukan</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                    <!-- {% if status %}
+                    {% endif %}
+                    <div class="pagination mt-3">
+                        <a href="#">Prev</a>
+                        <a href="#" class="active">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#">4</a>
+                        <a href="#">5</a>
+                        <a href="#">Next</a>
+                    </div> -->
+                </section>
+            </div>
+            <!-- Jadwal Ibadah Section -->
+            <div class="col-md-4">
+                <aside class="jadwal-ibadah">
+                    <h2>Jadwal Ibadah HKBP Purwokerto</h2>
+                    <div class="time">
+                        <span class="icon">⛪</span>
+                        <span>10.00 WIB - Ibadah Sekolah Minggu</span>
+                    </div>
+                    <div class="time">
+                        <span class="icon">⛪</span>
+                        <span>10.00 WIB - Ibadah Bahasa Batak</span>
+                    </div>
+                    <div class="time">
+                        <span class="icon">⛪</span>
+                        <span>17.00 WIB - Ibadah Bahasa Indonesia</span>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+     <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+            <h5>Huria Kristen Batak Protestan</h5>
+            <p>HKBP Purwokerto</p>
+            <p>Jl. Sarwo Endah V No.1, Karanganyar,<br> Purwokerto Kidul, Kec. Purwokerto Sel.,<br> Kabupaten Banyumas, Jawa Tengah 53147</p>
+            </div>
+            <div class="col-md-2 mb-3">
+            <h5>Menu Utama</h5>
+            <ul class="list-unstyled">
+                <li><a href="#">Beranda</a></li>
+                <li><a href="#">Warta</a></li>
+            </ul>
+            </div>
+            <div class="col-md-2 mb-3">
+            <h5>Program</h5>
+            <ul class="list-unstyled">
+                <li><a href="#">Marturia</a></li>
+                <li><a href="#">Diakonia</a></li>
+                <li><a href="#">Koinonia</a></li>
+            </ul>
+            </div>
+            <div class="col-md-4 mb-3">
+            <h5>Ikuti Kami</h5>
+            <ul class="list-unstyled social-icons">
+                <li><a href="#"><i class="bi bi-facebook"></i> Facebook</a></li>
+                <li><a href="#"><i class="bi bi-instagram"></i> Instagram</a></li>
+                <li><a href="#"><i class="bi bi-youtube"></i> YouTube</a></li>
+            </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col text-center">
+            <p>&copy; 2024 HKBP Purwokerto. All Rights Reserved</p>
+            </div>
+        </div>
+        </div>
+    </footer>
+</body>
+</html>

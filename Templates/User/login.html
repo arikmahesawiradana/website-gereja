@@ -53,12 +53,15 @@
 </head>
 <body>
     <div class="login-container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Huria_Kristen_Batak_Protestan.svg" alt="HKBP Logo" width="80">
+        <img src="{{ url_for('static', filename='foto/logo.png') }}" alt="HKBP Logo" width="80">
         <h2>Huria Kristen Batak Protestan HKBP Purwokerto</h2>
         <h3>Masuk Menggunakan Akun Anda</h3>
-        <form action="#" method="post">
-            <input type="text" name="username" placeholder="Username" value="Markussitumorang" required>
-            <input type="password" name="password" placeholder="Password" value="********" required>
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        <form action="/signin" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Masuk</button>
         </form>
     </div>

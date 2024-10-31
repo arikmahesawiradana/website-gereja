@@ -1,0 +1,285 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: white;
+    color: #003366;
+  }
+  
+  /* header .logo h1 {
+    margin-left: 10px;
+    font-size: 18px;
+  } */
+  
+  nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  nav ul li {
+    margin: 0 15px;
+  }
+  
+  nav ul li a {
+    color: #003366;
+    text-decoration: none;
+    font-size: 20px;
+  }
+  
+  /* Hero Section */
+.hero {
+    position: relative;
+    height: 60vh;
+    background: url('../foto/header_foto.jpg') no-repeat center center;
+    background-size: cover;
+  }
+  
+  /* Info boxes container */
+  .hero-info {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  /* Info boxes styling */
+  .info-box {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
+  }
+  
+  .info-box h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #002060;
+  }
+  
+  /* Responsive layout for smaller screens */
+  @media (max-width: 768px) {
+    .hero-info {
+      flex-direction: column;
+    }
+  }
+  
+
+  /* Main Section */
+  /* main {
+    padding: 40px;
+  }
+  
+  .warta-section, .pelayan-section, .jadwal-section, .berita-section {
+    margin-bottom: 40px;
+  }
+  
+  .card-container, .pelayan-container, .jadwal-container, .berita-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  
+  .pelayan-card, .jadwal-box, .berita-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    margin: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    overflow: hidden;
+  } */
+
+  /* .card{
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    margin: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    overflow: hidden;
+  } */
+  /* .card img{
+    width: 100%;
+    border-radius: 8px;
+  } */
+  /* .pelayan-card img, .berita-card img {
+    width: 100%;
+    border-radius: 8px;
+  } */
+  
+  /* button, .load-more {
+    background-color: #003366;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+  } */
+  
+  /* .social-icons a {
+    margin: 0 5px;
+    color: #003366;
+    font-size: 18px;
+  } */
+  
+  /* Footer */
+  footer {
+    background-color: #003366;
+    color: white;
+  }
+  
+  /* .footer-menu ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-menu ul li {
+    margin: 10px 0;
+  }
+  
+  footer a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  } */
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-container img {
+    height: 60px; /* Adjust the height as per your requirement */
+    margin-right: 15px; /* Space between logo and text */
+  }
+
+  .logo-container h1 {
+    font-size: 20px; /* Adjust the font size */
+    color: #002060; /* Color from the image */
+    margin: 0; /* Remove default margins */
+  }
+  /* Card Styles */
+ .card {
+    text-align: center;
+  }
+/*  
+  .card img {
+    width: 100%;
+    border-radius: 8px;
+  }
+  
+  .card h3 {
+    font-size: 1.25rem;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  .card p {
+    font-size: 0.875rem;
+    margin-top: 10px;
+    color: #666;
+  } */
+  
+  /* Button Style */
+  .card button {
+    background-color: #002366;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .card button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Container Styling */
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .warta-section {
+    padding: 50px 0;
+  }
+  
+  .warta-section h2 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .load-more {
+    display: block;
+    margin: 20px auto;
+    background-color: #002366;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .load-more:hover {
+    background-color: #0056b3;
+  }
+  
+.schedule-card {
+    background-color: white;
+    color: #002366;
+    border: none;
+}
+.schedule-card .card-body {
+    text-align: center;
+}
+.icon {
+    font-size: 2rem;
+}
+.jadwal{
+    background-color: #002366;
+    display: flex;
+    text-align: center;
+    color: white;
+}
+.footer {
+    background-color: #002366;
+    color: white;
+    padding: 20px 0;
+}
+.footer a {
+    color: white;
+    text-decoration: none;
+}
+.footer a:hover {
+    text-decoration: underline;
+}
+.footer .social-icons a {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+.footer hr {
+    border-top: 1px solid white;
+}

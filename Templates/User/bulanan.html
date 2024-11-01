@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+        }
+        .sidebar {
+            background-color: #002855;
+            color: white;
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+        .sidebar h2 {
+            font-size: 18px;
+            margin-bottom: 30px;
+            text-align: left;
+            padding-left: 20px;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 12px 20px;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #004080;
+        }
+        .sidebar ul li {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 5px 20px;
+            transition: background 0.3s;
+        }
+        .sidebar ul li:hover {
+            background-color: #004080;
+        }
+        .stat-box {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-box h3 {
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 5px;
+        }
+        .stat-box p {
+            font-size: 18px;
+            font-weight: bold;
+            color: #002855;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar">
+            <h2>Huria Kristen Batak Protestan <br> HKBP Purwokerto</h2>
+            <a href="/profile"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="/profile/keluarga"><i class="fas fa-users"></i> Anggota Keluarga</a>
+            <a href="/profile/bulanan"><i class="fas fa-envelope"></i> Persembahan Bulanan</a>
+            <!-- <a href="#"><i class="fas fa-book"></i> Hamauliateon</a> -->
+            <!-- <a href="#"><i class="fas fa-concierge-bell"></i> Layanan</a> -->
+            <a href="#"><i class="fas fa-hands-helping"></i> Diakonia</a>
+            <!-- <a href="#"><i class="fas fa-user"></i> Pelayananku</a> -->
+            <a href="/signout"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+        </div>
+        
+        <div class="col-md-10 p-4">
+            <h2 class="mb-3">Persembahan Bulanan</h2>
+            <!-- Stats Container -->
+            <div class="row mb-4">
+                <div class="col-md-2">
+                    <div class="stat-box">
+                        <h3>Bulan Yang Sudah Dibayar</h3>
+                        <p>{{ count }}</p>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="stat-box">
+                        <h3>Dalam Proses Verifikasi</h3>
+                        <p>{{ pending }}</p>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="stat-box">
+                        <h3>Jumlah Persembahan</h3>
+                        <p>{{ nominal }}</p>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Form Persembahan Bulanan -->
+            <h3 class="mb-3">Form Persembahan Bulanan</h3>
+            <form action="/addbulanan" method="POST" enctype="multipart/form-data">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <!-- Upload Box -->
+                        <div class="upload-box p-3 text-center" style="border: 1px dashed #ccc; border-radius: 8px;">
+                            <input type="file" name="bukti" class="form-control-file" accept=".jpeg, .jpg, .png" style="display: none;" id="uploadBukti">
+                            <label for="uploadBukti" style="cursor: pointer;">
+                                <p>Pindahkan atau <a href="#">Upload Bukti Persembahan</a></p>
+                                <p><small>.jpeg, .jpg, .png</small></p>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <!-- Form Fields -->
+                        <div class="mb-3">
+                            <label for="nama" class="form-label">Nama Keluarga</label>
+                            <input type="text" class="form-control" id="nama" name="nama" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nominal" class="form-label">Nominal Persembahan</label>
+                            <input type="number" class="form-control" id="nominal" name="nominal" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bulan" class="form-label">Persembahan Bulan</label>
+                            <select id="bulan" name="bulan" class="form-select">
+                                <option selected disabled>Pilih Bulan...</option>
+                                <option value="Januari">Januari</option>
+                                <option value="Februari">Februari</option>
+                                <option value="Maret">Maret</option>
+                                <option value="April">April</option>
+                                <option value="Mei">Mei</option>
+                                <option value="Juni">Juni</option>
+                                <option value="Juli">Juli</option>
+                                <option value="Agustus">Agustus</option>
+                                <option value="September">September</option>
+                                <option value="Oktober">Oktober</option>
+                                <option value="November">November</option>
+                                <option value="Desember">Desember</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary">Submit Persembahan</button>
+            </form>
+        </div>        
+    </div>
+</div>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -128,6 +128,30 @@ command = """CREATE TABLE IF NOT EXISTS pelayanan(
     tanggal_tahbisan TEXT
     )"""
 cursor.execute(command)
+command = """CREATE TABLE IF NOT EXISTS keluarga(
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    myid INTEGER, 
+    nama TEXT,
+    status TEXT,
+    jenis_kelamin TEXT,
+    tempat_lahir TEXT,
+    tanggal_lahir TEXT,
+    tanggal_baptis TEXT,
+    tanggal_sidi TEXT,
+    pekerjaan TEXT,
+    pendidikan TEXT
+    )"""
+cursor.execute(command)
+command = """CREATE TABLE IF NOT EXISTS bulanan(
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    username TEXT,
+    nama TEXT,
+    nominal INTEGER,
+    bulan TEXT,
+    bukti TEXT,
+    status TEXT
+    )"""
+cursor.execute(command)
 
 app = Flask(__name__, static_folder="Static", template_folder="Templates")
 UPLOAD_FOLDER = 'static/pdf'
@@ -190,7 +214,8 @@ def signin():
         myData = cursor.fetchone()
         #add all of data from user into session
         if myData:
-            id, username, password, status, nama, registrasi, wijk, tanggal_registrasi, tanggal_menikah, alamat = myData
+            myid, username, password, status, nama, registrasi, wijk, tanggal_registrasi, tanggal_menikah, alamat = myData
+            session["id"] = myid
             session["username"] = username
             session["password"] = password
             session["status"] = status
@@ -229,6 +254,11 @@ def adduser():
         command = f"INSERT INTO user(username, password, status) VALUES('{username}', '{password}', '{status}')"
         cursor.execute(command)
         db.commit()
+        new_json = []
+        filename = f"data/{username}.json"
+        #create a new json file
+        with open(filename, "w") as f:
+            json.dump(new_json, f)
         return redirect(url_for("management_user"))
     else:
         return redirect(url_for("index"))
@@ -269,7 +299,10 @@ def keluarga():
             command = f"SELECT * FROM user WHERE id={id}"
             cursor.execute(command)
             user = cursor.fetchone()
-            return render_template("Admin/data_keluarga.html", user=user, wijk=wijk)
+            command = f"SELECT * FROM keluarga WHERE myid={id}"
+            cursor.execute(command)
+            keluarga = cursor.fetchall()
+            return render_template("Admin/data_keluarga.html", user=user, wijk=wijk, families=keluarga)
     else:
         return redirect(url_for("index"))
 
@@ -301,8 +334,7 @@ def baptis():
         return redirect(url_for("index"))
 
 def addbaptis():
-    if session:
-        if session['status'] == "Admin":
+    if "status" in session:
             nama_lengkap = request.form.get("nama_lengkap")
             jenis_kelamin = request.form.get("jenis_kelamin")
             tempat_lahir = request.form.get("tempat_lahir")
@@ -334,8 +366,7 @@ def sidi():
         return redirect(url_for("index"))
 
 def addsidi():
-    if session:
-        if session['status'] == "Admin":
+    if "status" in session:
             nama_lengkap = request.form.get("nama_lengkap")
             jenis_kelamin = request.form.get("jenis_kelamin")
             tempat_lahir = request.form.get("tempat_lahir")
@@ -368,8 +399,7 @@ def lahir():
         return redirect(url_for("index"))
 
 def addlahir():
-    if session:
-        if session['status'] == "Admin":
+    if "status" in session:
             nama_lengkap = request.form.get("nama_lengkap")
             jenis_kelamin = request.form.get("jenis_kelamin")
             tempat_lahir = request.form.get("tempat_lahir")
@@ -400,8 +430,7 @@ def rpp():
         return redirect(url_for("index"))
 
 def addrpp():
-    if session:
-        if session['status'] == "Admin":
+    if "status" in session:
             nama_lengkap = request.form.get("nama_lengkap")
             jenis_kelamin = request.form.get("jenis_kelamin")
             tanggal_rpp = request.form.get("tanggal_rpp")
@@ -432,8 +461,7 @@ def martumpol():
         return redirect(url_for("index"))
 
 def addmartumpol():
-    if session:
-        if session['status'] == "Admin":
+    if "status" in session:
             nama_lengkap_laki = request.form.get("nama_lengkap_laki")
             nama_ayah_laki = request.form.get("nama_ayah_laki")
             nama_ibu_laki = request.form.get("nama_ibu_laki")
@@ -471,8 +499,7 @@ def pernikahan():
         return redirect(url_for("index"))
 
 def addpernikahan():
-    if session:
-        if session['status'] == "Admin":
+    if "status" in session:
             nama_lengkap_laki = request.form.get("nama_lengkap_laki")
             nama_ayah_laki = request.form.get("nama_ayah_laki")
             nama_ibu_laki = request.form.get("nama_ibu_laki")
@@ -511,7 +538,6 @@ def meninggal_dunia():
 
 def addmeninggal():
     if "status" in session:
-        if session['status'] == "Admin":
             nama_lengkap = request.form.get("nama_lengkap")
             jenis_kelamin = request.form.get("jenis_kelamin")
             monding = request.form.get("monding")
@@ -541,8 +567,7 @@ def kegiatan_kebaktian():
         return redirect(url_for("index"))
 
 def addkebaktian():
-    if session:
-        if session['status'] == "Admin":
+    if "status" in session:
             nama_kebaktian = request.form.get("nama_kebaktian")
             tanggal = request.form.get("tanggal")
             pengkhotbah = request.form.get("pengkhotbah")
@@ -571,7 +596,7 @@ def deletekebaktian():
     return redirect(url_for("kegiatan_kebaktian"))
 
 def data_pelayanan():
-    if session:
+    if "status" in session:
         if "status" in session:
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
@@ -583,8 +608,7 @@ def data_pelayanan():
         return redirect(url_for("index"))
 
 def addpelayanan():
-    if session:
-        if session['status'] == "Admin":
+    if "status" in session:
             nama_lengkap = request.form.get("nama_lengkap")
             jenis_kelamin = request.form.get("jenis_kelamin")
             status_pelayanan = request.form.get("status_pelayanan")
@@ -695,7 +719,22 @@ def deleteberita():
         json.dump(data, fil)
     return redirect(url_for("warta"))
 
-def url_rule():
+def pembayaran():
+    if "status" in session:
+        command = f"SELECT * FROM bulanan"
+        cursor.execute(command)
+        users = cursor.fetchall()
+        return render_template("Admin/bulanan.html", users=users)
+    
+def verify_pembayaran():
+    id = request.args.get("id")
+    #create sql command set status into verified where id is from variable call id
+    command = f"UPDATE pembayaran SET status='verified' WHERE id={id}"
+    cursor.execute(command)
+    db.commit()
+    return redirect(url_for("pembayaran"))
+
+def url_rule_admin():
     app.add_url_rule("/", "index", index)
     app.add_url_rule("/warta_user", "warta_user", warta_user    )
     app.add_url_rule("/login", "login", login)
@@ -742,8 +781,100 @@ def url_rule():
     app.add_url_rule("/dashboard/berita/add", "add_berita_page", add_berita_page)
     app.add_url_rule("/addberita", "addberita", addberita, methods=["post"])
     app.add_url_rule("/deleteberita", "deleteberita", deleteberita)
+    app.add_url_rule("/dashboard/bulanan", "pembayaran", pembayaran)
 
-url_rule()
+#ini untuk user
+def profile():
+    if "nama" in session:
+        nama = session["nama"]
+        tanggal = session["tanggal_registrasi"]
+        return render_template("User/profile.html", nama=nama, tanggal=tanggal)
+    
+def user_keluarga():
+    if "nama" in session:
+        # with open("data/nama_wjik.txt", "r") as f:
+        #     wijk = f.read().split("\n")
+        id = session["id"]
+        command = f"SELECT * FROM user WHERE id={id}"
+        cursor.execute(command)
+        user = cursor.fetchone()
+        command = f"SELECT * FROM keluarga WHERE myid={id}"
+        cursor.execute(command)
+        keluarga = cursor.fetchall()
+        return render_template("User/keluarga.html", user=user, families=keluarga)
+
+def addkeluarga():
+    id = session["id"]
+    nama = request.form.get("nama")
+    status = request.form.get("status")
+    jenis_kelamin = request.form.get("jenis_kelamin")
+    tempat_lahir = request.form.get("tempat_lahir")
+    tanggal_lahir = request.form.get("tanggal_lahir")
+    tanggal_baptis = request.form.get("tanggal_baptis")
+    tanggal_sidi = request.form.get("tanggal_sidi")
+    pekerjaan = request.form.get("pekerjaan")
+    pendidikan = request.form.get("pendidikan")
+    #add all of those data into database keluarga
+    command = f"INSERT INTO keluarga(myid, nama, status, jenis_kelamin, tempat_lahir, tanggal_lahir, tanggal_baptis, tanggal_sidi, pekerjaan, pendidikan) VALUES({id}, '{nama}', '{status}', '{jenis_kelamin}', '{tempat_lahir}', '{tanggal_lahir}', '{tanggal_baptis}', '{tanggal_sidi}', '{pekerjaan}', '{pendidikan}')"
+    cursor.execute(command)
+    db.commit()
+    return redirect(url_for("user_keluarga"))
+
+def deletekeluarga():
+    myid = session["id"]
+    id = request.args.get("id")
+    print(myid)
+    print(id)
+    command = f"DELETE FROM keluarga WHERE id={id} AND myid={myid}"
+    cursor.execute(command)
+    db.commit()
+    return redirect(url_for("user_keluarga"))
+
+def pelayanan_user():
+    if "nama" in session:
+        return render_template("User/layanan.html")
+
+def bulanan_user():
+    if "nama" in session:
+        command = f"SELECT * FROM bulanan WHERE username='{session["username"]}'"
+        cursor.execute(command)
+        bulanan = cursor.fetchall()
+        nominal = 0
+        pending = 0
+        count = len(bulanan)
+        if count > 0:
+            if bulanan[6] == "verified":
+                nominal += int(bulanan[3])
+            else:
+                pending += 1
+        return render_template("User/bulanan.html", nominal=nominal, pending=pending, count=count)
+
+def addbulanan():
+    nama_keluarga = request.form.get('nama')
+    nominal_persembahan = request.form.get('nominal')
+    persembahan_bulan = request.form.get('bulan')
+    bukti_persembahan = request.files.get('bukti')
+    file_path = None
+    if bukti_persembahan:
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], bukti_persembahan.filename)
+        bukti_persembahan.save(file_path)
+    command = f"INSERT INTO bulanan (username, nama, nominal, bulan, bukti, status) VALUES ('{session["username"]}', '{nama_keluarga}', {nominal_persembahan}, '{persembahan_bulan}', '{file_path}', 'pending') "
+    cursor.execute(command)
+    db.commit()
+    redirect(url_for("bulanan_user"))
+
+def url_rule_user():
+    app.add_url_rule("/profile", "profile", profile)
+    app.add_url_rule("/profile/keluarga", "user_keluarga", user_keluarga)
+    app.add_url_rule("/addkeluarga", "addkeluarga", addkeluarga, methods=["post"])
+    app.add_url_rule("/deletekeluarga", "deletekeluarga", deletekeluarga)
+    app.add_url_rule("/profile/layanan", "pelayanan_user", pelayanan_user)
+    app.add_url_rule("/profile/bulanan", "bulanan_user", bulanan_user)
+    app.add_url_rule("/addbulanan", "addbulanan", addbulanan, methods=["post"])
+
+
+url_rule_admin()
+url_rule_user()
 
 if __name__ == '__main__':
     app.run(debug=True)

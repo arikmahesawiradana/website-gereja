@@ -181,42 +181,14 @@
     <div class="row">
         <!-- Sidebar -->
         <div class="col-md-2 sidebar">
-            <h2>Huria Kristen Batak Protestan</h2>
-            <a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-            <a href="/dashboard/management_user"><i class="fas fa-users-cog"></i> Manajemen User</a>
-            <a data-bs-toggle="collapse" data-bs-target="#Peremajaan"><i class="fas fa-database"></i> Peremajaan Data</a>
-            <div id="Peremajaan" class="collapse">
-                <ul>
-                    <li><a href="/dashboard/ubah_data_jemaat">Ubah Data Jemaat</a></li>
-                    <li><a href="/dashboard/jemaat_baptis">Jemaat Baptis</a></li>
-                    <li><a href="/dashboard/jemaat_sidi">Jemaat Sidi</a></li>
-                    <li><a href="/dashboard/anak_lahir">Anak Lahir</a></li>
-                    <li><a href="/dashboard/rpp">RPP</a></li>
-                    <li><a href="/dashboard/martumpal">Martumpal</a></li>
-                    <li><a href="/dashboard/pernikahan">Pernikahan</a></li>
-                    <li><a href="/dashboard/meninggal_dunia">Meninggal Dunia</a></li>
-                </ul>
-            </div>
-            <!-- <a href="#" data-bs-toggle="collapse" data-bs-target="#Injem"><i class="fas fa-info-circle"></i> Informasi Jemaat</a>
-            <div id="Injem" class="collapse">
-                <ul>
-                    <li><a href="/dashboard/cari_data_jemaat">Cari Data Jemaat</a></li>
-                    <li><a href="/dashboard/ulang_tahun">Ulang Tahun</a></li>
-                </ul>
-            </div> -->
-            <!-- <a href="#" data-bs-toggle="collapse" data-bs-target="#Keuangan"><i class="fas fa-wallet"></i> Keuangan</a>
-            <div id="Keuangan" class="collapse">
-                <ul>
-                    <li><a href="/dashboard/persembahan_bulanan">Persembahan Bulanan</a></li>
-                    <li><a href="/dashboard/hamauliateon">Hamauliateon</a></li>
-                    <li><a href="/dashboard/warta_keuangan">Warta Keuangan</a></li>
-                </ul>
-            </div> -->
-            <a href="/dashboard/bulanann"><i class="fas fa-church"></i>Bulanan</a>
-            <a href="/dashboard/kegiatan_kebaktian"><i class="fas fa-church"></i> Kegiatan Kebaktian</a>
-            <a href="/dashboard/data_pelayan"><i class="fas fa-user-shield"></i> Data Pelayan</a>
-            <a href="/dashboard/warta"><i class="fas fa-newspaper"></i> Warta</a>
-            <a href="/dashboard/berita"><i class="fas fa-bullhorn"></i> Berita</a>
+            <h2>Huria Kristen Batak Protestan <br> HKBP Purwokerto</h2>
+            <a href="/profile"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="/profile/keluarga"><i class="fas fa-users"></i> Anggota Keluarga</a>
+            <!-- <a href="#"><i class="fas fa-envelope"></i> Persembahan Bulanan</a> -->
+            <a href="#"><i class="fas fa-book"></i> Hamauliateon</a>
+            <a href="#"><i class="fas fa-concierge-bell"></i> Layanan</a>
+            <a href="#"><i class="fas fa-hands-helping"></i> Diakonia</a>
+            <!-- <a href="#"><i class="fas fa-user"></i> Pelayananku</a> -->
             <a href="/signout"><i class="fas fa-sign-out-alt"></i> Keluar</a>
         </div>
         
@@ -255,22 +227,19 @@
                         </div>
                     </div>
                 </div>
-            
-                <div class="button-group">
-                    <button type="button" class="btn btn-edit" data-bs-toggle="modal" data-bs-target="#edit">Edit</button>
-                    <button type="button" class="btn btn-delete">Hapus</button>
-                </div>
             </div>
             <div class="container container-box">
                 <h2 class="header-title mb-4">Daftar Anggota Keluarga</h2>
                 <div class="table-container">
                     <div class="d-flex justify-content-between mb-3">
+                        <button class="btn btn-primary btn-primary-custom" data-bs-toggle="modal" data-bs-target="#edit">Tambah Keluarga</button>
                         <input type="text" class="search-bar" placeholder="Cari User...">
                     </div>
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>Daftar Keluarga</th>
+                                <th>Daftar Anggota Keluarga</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -289,6 +258,9 @@
                                         <p>Pekerjaan: {{ family[9] }}</p>
                                         <p>Pendidikan: {{ family[10] }}</p>
                                     </td>
+                                    <td>
+                                        <a href="/deletekeluarga?id={{ family[0] }}" class="btn btn-danger btn-sm">Hapus</a>
+                                    </td>
                                 </tr>
                                 {% endfor %}
                             {% else %}
@@ -301,55 +273,6 @@
                 </div>
             </div>
         </div>
-        <!-- Add User Modal -->
-         <!-- Modal for adding new user -->
-         <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addUserModalLabel">Edit User</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form method="POST" action="/dashboard/ubah_data_jemaat/edit_user?id={{ user[0] }}">
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="username" class="form-label">No. Registrasi</label>
-                                <input type="text" class="form-control" id="registrasi" name="registrasi" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Tanggal Registrasi</label>
-                                <input type="date" class="form-control" id="tanggal_registrasi" name="tanggal_registrasi" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Tanggal Menikah</label>
-                                <input type="date" class="form-control" id="tanggal_menikah" name="tanggal_menikah">
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Nama Keluarga</label>
-                                <input type="text" class="form-control" id="nama" name="nama" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Alamat</label>
-                                <input type="text" class="form-control" id="alamat" name="alamat" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">WIJK</label>
-                                <select class="form-select" id="wijk" name="wijk" required>
-                                    <option value="" disabled selected>Wijk</option>
-                                    {% for w in wijk %}
-                                    <option value="{{ w }}">{{ w }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary btn-primary-custom">Simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
         <!-- Modal for adding new user -->
         <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -358,20 +281,76 @@
                         <h5 class="modal-title" id="addUserModalLabel">Tambah User Baru</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form method="POST" action="/edit">
+                    <form method="POST" action="/addkeluarga">
                         <div class="modal-body">
                             <div class="mb-3">
-                                <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="username" name="username" required>
+                                <label for="nama" class="form-label">Nama Lengkap</label>
+                                <input type="text" class="form-control" id="nama" name="nama" required>
                             </div>
+                            
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-select" id="status" name="status">
+                                    <option selected disabled>Pilih Status</option>
+                                    <option value="kepala">Kepala Keluarga</option>
+                                    <option value="istri">Istri</option>
+                                    <option value="anak">Anak</option>
+                                    <option value="tanggungan">Tanggungan</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                                <select class="form-select" id="jenis_kelamin" name="jenis_kelamin">
+                                    <option selected>Jenis Kelamin</option>
+                                    <option value="laki-laki">Laki-laki</option>
+                                    <option value="perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="tempat_lahir" class="form-label">Tempat Lahir</label>
+                                <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
+                                <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required>
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="tanggal_baptis" class="form-label">Tanggal Baptis</label>
+                                <input type="date" class="form-control" id="tanggal_baptis" name="tanggal_baptis">
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="tanggal_sidi" class="form-label">Tanggal Sidi</label>
+                                <input type="date" class="form-control" id="tanggal_sidi" name="tanggal_sidi">
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="pekerjaan" class="form-label">Pekerjaan</label>
+                                <input type="text" class="form-control" id="pekerjaan" name="pekerjaan">
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="pendidikan" class="form-label">Pendidikan</label>
+                                <select class="form-select" id="pendidikan" name="pendidikan">
+                                    <option selected disabled>Pendidikan</option>
+                                    <option value="S3">S3</option>
+                                    <option value="S2">S2</option>
+                                    <option value="S1">S1</option>
+                                    <option value="SMA">SMA</option>
+                                    <option value="SMP">SMP</option>
+                                    <option value="SD">SD</option>
+                                    <option value="PAUD">PAUD</option>
+                                    <option value="Tidak Bersekolah">Tidak Bersekolah</option>
+                                </select>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary btn-primary-custom">Simpan</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
                         </div>
                     </form>
                 </div>

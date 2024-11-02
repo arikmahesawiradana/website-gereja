@@ -729,10 +729,35 @@ def pembayaran():
 def verify_pembayaran():
     id = request.args.get("id")
     #create sql command set status into verified where id is from variable call id
-    command = f"UPDATE pembayaran SET status='verified' WHERE id={id}"
+    command = f"UPDATE bulanan SET status='verified' WHERE id={id}"
     cursor.execute(command)
     db.commit()
     return redirect(url_for("pembayaran"))
+
+def more_info():
+    id = request.args.get("id")
+    page = request.args.get("page")
+    command = f"SELECT * FROM {page} WHERE id={id}"
+    cursor.execute(command)
+    user = cursor.fetchone()
+    print(user)
+    return render_template("more_info.html", user=user, page=page)
+
+def show_bukti(filename):
+    image_path = os.path.join(app.static_folder, 'pdf', filename)
+    if not os.path.isfile(image_path):
+        # Jika tidak ada, tampilkan error 404
+        abort(404)
+    print(f"pdf/{filename}")
+    return render_template("Admin/bukti.html", filename=f"pdf/{filename}")
+
+def deletebulanan():
+    id = request.args.get("id")
+    command = f"DELETE FROM bulanan WHERE id={id}"
+    cursor.execute(command)
+    db.commit()
+    return redirect(url_for("pembayaran"))
+
 
 def url_rule_admin():
     app.add_url_rule("/", "index", index)
@@ -781,7 +806,11 @@ def url_rule_admin():
     app.add_url_rule("/dashboard/berita/add", "add_berita_page", add_berita_page)
     app.add_url_rule("/addberita", "addberita", addberita, methods=["post"])
     app.add_url_rule("/deleteberita", "deleteberita", deleteberita)
-    app.add_url_rule("/dashboard/bulanan", "pembayaran", pembayaran)
+    app.add_url_rule("/dashboard/bulanann", "pembayaran", pembayaran)
+    app.add_url_rule("/verified", "verified", verify_pembayaran)
+    app.add_url_rule("/deletebulanan", "deletebulanan", deletebulanan)
+    app.add_url_rule("/static/pdf/<filename>", "show_bukti", show_bukti)
+    app.add_url_rule("/lihat", "more_info", more_info)
 
 #ini untuk user
 def profile():
@@ -836,20 +865,24 @@ def pelayanan_user():
 
 def bulanan_user():
     if "nama" in session:
-        command = f"SELECT * FROM bulanan WHERE username='{session["username"]}'"
+        username = session["username"]
+        command = f"SELECT * FROM bulanan WHERE username='{username}'"
         cursor.execute(command)
         bulanan = cursor.fetchall()
         nominal = 0
         pending = 0
         count = len(bulanan)
+        # print(len(bulanan))
         if count > 0:
-            if bulanan[6] == "verified":
-                nominal += int(bulanan[3])
-            else:
-                pending += 1
+            for i in bulanan:
+                if i[6] == "verified":
+                    nominal += int(i[3])
+                else:
+                    pending += 1
         return render_template("User/bulanan.html", nominal=nominal, pending=pending, count=count)
 
 def addbulanan():
+    username = session["username"]
     nama_keluarga = request.form.get('nama')
     nominal_persembahan = request.form.get('nominal')
     persembahan_bulan = request.form.get('bulan')
@@ -858,10 +891,10 @@ def addbulanan():
     if bukti_persembahan:
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], bukti_persembahan.filename)
         bukti_persembahan.save(file_path)
-    command = f"INSERT INTO bulanan (username, nama, nominal, bulan, bukti, status) VALUES ('{session["username"]}', '{nama_keluarga}', {nominal_persembahan}, '{persembahan_bulan}', '{file_path}', 'pending') "
+    command = f"INSERT INTO bulanan (username, nama, nominal, bulan, bukti, status) VALUES ('{username}', '{nama_keluarga}', {nominal_persembahan}, '{persembahan_bulan}', '{file_path}', 'pending') "
     cursor.execute(command)
     db.commit()
-    redirect(url_for("bulanan_user"))
+    return redirect(url_for("bulanan_user"))
 
 def url_rule_user():
     app.add_url_rule("/profile", "profile", profile)
@@ -869,7 +902,7 @@ def url_rule_user():
     app.add_url_rule("/addkeluarga", "addkeluarga", addkeluarga, methods=["post"])
     app.add_url_rule("/deletekeluarga", "deletekeluarga", deletekeluarga)
     app.add_url_rule("/profile/layanan", "pelayanan_user", pelayanan_user)
-    app.add_url_rule("/profile/bulanan", "bulanan_user", bulanan_user)
+    app.add_url_rule("/profile/persembahan", "bulanan_user", bulanan_user)
     app.add_url_rule("/addbulanan", "addbulanan", addbulanan, methods=["post"])
 
 

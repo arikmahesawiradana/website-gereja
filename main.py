@@ -152,6 +152,51 @@ command = """CREATE TABLE IF NOT EXISTS bulanan(
     status TEXT
     )"""
 cursor.execute(command)
+command = """CREATE TABLE IF NOT EXISTS hamauliateon(
+    id INTEGER PRIMARY KEY AUTOINCREMENT, 
+    username TEXT,
+    nama TEXT,
+    huria INTEGER,
+    pembangunan INTEGER,
+    diakonia INTEGER,
+    pendeta INTEGER,
+    sintua INTEGER,
+    perhalado INTEGER,
+    ama INTEGER,
+    ina INTEGER,
+    nhkbp INTEGER,
+    remaja INTEGER,
+    sekolah_minggu INTEGER,
+    pemusik INTEGER,
+    multimedia INTEGER,
+    song_leader INTEGER,
+    total INTEGER,
+    bukti TEXT,
+    status TEXT
+    )"""
+cursor.execute(command)
+command = """ CREATE TABLE IF NOT EXISTS financial_data (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nama_minggu TEXT,
+            tanggal TEXT,
+            pemasukan_pagi INTEGER,
+            pemasukan_sore INTEGER,
+            pemasukan_sekolah INTEGER,
+            pemasukan_kasual INTEGER,
+            pemasukan_partangiangan INTEGER,
+            pemasukan_kategori INTEGER,
+            transitori INTEGER,
+            pemasukan_lainnya INTEGER,
+            konven_pendeta INTEGER,
+            transport INTEGER,
+            rumah_tangga INTEGER,
+            diakonia INTEGER,
+            koinonia INTEGER,
+            marturia INTEGER,
+            biaya_operasional INTEGER,
+            pengeluaran_lainnya INTEGER
+        )"""
+cursor.execute(command)
 
 app = Flask(__name__, static_folder="Static", template_folder="Templates")
 UPLOAD_FOLDER = 'static/pdf'
@@ -231,45 +276,69 @@ def signin():
 
 def dashboard():
     if "status" in session:
-        if "status" in session:
-            page = request.args.get("page") or ""
-            return render_template("Admin/dashboard.html", page=page)
+        if session["status"] == "Admin":
+            command = "SELECT * FROM user"
+            cursor.execute(command)
+            users = cursor.fetchall()
+            users = len(users)
+            command = f"SELECT * FROM keluarga"
+            cursor.execute(command)
+            keluarga = cursor.fetchall()
+            keluarga = len(keluarga)
+            with open("data/warta_jemaat.json", "r") as file:
+                data = json.load(file)
+            data = len(data)
+            command = f"SELECT * FROM bulanan"
+            cursor.execute(command)
+            bulanan = cursor.fetchall()
+            nominal = 0
+            for i in bulanan:
+                if i[6] == "verified":
+                    nominal += int(i[3])
+            return render_template("Admin/dashboard.html", 
+                                   users=users, 
+                                   keluarga=keluarga,
+                                   data=data,
+                                   total=nominal)
     else:
         return redirect(url_for("index"))
 
 def management_user():
     if "status" in session:
-        command = "SELECT * FROM user"
-        cursor.execute(command)
-        users = cursor.fetchall()
-        return render_template("Admin/management_user.html", users=users)
+        if session["status"] == "Admin":
+            command = "SELECT * FROM user"
+            cursor.execute(command)
+            users = cursor.fetchall()
+            return render_template("Admin/management_user.html", users=users)
     else:
         return redirect(url_for("index"))
 
 def adduser():
     if "status" in session:
-        username = request.form.get("username")
-        password = request.form.get("password")
-        status = "Peserta"
-        command = f"INSERT INTO user(username, password, status) VALUES('{username}', '{password}', '{status}')"
-        cursor.execute(command)
-        db.commit()
-        new_json = []
-        filename = f"data/{username}.json"
-        #create a new json file
-        with open(filename, "w") as f:
-            json.dump(new_json, f)
-        return redirect(url_for("management_user"))
+        if session["status"] == "Admin":
+            username = request.form.get("username")
+            password = request.form.get("password")
+            status = "Peserta"
+            command = f"INSERT INTO user(username, password, status) VALUES('{username}', '{password}', '{status}')"
+            cursor.execute(command)
+            db.commit()
+            new_json = []
+            filename = f"data/{username}.json"
+            #create a new json file
+            with open(filename, "w") as f:
+                json.dump(new_json, f)
+            return redirect(url_for("management_user"))
     else:
         return redirect(url_for("index"))
 
 def hapus():
     if "status" in session:
-        id = request.args.get("id")
-        command = f"DELETE FROM user WHERE id={id}"
-        cursor.execute(command)
-        db.commit()
-        return redirect(url_for("management_user"))
+        if session["status"] == "Admin":
+            id = request.args.get("id")
+            command = f"DELETE FROM user WHERE id={id}"
+            cursor.execute(command)
+            db.commit()
+            return redirect(url_for("management_user"))
     else:
         return redirect(url_for("index"))
 
@@ -279,7 +348,7 @@ def keluar():
 
 def ubah_data_jemaat():
     if "status" in session:
-        if "status" in session:
+        if session["status"] == "Admin":
             with open("data/nama_wjik.txt", "r") as f:
                 wjik = f.read().split("\n")
             print(wjik)
@@ -292,7 +361,7 @@ def ubah_data_jemaat():
 
 def keluarga():
     if "status" in session:
-        if "status" in session:
+        if session["status"] == "Admin":
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             id = request.args.get("id")
@@ -308,7 +377,7 @@ def keluarga():
 
 def edit_user():
     if "status" in session:
-        if "status" in session:
+        if session["status"] == "Admin":
             id = request.args.get("id")
             registrasi = request.form.get("registrasi")
             tanggal_registrasi = request.form.get("tanggal_registrasi")
@@ -323,7 +392,7 @@ def edit_user():
 
 def baptis():
     if "status" in session:
-        if "status" in session:
+        if session["status"] == "Admin":
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM baptis"
@@ -335,6 +404,7 @@ def baptis():
 
 def addbaptis():
     if "status" in session:
+        if session["status"] == "Admin":
             nama_lengkap = request.form.get("nama_lengkap")
             jenis_kelamin = request.form.get("jenis_kelamin")
             tempat_lahir = request.form.get("tempat_lahir")
@@ -345,17 +415,22 @@ def addbaptis():
             cursor.execute(command)
             db.commit()
             return redirect(url_for("jemaat_baptis"))
+    else:
+        return redirect(url_for("index"))
 
 def deletebaptis():
-    id = request.args.get("id")
-    command = f"DELETE FROM baptis WHERE id={id}"
-    cursor.execute(command)
-    db.commit()
-    return redirect(url_for("jemaat_baptis"))
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        command = f"DELETE FROM baptis WHERE id={id}"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("jemaat_baptis"))
+    else:
+        return redirect(url_for("index"))
 
 def sidi():
     if "status" in session:
-        if "status" in session:
+        if session["status"] == "Admin":
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM sidi"
@@ -367,6 +442,7 @@ def sidi():
 
 def addsidi():
     if "status" in session:
+        if session["status"] == "Admin":
             nama_lengkap = request.form.get("nama_lengkap")
             jenis_kelamin = request.form.get("jenis_kelamin")
             tempat_lahir = request.form.get("tempat_lahir")
@@ -378,17 +454,22 @@ def addsidi():
             cursor.execute(command)
             db.commit()
             return redirect(url_for("jemaat_sidi"))
+    else:
+        return redirect(url_for("index"))
 
 def deletesidi():
-    id = request.args.get("id")
-    command = f"DELETE FROM sidi WHERE id={id}"
-    cursor.execute(command)
-    db.commit()
-    return redirect(url_for("jemaat_sidi"))
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        command = f"DELETE FROM sidi WHERE id={id}"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("jemaat_sidi"))
+    else:
+        return redirect(url_for("index"))
 
 def lahir():
     if "status" in session:
-        if "status" in session:
+        if session["status"] == "Admin":
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM anak_lahir"
@@ -400,6 +481,7 @@ def lahir():
 
 def addlahir():
     if "status" in session:
+        if session["status"] == "Admin":
             nama_lengkap = request.form.get("nama_lengkap")
             jenis_kelamin = request.form.get("jenis_kelamin")
             tempat_lahir = request.form.get("tempat_lahir")
@@ -409,17 +491,22 @@ def addlahir():
             cursor.execute(command)
             db.commit()
             return redirect(url_for("anak_lahir"))
+    else:
+        return redirect(url_for("index"))
 
 def deletelahir():
-    id = request.args.get("id")
-    command = f"DELETE FROM anak_lahir WHERE id={id}"
-    cursor.execute(command)
-    db.commit()
-    return redirect(url_for("anak_lahir"))
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        command = f"DELETE FROM anak_lahir WHERE id={id}"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("anak_lahir"))
+    else:
+        return redirect(url_for("index"))
 
 def rpp():
     if "status" in session:
-        if "status" in session:
+        if session["status"] == "Admin":
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM rpp"
@@ -431,6 +518,7 @@ def rpp():
 
 def addrpp():
     if "status" in session:
+        if session["status"] == "Admin":
             nama_lengkap = request.form.get("nama_lengkap")
             jenis_kelamin = request.form.get("jenis_kelamin")
             tanggal_rpp = request.form.get("tanggal_rpp")
@@ -440,17 +528,22 @@ def addrpp():
             cursor.execute(command)
             db.commit()
             return redirect(url_for("rpp"))
+    else:
+        return redirect(url_for("index"))
 
 def deleterpp():
-    id = request.args.get("id")
-    command = f"DELETE FROM rpp WHERE id={id}"
-    cursor.execute(command)
-    db.commit()
-    return redirect(url_for("rpp"))
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        command = f"DELETE FROM rpp WHERE id={id}"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("rpp"))
+    else:
+        return redirect(url_for("index"))
 
 def martumpol():
     if "status" in session:
-        if "status" in session:
+        if session["status"] == "Admin":
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM martumpol"
@@ -462,6 +555,7 @@ def martumpol():
 
 def addmartumpol():
     if "status" in session:
+        if session["status"] == "Admin":
             nama_lengkap_laki = request.form.get("nama_lengkap_laki")
             nama_ayah_laki = request.form.get("nama_ayah_laki")
             nama_ibu_laki = request.form.get("nama_ibu_laki")
@@ -478,17 +572,22 @@ def addmartumpol():
             cursor.execute(command)
             db.commit()
             return redirect(url_for("martumpol"))
+    else:
+        return redirect(url_for("index"))
 
 def deletemartumpol():
-    id = request.args.get("id")
-    command = f"DELETE FROM martumpol WHERE id={id}"
-    cursor.execute(command)
-    db.commit()
-    return redirect(url_for("martumpol"))
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        command = f"DELETE FROM martumpol WHERE id={id}"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("martumpol"))
+    else:
+        return redirect(url_for("index"))
 
 def pernikahan():
     if "status" in session:
-        if "status" in session:
+        if session["status"] == "Admin":
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM pernikahan"
@@ -500,6 +599,7 @@ def pernikahan():
 
 def addpernikahan():
     if "status" in session:
+        if session["status"] == "Admin":
             nama_lengkap_laki = request.form.get("nama_lengkap_laki")
             nama_ayah_laki = request.form.get("nama_ayah_laki")
             nama_ibu_laki = request.form.get("nama_ibu_laki")
@@ -516,17 +616,22 @@ def addpernikahan():
             cursor.execute(command)
             db.commit()
             return redirect(url_for("pernikahan"))
+    else:
+        return redirect(url_for("index"))
 
 def deletepernikahan():
-    id = request.args.get("id")
-    command = f"DELETE FROM pernikahan WHERE id={id}"
-    cursor.execute(command)
-    db.commit()
-    return redirect(url_for("pernikahan"))
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        command = f"DELETE FROM pernikahan WHERE id={id}"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("pernikahan"))
+    else:
+        return redirect(url_for("index"))
 
 def meninggal_dunia():
     if "status" in  session:
-        if "status" in session:
+        if session["status"] == "Admin":
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM meninggal"
@@ -538,6 +643,7 @@ def meninggal_dunia():
 
 def addmeninggal():
     if "status" in session:
+        if session["status"] == "Admin":
             nama_lengkap = request.form.get("nama_lengkap")
             jenis_kelamin = request.form.get("jenis_kelamin")
             monding = request.form.get("monding")
@@ -550,15 +656,18 @@ def addmeninggal():
         return redirect(url_for("login"))
 
 def deletemeninggal():
-    id = request.args.get("id")
-    command = f"DELETE FROM meninggal WHERE id={id}"
-    cursor.execute(command)
-    db.commit()
-    return redirect(url_for("meninggal_dunia"))
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        command = f"DELETE FROM meninggal WHERE id={id}"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("meninggal_dunia"))
+    else:
+        return redirect(url_for("index"))
 
 def kegiatan_kebaktian():
     if "status" in session:
-        if "status" in session:
+        if session["status"] == "Admin":
             command = "SELECT * FROM kebaktian"
             cursor.execute(command)
             users = cursor.fetchall()
@@ -589,15 +698,18 @@ def addkebaktian():
             return redirect(url_for("kegiatan_kebaktian"))
 
 def deletekebaktian():
-    id = request.args.get("id")
-    command = f"DELETE FROM kebaktian WHERE id={id}"
-    cursor.execute(command)
-    db.commit()
-    return redirect(url_for("kegiatan_kebaktian"))
-
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        command = f"DELETE FROM kebaktian WHERE id={id}"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("kegiatan_kebaktian"))
+    else:
+        return redirect(url_for("index"))
+    
 def data_pelayanan():
     if "status" in session:
-        if "status" in session:
+        if session["status"] == "Admin":
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM pelayanan"
@@ -623,18 +735,22 @@ def addpelayanan():
         return redirect(url_for("login"))
 
 def deletepelayanan():
-    id = request.args.get("id")
-    command = f"DELETE FROM pelayanan WHERE id={id}"
-    cursor.execute(command)
-    db.commit()
-    return redirect(url_for("data_pelayanan"))
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        command = f"DELETE FROM pelayanan WHERE id={id}"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("data_pelayanan"))
+    else:
+        return redirect(url_for("index"))
 
 def warta():
     if "status" in session:
-        with open("data/warta_jemaat.json", "r") as file:
-            data = json.load(file)
-        print(data)
-        return render_template("Admin/warta.html", data=data)
+        if session["status"] == "Admin":
+            with open("data/warta_jemaat.json", "r") as file:
+                data = json.load(file)
+            print(data)
+            return render_template("Admin/warta.html", data=data)
     else:
         return redirect(url_for("login"))
     
@@ -659,27 +775,32 @@ def addwarta():
     return redirect(url_for("warta"))
 
 def deletewarta():
-    myid = request.args.get("id")
-    myid = int(myid) - 1
-    with open("data/warta_jemaat.json", "r") as fil:
-        data = json.load(fil)
-    data_remove = data[myid]
-    data.remove(data_remove)
-    with open("data/warta_jemaat.json", "w") as fil:
-        json.dump(data, fil)
-    return redirect(url_for("warta"))
+    if session["status"] == "Admin":
+        myid = request.args.get("id")
+        myid = int(myid) - 1
+        with open("data/warta_jemaat.json", "r") as fil:
+            data = json.load(fil)
+        data_remove = data[myid]
+        data.remove(data_remove)
+        with open("data/warta_jemaat.json", "w") as fil:
+            json.dump(data, fil)
+        return redirect(url_for("warta"))
+    else:
+        return redirect(url_for("index"))
 
 def berita():
     if "status" in session:
-        with open("data/berita.json", "r") as file:
-            data = json.load(file)
-        return render_template("Admin/berita.html", data=data)
+        if session["status"] == "Admin":
+            with open("data/berita.json", "r") as file:
+                data = json.load(file)
+            return render_template("Admin/berita.html", data=data)
     else:
         return redirect(url_for("login"))
     
 def add_berita_page():
     if "status" in session:
-        return render_template("Admin/add_berita.html")
+        if session["status"] == "Admin":
+            return render_template("Admin/add_berita.html")
     else:
         return redirect(url_for("login"))
 
@@ -709,55 +830,454 @@ def addberita():
         return redirect(url_for("login"))
 
 def deleteberita():
-    myid = request.args.get("id")
-    myid = int(myid) - 1
-    with open("data/berita.json", "r") as fil:
-        data = json.load(fil)
-    data_remove = data[myid]
-    data.remove(data_remove)
-    with open("data/berita.json", "w") as fil:
-        json.dump(data, fil)
-    return redirect(url_for("warta"))
+    if session["status"] == "Admin":
+        myid = request.args.get("id")
+        myid = int(myid) - 1
+        with open("data/berita.json", "r") as fil:
+            data = json.load(fil)
+        data_remove = data[myid]
+        data.remove(data_remove)
+        with open("data/berita.json", "w") as fil:
+            json.dump(data, fil)
+        return redirect(url_for("warta"))
+    else:
+        return redirect(url_for("index"))
 
 def pembayaran():
     if "status" in session:
-        command = f"SELECT * FROM bulanan"
-        cursor.execute(command)
-        users = cursor.fetchall()
-        return render_template("Admin/bulanan.html", users=users)
+        if session["status"] == "Admin":
+            command = f"SELECT * FROM bulanan"
+            cursor.execute(command)
+            users = cursor.fetchall()
+            return render_template("Admin/bulanan.html", users=users)
+    else:
+        return redirect(url_for("index"))
     
 def verify_pembayaran():
-    id = request.args.get("id")
-    #create sql command set status into verified where id is from variable call id
-    command = f"UPDATE bulanan SET status='verified' WHERE id={id}"
-    cursor.execute(command)
-    db.commit()
-    return redirect(url_for("pembayaran"))
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        command = f"UPDATE bulanan SET status='verified' WHERE id={id}"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("pembayaran"))
+    else:
+        return redirect(url_for("index"))
 
 def more_info():
-    id = request.args.get("id")
-    page = request.args.get("page")
-    command = f"SELECT * FROM {page} WHERE id={id}"
-    cursor.execute(command)
-    user = cursor.fetchone()
-    print(user)
-    return render_template("more_info.html", user=user, page=page)
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        page = request.args.get("page")
+        command = f"SELECT * FROM {page} WHERE id={id}"
+        cursor.execute(command)
+        user = cursor.fetchone()
+        print(user)
+        return render_template("more_info.html", user=user, page=page)
+    else:
+        return redirect(url_for("index"))
 
 def show_bukti(filename):
-    image_path = os.path.join(app.static_folder, 'pdf', filename)
-    if not os.path.isfile(image_path):
-        # Jika tidak ada, tampilkan error 404
-        abort(404)
-    print(f"pdf/{filename}")
-    return render_template("Admin/bukti.html", filename=f"pdf/{filename}")
+    if session["status"] == "Admin":
+        image_path = os.path.join(app.static_folder, 'pdf', filename)
+        if not os.path.isfile(image_path):
+            # Jika tidak ada, tampilkan error 404
+            abort(404)
+        print(f"pdf/{filename}")
+        return render_template("Admin/bukti.html", filename=f"pdf/{filename}")
+    else:
+        return redirect(url_for("index"))
 
 def deletebulanan():
-    id = request.args.get("id")
-    command = f"DELETE FROM bulanan WHERE id={id}"
-    cursor.execute(command)
-    db.commit()
-    return redirect(url_for("pembayaran"))
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        command = f"DELETE FROM bulanan WHERE id={id}"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("pembayaran"))
+    else:
+        return redirect(url_for("index"))
+    
+def verify_hamauliateon():
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        #create sql command set status into verified where id is from variable call id
+        command = f"UPDATE hamauliateon SET status='verified' WHERE id={id}"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("hamauliateon_admin"))
+    else:
+        return redirect(url_for("index"))
 
+def deletehamauliateon():
+    if session["status"] == "Admin":
+        id = request.args.get("id")
+        command = f"DELETE FROM hamauliateon WHERE id={id}"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("hamauliateon_admin"))
+    else:
+        return redirect(url_for("index"))
+
+def hamauliateon_admin():
+    if "status" in session:
+        if session["status"] == "Admin":
+            command = f"SELECT * FROM hamauliateon"
+            cursor.execute(command)
+            users = cursor.fetchall()
+            return render_template("Admin/hamauliateon.html", users=users)
+    else:
+        return redirect(url_for("index"))
+
+def finansial_data():
+    if "status" in session:
+        if session["status"] == "Admin":
+            return render_template("Admin/warta_keuangan.html")
+    else:
+        return redirect(url_for("index"))
+
+def submit_financial_data():
+    if "status" in session:
+        if session["status"] == "Admin":
+            data = (
+                request.form['namaMinggu'],
+                request.form['tanggal'],
+                request.form.get('pemasukanPagi', 0),
+                request.form.get('pemasukanSore', 0),
+                request.form.get('pemasukanSekolah', 0),
+                request.form.get('pemasukanKasual', 0),
+                request.form.get('pemasukanPartangiangan', 0),
+                request.form.get('pemasukanKategori', 0),
+                request.form.get('transitori', 0),
+                request.form.get('pemasukanLainnya', 0),
+                request.form.get('konvenPendeta', 0),
+                request.form.get('transport', 0),
+                request.form.get('rumahTangga', 0),
+                request.form.get('diakonia', 0),
+                request.form.get('koinonia', 0),
+                request.form.get('marturia', 0),
+                request.form.get('biayaOperasional', 0),
+                request.form.get('pengeluaranLainnya', 0),
+            )
+            cursor.execute('''
+            INSERT INTO financial_data (
+                nama_minggu, tanggal, pemasukan_pagi, pemasukan_sore,
+                pemasukan_sekolah, pemasukan_kasual, pemasukan_partangiangan,
+                pemasukan_kategori, transitori, pemasukan_lainnya,
+                konven_pendeta, transport, rumah_tangga, diakonia, koinonia,
+                marturia, biaya_operasional, pengeluaran_lainnya
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', data)
+            db.commit()
+            return(redirect(url_for("warta_keuangan")))
+    else:
+        return redirect(url_for("index"))
+
+def editlahir():
+    if "status" in session:
+        if session["status"] == "Admin":
+            id = request.form['modal_id']
+            nama_lengkap = request.form['modal_nama_lengkap']
+            jenis_kelamin = request.form['modal_jenis_kelamin']
+            wijk = request.form['modal_wijk']
+            tempat_lahir = request.form['modal_tempat_lahir']
+            tanggal_lahir = request.form['modal_tanggal_lahir']
+            command = f"""
+                        UPDATE anak_lahir
+                        SET nama_lengkap = '{nama_lengkap}',
+                            jenis_kelamin = '{jenis_kelamin}',
+                            wijk = '{wijk}',
+                            tempat_lahir = '{tempat_lahir}',
+                            tanggal_lahir = '{tanggal_lahir}'
+                        WHERE id = {id}
+                        """
+            cursor.execute(command)
+            db.commit()
+            return(redirect(url_for("anak_lahir")))
+    else:
+        return redirect(url_for("index"))
+
+def editbaptis():
+    if "status" in session:
+        if session["status"] == "Admin":
+            id = request.form['modal_id']
+            nama_lengkap = request.form['modal_nama_lengkap']
+            jenis_kelamin = request.form['modal_jenis_kelamin']
+            wijk = request.form['modal_wijk']
+            tempat_lahir = request.form['modal_tempat_lahir']
+            tanggal_lahir = request.form['modal_tanggal_lahir']
+            tanggal_baptis = request.form['modal_tanggal_baptis']
+            command = f"""
+                UPDATE baptis
+                SET nama_lengkap = '{nama_lengkap}',
+                    jenis_kelamin = '{jenis_kelamin}',
+                    wijk = '{wijk}',
+                    tempat_lahir = '{tempat_lahir}',
+                    tanggal_lahir = '{tanggal_lahir}',
+                    tanggal_baptis = '{tanggal_baptis}'
+                WHERE id = {id}
+                """
+            cursor.execute(command)
+            db.commit()
+            return(redirect(url_for("jemaat_baptis")))
+    else:
+        return redirect(url_for("index"))
+
+def editmartumpol():
+    if "status" in session:
+        if session["status"] == "Admin":
+            id = request.form['modal_id']
+            nama_lengkap_laki = request.form['modal_nama_lengkap_laki']
+            nama_ayah_laki = request.form['modal_nama_ayah_laki']
+            nama_ibu_laki = request.form['modal_nama_ibu_laki']
+            tempat_lahir_laki = request.form['modal_tempat_lahir_laki']
+            wijk_laki = request.form['modal_wijk_laki']
+            
+            nama_lengkap_perempuan = request.form['modal_nama_lengkap_perempuan']
+            nama_ayah_perempuan = request.form['modal_nama_ayah_perempuan']
+            nama_ibu_perempuan = request.form['modal_nama_ibu_perempuan']
+            tempat_lahir_perempuan = request.form['modal_tempat_lahir_perempuan']
+            wijk_perempuan = request.form['modal_wijk_perempuan']
+            
+            tanggal_martumpol = request.form['modal_tanggal_martumpol']
+            pukul_martumpol = request.form['modal_pukul_martumpol']
+            cursor.execute("""
+                UPDATE martumpol
+                SET nama_lengkap_laki = ?,
+                    nama_ayah_laki = ?,
+                    nama_ibu_laki = ?,
+                    tempat_lahir_laki = ?,
+                    wijk_laki = ?,
+                    nama_lengkap_perempuan = ?,
+                    nama_ayah_perempuan = ?,
+                    nama_ibu_perempuan = ?,
+                    tempat_lahir_perempuan = ?,
+                    wijk_perempuan = ?,
+                    tanggal_martumpol = ?,
+                    pukul_martumpol = ?
+                WHERE id = ?
+            """, (
+                nama_lengkap_laki,
+                nama_ayah_laki,
+                nama_ibu_laki,
+                tempat_lahir_laki,
+                wijk_laki,
+                nama_lengkap_perempuan,
+                nama_ayah_perempuan,
+                nama_ibu_perempuan,
+                tempat_lahir_perempuan,
+                wijk_perempuan,
+                tanggal_martumpol,
+                pukul_martumpol,
+                id
+            ))
+            db.commit()
+            return(redirect(url_for("martumpol")))
+    else:
+        return redirect(url_for("index"))
+
+def editpernikahan():
+    if "status" in session:
+        if session["status"] == "Admin":
+            id = request.form['modal_id']
+            nama_lengkap_laki = request.form['modal_nama_lengkap_laki']
+            nama_ayah_laki = request.form['modal_nama_ayah_laki']
+            nama_ibu_laki = request.form['modal_nama_ibu_laki']
+            tempat_lahir_laki = request.form['modal_tempat_lahir_laki']
+            wijk_laki = request.form['modal_wijk_laki']
+            
+            nama_lengkap_perempuan = request.form['modal_nama_lengkap_perempuan']
+            nama_ayah_perempuan = request.form['modal_nama_ayah_perempuan']
+            nama_ibu_perempuan = request.form['modal_nama_ibu_perempuan']
+            tempat_lahir_perempuan = request.form['modal_tempat_lahir_perempuan']
+            wijk_perempuan = request.form['modal_wijk_perempuan']
+            
+            tanggal_pernikahan = request.form['modal_tanggal_pernikahan']
+            pukul_pernikahan = request.form['modal_pukul_pernikahan']
+            cursor.execute("""
+                UPDATE pernikahan
+                SET nama_lengkap_laki = ?,
+                    nama_ayah_laki = ?,
+                    nama_ibu_laki = ?,
+                    tempat_lahir_laki = ?,
+                    wijk_laki = ?,
+                    nama_lengkap_perempuan = ?,
+                    nama_ayah_perempuan = ?,
+                    nama_ibu_perempuan = ?,
+                    tempat_lahir_perempuan = ?,
+                    wijk_perempuan = ?,
+                    tanggal_pernikahan = ?,
+                    pukul_pernikahan = ?
+                WHERE id = ?
+            """, (
+                nama_lengkap_laki,
+                nama_ayah_laki,
+                nama_ibu_laki,
+                tempat_lahir_laki,
+                wijk_laki,
+                nama_lengkap_perempuan,
+                nama_ayah_perempuan,
+                nama_ibu_perempuan,
+                tempat_lahir_perempuan,
+                wijk_perempuan,
+                tanggal_pernikahan,
+                pukul_pernikahan,
+                id
+            ))
+            db.commit()
+            return(redirect(url_for("martumpol")))
+    else:
+        return redirect(url_for("index"))
+
+def editmeninggal():
+    # Check if the user is logged in and has Admin status
+    if "status" in session and session["status"] == "Admin":
+        # Get form data
+        id = request.form['modal_id']
+        nama_lengkap = request.form['modal_nama_lengkap']
+        jenis_kelamin = request.form['modal_jenis_kelamin']
+        wijk = request.form['modal_wijk']
+        tanggal_baptis = request.form['modal_monding']
+        cursor.execute("""
+            UPDATE meninggal
+            SET nama_lengkap = ?,
+                jenis_kelamin = ?,
+                wijk = ?,
+                tanggal_baptis = ?
+            WHERE id = ?
+        """, (nama_lengkap, jenis_kelamin, wijk, tanggal_baptis, id))
+        db.commit()
+        return(redirect(url_for("meninggal_dunia")))
+    else:
+        return redirect(url_for("index"))
+
+def editpelayan():
+    # Ensure the user is an admin (check session status)
+    if "status" in session and session["status"] == "Admin":
+        # Retrieve form data
+        id = request.form['modal_id']
+        nama_lengkap = request.form['modal_nama_lengkap']
+        jenis_kelamin = request.form['modal_jenis_kelamin']
+        status_pelayanan = request.form['modal_status_pelayanan']
+        jenis_pelayanan = request.form['modal_jenis_pelayanan']
+        tanggal_tahbisan = request.form['modal_tanggal_tahbisan']
+        
+        cursor.execute("""
+            UPDATE pelayan
+            SET nama_lengkap = ?,
+                jenis_kelamin = ?,
+                status_pelayanan = ?,
+                jenis_pelayanan = ?,
+                tanggal_tahbisan = ?
+            WHERE id = ?
+        """, (nama_lengkap, jenis_kelamin, status_pelayanan, jenis_pelayanan, tanggal_tahbisan, id))
+        
+        db.commit()
+        return(redirect(url_for("data_pelayanan")))
+    else:
+        return redirect(url_for("index"))
+
+def editrpp():
+    if "status" in session and session["status"] == "Admin":
+        id = request.form['modal_id']
+        nama_lengkap = request.form['modal_nama_lengkap']
+        jenis_kelamin = request.form['modal_jenis_kelamin']
+        wijk = request.form['modal_wijk']
+        tanggal_rpp = request.form['modal_tanggal_rpp']
+        alasan = request.form['modal_alasan']
+        cursor.execute("""
+            UPDATE rpp
+            SET nama_lengkap = ?,
+                jenis_kelamin = ?,
+                wijk = ?,
+                tanggal_rpp = ?,
+                alasan = ?
+            WHERE id = ?
+        """, (nama_lengkap, jenis_kelamin, wijk, tanggal_rpp, alasan, id))
+        db.commit()
+        return(redirect(url_for("rpp")))
+    else:
+        return redirect(url_for("index"))
+
+def editsidi():
+    if "status" in session and session["status"] == "Admin":
+        id = request.form['modal_id']
+        nama_lengkap = request.form['modal_nama_lengkap']
+        jenis_kelamin = request.form['modal_jenis_kelamin']
+        wijk = request.form['modal_wijk']
+        tempat_lahir = request.form['modal_tempat_lahir']
+        tanggal_lahir = request.form['modal_tanggal_lahir']
+        tanggal_baptis = request.form['modal_tanggal_baptis']
+        tanggal_sidi = request.form['modal_tanggal_sidi']
+        
+        cursor.execute("""
+            UPDATE sidi_table  -- Replace with your actual table name
+            SET nama_lengkap = ?,
+                jenis_kelamin = ?,
+                wijk = ?,
+                tempat_lahir = ?,
+                tanggal_lahir = ?,
+                tanggal_baptis = ?,
+                tanggal_sidi = ?
+            WHERE id = ?
+        """, (nama_lengkap, jenis_kelamin, wijk, tempat_lahir, tanggal_lahir, tanggal_baptis, tanggal_sidi, id))
+        db.commit()
+        return redirect(url_for("jemaat_sidi"))
+    else:
+        return redirect(url_for("index"))
+
+def search():
+    results = set()
+    if request.method == 'POST':
+        from_day = request.form.get('from_day')
+        from_month = request.form.get('from_month')
+        to_day = request.form.get('to_day')
+        to_month = request.form.get('to_month')
+
+        # Konversi ke format tanggal
+        from_date = datetime.strptime(f"2023-{from_month}-{from_day}", "%Y-%m-%d")
+        to_date = datetime.strptime(f"2023-{to_month}-{to_day}", "%Y-%m-%d")
+        query = """
+            SELECT *
+            FROM keluarga
+            WHERE strftime('%m-%d', tanggal_lahir) BETWEEN ? AND ?
+            """
+        cursor.execute(query, (from_date.strftime('%m-%d'), to_date.strftime('%m-%d')))
+        results = cursor.fetchall()
+    return render_template('Admin/cari_umur.html', results=results)
+
+def search_jemaat():
+    if session and "status" in session:
+        results = None
+        with open("data/nama_wjik.txt", "r") as f:
+                wijki = f.read().split("\n")
+        if request.method == 'POST':
+            wijk = request.form.get('wijk')
+            registration_number = request.form.get('registration_number')
+            name = request.form.get('name')
+            other_search = request.form.get('other_search')
+
+            # SQL query based on user input
+            query = "SELECT * FROM user WHERE 1=1"
+            params = []
+
+            if wijk:
+                query += " AND wjik = ?"
+                params.append(wijk)
+            if registration_number:
+                query += " AND registration = ?"
+                params.append(registration_number)
+            if name:
+                query += " AND nama LIKE ?"
+                params.append(f"%{name}%")
+            if other_search:
+                query += " AND (nama LIKE ? OR Alamat LIKE ?)"
+                params.extend([f"%{other_search}%", f"%{other_search}%"])
+
+            cursor.execute(query, params)
+            # Execute the query
+            results = cursor.fetchall()
+        return render_template("Admin/cari _jemaat.html", wijk=wijki, results=results)
+    else:
+        return redirect(url_for("index"))
 
 def url_rule_admin():
     app.add_url_rule("/", "index", index)
@@ -811,6 +1331,21 @@ def url_rule_admin():
     app.add_url_rule("/deletebulanan", "deletebulanan", deletebulanan)
     app.add_url_rule("/static/pdf/<filename>", "show_bukti", show_bukti)
     app.add_url_rule("/lihat", "more_info", more_info)
+    app.add_url_rule("/verifiedhamauliateon", "verified_hamauliateon", verify_hamauliateon)
+    app.add_url_rule("/deletehamauliateon", "deletehamauliateon", deletehamauliateon)
+    app.add_url_rule("/dashboard/hamauliateon", "hamauliateon_admin", hamauliateon_admin)
+    app.add_url_rule("/dashboard/warta_keuangan", "warta_keuangan", finansial_data)
+    app.add_url_rule("/submit_financial_data", "submit_financial_data", submit_financial_data, methods=["post"])
+    app.add_url_rule("/editlahir", "editlahir", editlahir)
+    app.add_url_rule("/editbaptis", "editbaptis", editbaptis)
+    app.add_url_rule("/editmartumpol", "editmartumpol", editmartumpol)
+    app.add_url_rule("/editpernikahan", "editpernikahan", editpernikahan)
+    app.add_url_rule("/editmeninggal", "editmeninggal", editmeninggal)
+    app.add_url_rule("/editpelayan", "editpelayan", editpelayan)
+    app.add_url_rule("/editrpp", "editrpp", editrpp)
+    app.add_url_rule("/editsidi", "editsidi", editsidi)
+    app.add_url_rule("/dashboard/search-jemaat", "search-jemaat", search, methods=["post", "get"])
+    app.add_url_rule("/dashboard/cari_data_jemaat", "cari_data_jemaat", search_jemaat, methods=["post", "get"])
 
 #ini untuk user
 def profile():
@@ -843,7 +1378,11 @@ def addkeluarga():
     tanggal_sidi = request.form.get("tanggal_sidi")
     pekerjaan = request.form.get("pekerjaan")
     pendidikan = request.form.get("pendidikan")
-    #add all of those data into database keluarga
+    parsed_date = datetime.strptime(tanggal_lahir, "%Y-%m-%d")
+    # year = parsed_date.year
+    # month = parsed_date.month
+    # day = parsed_date.day
+    # command = f"INSERT INTO keluarga(myid, nama, status, jenis_kelamin, tempat_lahir, tanggal_lahir, tanggal_baptis, tanggal_sidi, pekerjaan, pendidikan, tanggal, bulan) VALUES({id}, '{nama}', '{status}', '{jenis_kelamin}', '{tempat_lahir}', '{tanggal_lahir}', '{tanggal_baptis}', '{tanggal_sidi}', '{pekerjaan}', '{pendidikan}', '{day}', '{month}')"
     command = f"INSERT INTO keluarga(myid, nama, status, jenis_kelamin, tempat_lahir, tanggal_lahir, tanggal_baptis, tanggal_sidi, pekerjaan, pendidikan) VALUES({id}, '{nama}', '{status}', '{jenis_kelamin}', '{tempat_lahir}', '{tanggal_lahir}', '{tanggal_baptis}', '{tanggal_sidi}', '{pekerjaan}', '{pendidikan}')"
     cursor.execute(command)
     db.commit()
@@ -882,19 +1421,117 @@ def bulanan_user():
         return render_template("User/bulanan.html", nominal=nominal, pending=pending, count=count)
 
 def addbulanan():
-    username = session["username"]
-    nama_keluarga = request.form.get('nama')
-    nominal_persembahan = request.form.get('nominal')
-    persembahan_bulan = request.form.get('bulan')
-    bukti_persembahan = request.files.get('bukti')
-    file_path = None
-    if bukti_persembahan:
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], bukti_persembahan.filename)
-        bukti_persembahan.save(file_path)
-    command = f"INSERT INTO bulanan (username, nama, nominal, bulan, bukti, status) VALUES ('{username}', '{nama_keluarga}', {nominal_persembahan}, '{persembahan_bulan}', '{file_path}', 'pending') "
-    cursor.execute(command)
-    db.commit()
-    return redirect(url_for("bulanan_user"))
+    if "status" in session:
+        username = session["username"]
+        nama_keluarga = request.form.get('nama')
+        nominal_persembahan = request.form.get('nominal')
+        persembahan_bulan = request.form.get('bulan')
+        bukti_persembahan = request.files.get('bukti')
+        file_path = None
+        if bukti_persembahan:
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], bukti_persembahan.filename)
+            bukti_persembahan.save(file_path)
+        command = f"INSERT INTO bulanan (username, nama, nominal, bulan, bukti, status) VALUES ('{username}', '{nama_keluarga}', {nominal_persembahan}, '{persembahan_bulan}', '{file_path}', 'pending') "
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("bulanan_user"))
+
+def hamauliateon_user():
+    if "nama" in session:
+        username = session["username"]
+        command = f"SELECT * FROM hamauliateon WHERE username='{username}'"
+        cursor.execute(command)
+        bulanan = cursor.fetchall()
+        nominal = 0
+        pending = 0
+        count = len(bulanan)
+        # print(len(bulanan))
+        if count > 0:
+            for i in bulanan:
+                if i[19] == "verified":
+                    nominal += int(i[17])
+                else:
+                    pending += 1
+        return render_template("User/hamauliateon.html", nominal=nominal, pending=pending)
+
+def addhamauliateon():
+    if "status" in session:
+        username = session["username"]
+        nama = request.form.get("nama")
+        huria = request.form.get("huria")
+        pembangunan = request.form.get("pembangunan")
+        diakonia = request.form.get("diakonia")
+        pendeta = request.form.get("pendeta")
+        sintua = request.form.get("sintua")
+        perhalado = request.form.get("parhalado")
+        ama = request.form.get("ama")
+        ina = request.form.get("ina")
+        nhkbp = request.form.get("nhkbp")
+        remaja = request.form.get("remaja")
+        sekolah_minggu = request.form.get("sekolah_minggu")
+        pemusik = request.form.get("pemusik")
+        multimedia = request.form.get("multimedia")
+        song_leader = request.form.get("song_leader")
+        #for total var, convert huria untill song leaser in to int and then sum all of them
+        total = int(huria) + int(pembangunan) + int(diakonia) + int(pendeta) + int(sintua) + int(perhalado) + int(ama) + int(ina) + int(nhkbp) + int(remaja) + int(sekolah_minggu) + int(pemusik) + int(multimedia) + int(song_leader)
+        status = "pending"
+        #add for hamauliateon
+        bukti_persembahan = request.files.get('bukti')
+        file_path = None
+        if bukti_persembahan:
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], bukti_persembahan.filename)
+            bukti_persembahan.save(file_path)
+        command = f"INSERT INTO hamauliateon (username, nama, huria, pembangunan, diakonia, pendeta, sintua, perhalado, ama, ina, nhkbp, remaja, sekolah_minggu, pemusik, multimedia, song_leader, total, status, bukti) VALUES ('{username}', '{nama}', {huria}, {pembangunan}, {diakonia}, {pendeta}, {sintua}, {perhalado}, {ama}, {ina}, {nhkbp}, {remaja}, {sekolah_minggu}, {pemusik}, {multimedia}, {song_leader}, {total}, '{status}', '{file_path}')"
+        cursor.execute(command)
+        db.commit()
+        return redirect(url_for("hamauliateon_user"))
+
+def user_anaklahir():
+    with open("data/nama_wjik.txt", "r") as f:
+        wijk = f.read().split("\n")
+    if "nama" in session:
+        return render_template("User/add_anaklahir.html", wijk=wijk)
+    else:
+        return redirect(url_for("profile"))
+
+def user_baptis():
+    if "nama" in session:
+        with open("data/nama_wjik.txt", "r") as f:
+            wijk = f.read().split("\n")
+        return render_template("User/add_baptis.html", wijk=wijk)
+    else:
+        return redirect(url_for("profile"))
+    
+def user_martumpol():
+    if "nama" in session:
+        with open("data/nama_wjik.txt", "r") as f:
+            wijk = f.read().split("\n")
+        return render_template("User/add_martumpol.html", wijk=wijk)
+    else:
+        return redirect(url_for("profile"))
+
+def user_pernikahan():
+    if "nama" in session:
+        with open("data/nama_wjik.txt", "r") as f:
+            wijk = f.read().split("\n")
+        return render_template("User/add_pernikahan.html", wijk=wijk)
+    else:
+        return redirect(url_for("profile"))
+
+def user_sidi():
+    if "nama" in session:
+        with open("data/nama_wjik.txt", "r") as f:
+            wijk = f.read().split("\n")
+        return render_template("User/add_sidi.html", wijk=wijk)
+    else:
+        return redirect(url_for("profile"))
+
+def user_berita():
+    i = request.args.get("index")
+    with open("data/berita.txt", "r") as f:
+        data = json.load(f)
+    news = data[i]
+    return render_template("User/berita.html", user=news)
 
 def url_rule_user():
     app.add_url_rule("/profile", "profile", profile)
@@ -902,9 +1539,16 @@ def url_rule_user():
     app.add_url_rule("/addkeluarga", "addkeluarga", addkeluarga, methods=["post"])
     app.add_url_rule("/deletekeluarga", "deletekeluarga", deletekeluarga)
     app.add_url_rule("/profile/layanan", "pelayanan_user", pelayanan_user)
-    app.add_url_rule("/profile/persembahan", "bulanan_user", bulanan_user)
+    app.add_url_rule("/profile/bulanan", "bulanan_user", bulanan_user)
     app.add_url_rule("/addbulanan", "addbulanan", addbulanan, methods=["post"])
-
+    app.add_url_rule("/profile/hamauliateon", "hamauliateon_user", hamauliateon_user)
+    app.add_url_rule("/addhamauliateon", "addhamauliateon", addhamauliateon, methods=["post"])
+    app.add_url_rule("/profile/anak_lahir", "user_anaklahir", user_anaklahir)
+    app.add_url_rule("/profile/jemaat_baptis", "user_baptis", user_baptis)
+    app.add_url_rule("/profile/martumpal", "user_martumpal", user_martumpol)
+    app.add_url_rule("/profile/pernikahan", "user_pernikahan", user_pernikahan)
+    app.add_url_rule("/profile/jemaat_sidi", "user_sidi", user_sidi)
+    app.add_url_rule("/berita", "user_berita", user_berita)
 
 url_rule_admin()
 url_rule_user()

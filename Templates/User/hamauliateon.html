@@ -69,7 +69,7 @@
 
 <div class="container-fluid">
     <div class="row">
-
+        <!-- Sidebar -->
         <div class="col-md-2 sidebar">
             <h2>Huria Kristen Batak Protestan <br> HKBP Purwokerto</h2>
             <a href="/profile"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
@@ -91,17 +91,10 @@
             <!-- <a href="#"><i class="fas fa-user"></i> Pelayananku</a> -->
             <a href="/signout"><i class="fas fa-sign-out-alt"></i> Keluar</a>
         </div>
-        
         <div class="col-md-10 p-4">
-            <h2 class="mb-3">Persembahan Bulanan</h2>
+            <h2 class="mb-3">hamauliateon/Persembahan Ucapan Syukur</h2>
             <!-- Stats Container -->
             <div class="row mb-4">
-                <div class="col-md-2">
-                    <div class="stat-box">
-                        <h3>Bulan Yang Sudah Dibayar</h3>
-                        <p>{{ count }}</p>
-                    </div>
-                </div>
                 <div class="col-md-2">
                     <div class="stat-box">
                         <h3>Dalam Proses Verifikasi</h3>
@@ -115,17 +108,17 @@
                     </div>
                 </div>
             </div>
-        
-            <!-- Form Persembahan Bulanan -->
-            <h3 class="mb-3">Form Persembahan Bulanan</h3>
-            <form action="/addbulanan" method="POST" enctype="multipart/form-data">
+        <div class="col-md-10 p-4">
+            <!-- Form Hamauliateon -->
+            <h3 class="mb-3">Form Hamauliateon</h3>
+            <form action="/addhamauliateon" method="POST" enctype="multipart/form-data">
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <!-- Upload Box -->
                         <div class="upload-box p-3 text-center" style="border: 1px dashed #ccc; border-radius: 8px;">
                             <input type="file" name="bukti" class="form-control-file" accept=".jpeg, .jpg, .png" style="display: none;" id="uploadBukti">
-                            <label for="uploadBukti" id="uploadLabel" style="cursor: pointer;">
-                                <p>Pindahkan atau <a href="#">Upload Bukti bulanan</a></p>
+                            <label for="uploadBukti" style="cursor: pointer;">
+                                <p>Pindahkan atau <a href="#">Upload Bukti Hamauliateon</a></p>
                                 <p><small>.jpeg, .jpg, .png</small></p>
                             </label>
                         </div>
@@ -133,37 +126,74 @@
                     <div class="col-md-8">
                         <!-- Form Fields -->
                         <div class="mb-3">
-                            <label for="nama" class="form-label">Nama Keluarga</label>
+                            <label for="nama" class="form-label">Nama/Keluarga</label>
                             <input type="text" class="form-control" id="nama" name="nama" required>
                         </div>
-                        <div class="mb-3">
-                            <label for="nominal" class="form-label">Nominal Persembahan</label>
-                            <input type="number" class="form-control" id="nominal" name="nominal" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="bulan" class="form-label">Persembahan Bulan</label>
-                            <select id="bulan" name="bulan" class="form-select">
-                                <option selected disabled>Pilih Bulan...</option>
-                                <option value="Januari">Januari</option>
-                                <option value="Februari">Februari</option>
-                                <option value="Maret">Maret</option>
-                                <option value="April">April</option>
-                                <option value="Mei">Mei</option>
-                                <option value="Juni">Juni</option>
-                                <option value="Juli">Juli</option>
-                                <option value="Agustus">Agustus</option>
-                                <option value="September">September</option>
-                                <option value="Oktober">Oktober</option>
-                                <option value="November">November</option>
-                                <option value="Desember">Desember</option>
-                            </select>
+                        <!-- Pos Hamauliateon Fields -->
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label>Huria</label>
+                                <input type="number" class="form-control" name="huria" value="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Pembangunan</label>
+                                <input type="number" class="form-control" name="pembangunan" value="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Diakonia</label>
+                                <input type="number" class="form-control" name="diakonia" value="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Pendeta</label>
+                                <input type="number" class="form-control" name="pendeta" value="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Sintua</label>
+                                <input type="number" class="form-control" name="sintua" value="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Parhalado</label>
+                                <input type="number" class="form-control" name="parhalado" value="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Ama</label>
+                                <input type="number" class="form-control" name="ama" value="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Ina</label>
+                                <input type="number" class="form-control" name="ina" value="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>NHKBP</label>
+                                <input type="number" class="form-control" name="nhkbp" value="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Remaja</label>
+                                <input type="number" class="form-control" name="remaja" value="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Sekolah Minggu</label>
+                                <input type="number" class="form-control" name="sekolah_minggu" value="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Pemusik</label>
+                                <input type="number" class="form-control" name="pemusik" value="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Multimedia</label>
+                                <input type="number" class="form-control" name="multimedia" value="0" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label>Song Leader</label>
+                                <input type="number" class="form-control" name="song_leader" value="0" required>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary">Submit Persembahan</button>
+                <button type="submit" class="btn btn-primary">Kirim</button>
             </form>
-        </div>        
+        </div>         
     </div>
 </div>
 
@@ -171,7 +201,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     document.getElementById('uploadBukti').addEventListener('change', function() {
-        const fileName = this.files[0] ? this.files[0].name : "Pindahkan atau Upload Bukti bulanan";
+        const fileName = this.files[0] ? this.files[0].name : "Pindahkan atau Upload Bukti hamauliateon";
         document.getElementById('uploadLabel').innerHTML = `<p>${fileName}</p>`;
     });
 </script>

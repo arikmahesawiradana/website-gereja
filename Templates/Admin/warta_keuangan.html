@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            background-color: #002855;
+            color: white;
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+        .sidebar h2 {
+            font-size: 18px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #004080;
+        }
+        .sidebar ul li {
+            color: white;
+            text-decoration: none;
+            display: block;
+            transition: background 0.3s;   }
+        .sidebar ul li:hover {
+            background-color: #004080;
+        }
+        .stat-box {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-box h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .stat-box p {
+            font-size: 20px;
+            font-weight: bold;
+            color: #002855;
+        }
+        .chart-box {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .calendar {
+            background-color: #ffffff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .calendar h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .container-box {
+            background-color: #ffffff;
+            border: 1px dashed #c4c4c4;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .header-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #002855;
+        }
+        .table-container {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary-custom {
+            background-color: #002855;
+            border: none;
+            color: white;
+        }
+        .btn-primary-custom:hover {
+            background-color: #004080;
+        }
+        .table th {
+            background-color: #002855;
+            color: white;
+            text-align: center;
+        }
+        .table tbody tr:nth-child(even) {
+            background-color: #e0e7ff;
+        }
+        .btn-action {
+            background-color: #ffffff;
+            border: 1px solid #002855;
+            color: #002855;
+            border-radius: 20px;
+            padding: 5px 15px;
+            font-size: 14px;
+        }
+        .btn-action:hover {
+            background-color: #002855;
+            color: white;
+        }
+        .search-bar {
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            padding: 5px 15px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar">
+            <h2>Huria Kristen Batak Protestan</h2>
+            <a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="/dashboard/management_user"><i class="fas fa-users-cog"></i> Manajemen User</a>
+            <a data-bs-toggle="collapse" data-bs-target="#Peremajaan"><i class="fas fa-database"></i> Peremajaan Data</a>
+            <div id="Peremajaan" class="collapse">
+                <ul>
+                    <li><a href="/dashboard/ubah_data_jemaat">Ubah Data Jemaat</a></li>
+                    <li><a href="/dashboard/jemaat_baptis">Jemaat Baptis</a></li>
+                    <li><a href="/dashboard/jemaat_sidi">Jemaat Sidi</a></li>
+                    <li><a href="/dashboard/anak_lahir">Anak Lahir</a></li>
+                    <li><a href="/dashboard/rpp">RPP</a></li>
+                    <li><a href="/dashboard/martumpal">Martumpal</a></li>
+                    <li><a href="/dashboard/pernikahan">Pernikahan</a></li>
+                    <li><a href="/dashboard/meninggal_dunia">Meninggal Dunia</a></li>
+                </ul>
+            </div>
+            <a href="#" data-bs-toggle="collapse" data-bs-target="#Injem"><i class="fas fa-info-circle"></i> Informasi Jemaat</a>
+            <div id="Injem" class="collapse">
+                <ul>
+                    <li><a href="/dashboard/cari_data_jemaat">Cari Data Jemaat</a></li>
+                    <li><a href="/dashboard/search-jemaat">Ulang Tahun</a></li>
+                </ul>
+            </div>
+            <a href="#" data-bs-toggle="collapse" data-bs-target="#Keuangan"><i class="fas fa-wallet"></i> Keuangan</a>
+            <div id="Keuangan" class="collapse">
+                <ul>
+                    <li><a href="/dashboard/bulanann">Persembahan Bulanan</a></li>
+                    <li><a href="/dashboard/hamauliateon">Hamauliateon</a></li>
+                    <li><a href="/dashboard/warta_keuangan">Warta Keuangan</a></li>
+                </ul>
+            </div>
+            <!-- <a href="/dashboard/bulanann"><i class="fas fa-church"></i>Bulanan</a> -->
+            <a href="/dashboard/kegiatan_kebaktian"><i class="fas fa-church"></i> Kegiatan Kebaktian</a>
+            <a href="/dashboard/data_pelayan"><i class="fas fa-user-shield"></i> Data Pelayan</a>
+            <a href="/dashboard/warta"><i class="fas fa-newspaper"></i> Warta</a>
+            <a href="/dashboard/berita"><i class="fas fa-bullhorn"></i> Berita</a>
+            <a href="/signout"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-10 p-4">
+            <div class="container container-box">
+                <h2 class="header-title mb-4">Tambah Data Warta</h2>
+                <div class="border rounded p-4">
+                    <form action="/submit_financial_data" method="post">
+                        <div class="row mb-4">
+                            <!-- Nama Minggu and Tanggal -->
+                            <div class="col-md-6">
+                                <label for="namaMinggu" class="form-label">Nama Minggu</label>
+                                <input type="text" class="form-control" id="namaMinggu" name="namaMinggu" placeholder="Masukkan Nama Minggu" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="tanggal" class="form-label">Tanggal</label>
+                                <input type="date" class="form-control" id="tanggal" name="tanggal" placeholder="Masukkan Tanggal" required>
+                            </div>
+                        </div>
+
+                        <!-- Pemasukan and Pengeluaran sections -->
+                        <div class="row">
+                            <!-- Pemasukan Section -->
+                            <div class="col-md-6">
+                                <h5 class="fw-bold">Pemasukan</h5>
+                                <div class="mb-3">
+                                    <label for="pemasukanPagi" class="form-label">Pelean Minggu Pagi</label>
+                                    <input type="number" class="form-control" id="pemasukanPagi" name="pemasukanPagi" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="pemasukanSore" class="form-label">Pelean Minggu Sore</label>
+                                    <input type="number" class="form-control" id="pemasukanSore" name="pemasukanSore" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="pemasukanSekolah" class="form-label">Pelean Sekolah Minggu</label>
+                                    <input type="number" class="form-control" id="pemasukanSekolah" name="pemasukanSekolah" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="pemasukanKasual" class="form-label">Pelean Kasual</label>
+                                    <input type="number" class="form-control" id="pemasukanKasual" name="pemasukanKasual" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="pemasukanPartangiangan" class="form-label">Pelean Partangiangan</label>
+                                    <input type="number" class="form-control" id="pemasukanPartangiangan" name="pemasukanPartangiangan" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="pemasukanKategori" class="form-label">Pelean Kategorial</label>
+                                    <input type="number" class="form-control" id="pemasukanKategori" name="pemasukanKategori" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="transitori" class="form-label">Transitori</label>
+                                    <input type="number" class="form-control" id="transitori" name="transitori" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="pemasukanLainnya" class="form-label">Pemasukan Lainnya</label>
+                                    <input type="number" class="form-control" id="pemasukanLainnya" name="pemasukanLainnya" placeholder="Rp" value="0" required>
+                                </div>
+                            </div>
+
+                            <!-- Pengeluaran Section -->
+                            <div class="col-md-6">
+                                <h5 class="fw-bold">Pengeluaran</h5>
+                                <div class="mb-3">
+                                    <label for="konvenPendeta" class="form-label">Biaya Konven Pendeta</label>
+                                    <input type="number" class="form-control" id="konvenPendeta" name="konvenPendeta" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="transport" class="form-label">Transport Parjamita Na Ro</label>
+                                    <input type="number" class="form-control" id="transport" name="transport" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="rumahTangga" class="form-label">Biaya Rumah Tangga</label>
+                                    <input type="number" class="form-control" id="rumahTangga" name="rumahTangga" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="diakonia" class="form-label">Diakonia</label>
+                                    <input type="number" class="form-control" id="diakonia" name="diakonia" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="koinonia" class="form-label">Koinonia</label>
+                                    <input type="number" class="form-control" id="koinonia" name="koinonia" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="marturia" class="form-label">Marturia</label>
+                                    <input type="number" class="form-control" id="marturia" name="marturia" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="biayaOperasional" class="form-label">Biaya Operasional (Air, Listrik, dan Gaji Koster)</label>
+                                    <input type="number" class="form-control" id="biayaOperasional" name="biayaOperasional" placeholder="Rp" value="0" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="pengeluaranLainnya" class="form-label">Pengeluaran Lainnya</label>
+                                    <input type="number" class="form-control" id="pengeluaranLainnya" name="pengeluaranLainnya" placeholder="Rp" value="0" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-end mt-4">
+                            <button type="submit" class="btn btn-primary btn-primary-custom me-2">Simpan</button>
+                            <button type="button" class="btn btn-outline-primary">Kembali</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap 5 JS and Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

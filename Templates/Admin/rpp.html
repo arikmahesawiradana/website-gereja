@@ -154,22 +154,22 @@
                     <li><a href="/dashboard/meninggal_dunia">Meninggal Dunia</a></li>
                 </ul>
             </div>
-            <!-- <a href="#" data-bs-toggle="collapse" data-bs-target="#Injem"><i class="fas fa-info-circle"></i> Informasi Jemaat</a>
+            <a href="#" data-bs-toggle="collapse" data-bs-target="#Injem"><i class="fas fa-info-circle"></i> Informasi Jemaat</a>
             <div id="Injem" class="collapse">
                 <ul>
                     <li><a href="/dashboard/cari_data_jemaat">Cari Data Jemaat</a></li>
-                    <li><a href="/dashboard/ulang_tahun">Ulang Tahun</a></li>
+                    <li><a href="/dashboard/search-jemaat">Ulang Tahun</a></li>
                 </ul>
-            </div> -->
-            <!-- <a href="#" data-bs-toggle="collapse" data-bs-target="#Keuangan"><i class="fas fa-wallet"></i> Keuangan</a>
+            </div>
+            <a href="#" data-bs-toggle="collapse" data-bs-target="#Keuangan"><i class="fas fa-wallet"></i> Keuangan</a>
             <div id="Keuangan" class="collapse">
                 <ul>
-                    <li><a href="/dashboard/persembahan_bulanan">Persembahan Bulanan</a></li>
+                    <li><a href="/dashboard/bulanann">Persembahan Bulanan</a></li>
                     <li><a href="/dashboard/hamauliateon">Hamauliateon</a></li>
                     <li><a href="/dashboard/warta_keuangan">Warta Keuangan</a></li>
                 </ul>
-            </div> -->
-            <a href="/dashboard/bulanann"><i class="fas fa-church"></i>Bulanan</a>
+            </div>
+            <!-- <a href="/dashboard/bulanann"><i class="fas fa-church"></i>Bulanan</a> -->
             <a href="/dashboard/kegiatan_kebaktian"><i class="fas fa-church"></i> Kegiatan Kebaktian</a>
             <a href="/dashboard/data_pelayan"><i class="fas fa-user-shield"></i> Data Pelayan</a>
             <a href="/dashboard/warta"><i class="fas fa-newspaper"></i> Warta</a>
@@ -204,8 +204,20 @@
                                     <td>{{ user[2] }}</td>
                                     <td>{{ user[4] }}</td>
                                     <td class="text-center">
-                                        <a href="/lihat?id={{ user[0] }}&page=rpp"><button class="btn btn-action">Lihat</button></a>
+                                        <!-- <a href="/lihat?id={{ user[0] }}&page=rpp"><button class="btn btn-action">Lihat</button></a> -->
                                         <a href="/deleterpp?id={{ user[0] }}"><button class="btn btn-action">Hapus</button></a>
+                                        <button class="btn btn-action" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#editUserModal"
+                                                id = "{{ user[0] }}"
+                                                nama_lengkap = "{{ user[1] }}"
+                                                jenis_kelamin = "{{ user[2] }}"
+                                                wijk = "{{ user[3] }}"
+                                                tanggal_rpp = "{{ user[4] }}"
+                                                alasan = "{{ user[5] }}"
+                                                onclick="modal(this)">
+                                        Edit Data
+                                        </button>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -268,11 +280,79 @@
                 </div>
             </div>
         </div>
+        <!-- edit modal  -->
+        <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addUserModalLabel">Edit Data</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" action="/editrpp">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="modal_id" class="form-label">ID</label>
+                                <input type="text" class="form-control" id="modal_id" name="modal_id" required readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_nama_lengkap" class="form-label">Nama Lengkap</label>
+                                <input type="text" class="form-control" id="modal_nama_lengkap" name="modal_nama_lengkap" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                                <select class="form-select" id="modal_jenis_kelamin" name="modal_jenis_kelamin" required>
+                                    <option value="" disabled>Pilih Jenis Kelamin</option>
+                                    <option value="Laki - Laki">Laki-Laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_Wijk" class="form-label">Wijk</label>
+                                <select class="form-select" id="modal_wijk" name="modal_wijk" required>
+                                    <option value="" disabled selected>Wijk</option>
+                                    {% for w in wijk %}
+                                    <option value="{{ w }}">{{ w }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_tanggal_rpp" class="form-label">Tanggal RPP</label>
+                                <input type="date" class="form-control" id="modal_tanggal_rpp" name="modal_tanggal_rpp" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_alasan" class="form-label">Nama Lengkap</label>
+                                <textarea class="form-control" id="modal_alasan" rows="4" cols="50" name="modal_alasan" required></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary btn-primary-custom">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- Bootstrap 5 JS and Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function modal(button){
+        const id = button.getAttribute("id");
+        const nama_lengkap = button.getAttribute("nama_lengkap");
+        const jenis_kelamin = button.getAttribute("jenis_kelamin");
+        const wijk = button.getAttribute("wijk");
+        const tanggal_rpp = button.getAttribute("tanggal_rpp");
+        const alasan = button.getAttribute("alasan");
+        document.getElementById("modal_id").value = id
+        document.getElementById("modal_nama_lengkap").value = nama_lengkap
+        document.getElementById("modal_jenis_kelamin").value = jenis_kelamin
+        document.getElementById("modal_wijk").value = wijk
+        document.getElementById("modal_tanggal_rpp").value = tanggal_rpp
+        document.getElementById("modal_alasan").innerHTML = alasan
+    }
+</script>
 </body>
 </html>

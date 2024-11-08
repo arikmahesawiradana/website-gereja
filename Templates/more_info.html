@@ -45,30 +45,29 @@
         <h1>More Info</h1>
         
         {% if user and page == "anak_lahir" %}
-                <div class="card">
-                    <div class="card-header">Anak Lahir</div>
-                    <div class="card-body">
-                        <p><span class="info-label">Nama Lengkap:</span> {{ user[1] }}</p>
-                        <p><span class="info-label">Jenis Kelamin:</span> {{ user[2] }}</p>
-                        <p><span class="info-label">WIJK:</span> {{ user[3] }}</p>
-                        <p><span class="info-label">Tempat Lahir:</span> {{ user[4] }}</p>
-                        <p><span class="info-label">Tanggal Lahir:</span> {{ user[5] }}</p>
-                    </div>
+            <div class="card">
+                <div class="card-header">Anak Lahir</div>
+                <div class="card-body">
+                    <p><span class="info-label">Nama Lengkap:</span> {{ user[1] }}</p>
+                    <p><span class="info-label">Jenis Kelamin:</span> {{ user[2] }}</p>
+                    <p><span class="info-label">WIJK:</span> {{ user[3] }}</p>
+                    <p><span class="info-label">Tempat Lahir:</span> {{ user[4] }}</p>
+                    <p><span class="info-label">Tanggal Lahir:</span> {{ user[5] }}</p>
                 </div>
+            </div>
         
         {% elif user and page == "baptis" %}
-                <div class="card">
-                    <div class="card-header">Baptis</div>
-                    <div class="card-body">
-                        <p><span class="info-label">Nama Lengkap:</span> {{ user[1] }}</p>
-                        <p><span class="info-label">Jenis Kelamin:</span> {{ user[2] }}</p>
-                        <p><span class="info-label">WIJK:</span> {{ user[3] }}</p>
-                        <p><span class="info-label">Tempat Lahir:</span> {{ user[4] }}</p>
-                        <p><span class="info-label">Tanggal Lahir:</span> {{ user[5] }}</p>
-                        <p><span class="info-label">Tanggal Baptis:</span> {{ user[6] }}</p>
-                    </div>
+            <div class="card">
+                <div class="card-header">Baptis</div>
+                <div class="card-body">
+                    <p><span class="info-label">Nama Lengkap:</span> {{ user[1] }}</p>
+                    <p><span class="info-label">Jenis Kelamin:</span> {{ user[2] }}</p>
+                    <p><span class="info-label">WIJK:</span> {{ user[3] }}</p>
+                    <p><span class="info-label">Tempat Lahir:</span> {{ user[4] }}</p>
+                    <p><span class="info-label">Tanggal Lahir:</span> {{ user[5] }}</p>
+                    <p><span class="info-label">Tanggal Baptis:</span> {{ user[6] }}</p>
                 </div>
-        
+            </div>    
         {% elif user and page == "sidi" %}
                 <div class="card">
                     <div class="card-header">Sidi</div>
@@ -83,7 +82,6 @@
                     </div>
                 </div>
         {% elif user and page == "rpp" %}
-            
                 <div class="card">
                     <div class="card-header">RPP</div>
                     <div class="card-body">
@@ -147,7 +145,6 @@
             
         
         {% elif user and page == "pernikahan" %}
-            
                 <div class="card">
                     <div class="card-header">Pernikahan</div>
                     <div class="card-body">
@@ -197,10 +194,32 @@
                         <p><span class="info-label">Tanggal Tahbisan:</span> {{ user[5] }}</p>
                     </div>
                 </div>
-            
+        {% elif user and page == "hamauliateon" %}
+                <div class="card">
+                    <div class="card-header">hamauliateon</div>
+                    <div class="card-body">
+                        <p><span class="info-label">username:</span> {{ user[1] }}</p>
+                        <p><span class="info-label">nama:</span> {{ user[2] }}</p>
+                        <p><span class="info-label">Huria:</span> {{ user[3] }}</p>
+                        <p><span class="info-label">Pembangunan:</span> {{ user[4] }}</p>
+                        <p><span class="info-label">Diakonia:</span> {{ user[5] }}</p>
+                        <p><span class="info-label">Pendeta:</span> {{ user[6] }}</p>
+                        <p><span class="info-label">Sintua:</span> {{ user[7] }}</p>
+                        <p><span class="info-label">Perhalado:</span> {{ user[8] }}</p>
+                        <p><span class="info-label">AMA:</span> {{ user[9] }}</p>
+                        <p><span class="info-label">INA:</span> {{ user[10] }}</p>
+                        <p><span class="info-label">NHKBP:</span> {{ user[11] }}</p>
+                        <p><span class="info-label">Remaja:</span> {{ user[12] }}</p>
+                        <p><span class="info-label">Sekolah Minggu:</span> {{ user[13] }}</p>
+                        <p><span class="info-label">Pemusik:</span> {{ user[14] }}</p>
+                        <p><span class="info-label">Multimedia:</span> {{ user[15] }}</p>
+                        <p><span class="info-label">Song Leader:</span> {{ user[16] }}</p>
+                        <p><span class="info-label">Total:</span> {{ user[17] }}</p>
+                    </div>
+                </div>    
         
         {% else %}
-            <div class="alert alert-warning" role="alert">Tidak ada data</div>
+            <div class="alert alert-warning" role="alert">Error memuat data</div>
         {% endif %}
     </div>
 

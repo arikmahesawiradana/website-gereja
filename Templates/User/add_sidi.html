@@ -63,6 +63,14 @@
             font-weight: bold;
             color: #002855;
         }
+        .btn-primary-custom {
+            background-color: #002855;
+            border: none;
+            color: white;
+        }
+        .btn-primary-custom:hover {
+            background-color: #004080;
+        }
     </style>
 </head>
 <body>
@@ -94,46 +102,48 @@
         
         <!-- Main Content -->
         <div class="col-md-10 p-4">
-            <h1 class="mb-3">Halo, {{ nama }}!</h1>
-            <p>{{ tanggal }}</p>
-
-            <!-- Stats Container -->
-            <div class="row mb-4">
-                <div class="col-md-2">
-                    <div class="stat-box">
-                        <h3>Anggota Keluarga</h3>
-                        <p>5</p>
+            <div class="container container-box text-center">
+                <h2 class="header-title mb-4">Sidi</h2>
+                <form method="POST" action="/addsidi">
+                    <div class="mb-3">
+                        <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+                        <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" required>
                     </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="stat-box">
-                        <h3>Jumlah Tanggungan</h3>
-                        <p>1</p>
+                    <div class="mb-3">
+                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                        <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
+                            <option value="" disabled>Pilih Jenis Kelamin</option>
+                            <option value="Laki - Laki">Laki-Laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
                     </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="stat-box">
-                        <h3>Pelayanan Ku</h3>
-                        <p>1</p>
+                    <div class="mb-3">
+                        <label for="Wijk" class="form-label">Wijk</label>
+                        <select class="form-select" id="wijk" name="wijk" required>
+                            <option value="" disabled selected>Wijk</option>
+                            {% for w in wijk %}
+                            <option value="{{ w }}">{{ w }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                </div>
-                <!-- <div class="col-md-3">
-                    <div class="stat-box">
-                        <h3>Persembahan Bulanan</h3>
-                        <p>Rp1,200,000</p>
+                    <div class="mb-3">
+                        <label for="tempat_lahir" class="form-label">Tempat Tanggal Lahir</label>
+                        <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Tempat Lahir" required>
+                        <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="stat-box">
-                        <h3>Persepuluhan</h3>
-                        <p>Rp1,200,000</p>
+                    <div class="mb-3">
+                        <label for="tanggal_baptis" class="form-label">Tanggal Baptis</label>
+                        <input type="date" class="form-control" id="tanggal_baptis" name="tanggal_baptis" required>
                     </div>
-                </div> -->
+                    <div class="mb-3">
+                        <label for="tanggal_sidi" class="form-label">Tanggal Sidi</label>
+                        <input type="date" class="form-control" id="tanggal_sidi" name="tanggal_sidi" required>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-
 <!-- Bootstrap 5 JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

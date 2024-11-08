@@ -154,22 +154,22 @@
                     <li><a href="/dashboard/meninggal_dunia">Meninggal Dunia</a></li>
                 </ul>
             </div>
-            <!-- <a href="#" data-bs-toggle="collapse" data-bs-target="#Injem"><i class="fas fa-info-circle"></i> Informasi Jemaat</a>
+            <a href="#" data-bs-toggle="collapse" data-bs-target="#Injem"><i class="fas fa-info-circle"></i> Informasi Jemaat</a>
             <div id="Injem" class="collapse">
                 <ul>
                     <li><a href="/dashboard/cari_data_jemaat">Cari Data Jemaat</a></li>
-                    <li><a href="/dashboard/ulang_tahun">Ulang Tahun</a></li>
+                    <li><a href="/dashboard/search-jemaat">Ulang Tahun</a></li>
                 </ul>
-            </div> -->
-            <!-- <a href="#" data-bs-toggle="collapse" data-bs-target="#Keuangan"><i class="fas fa-wallet"></i> Keuangan</a>
+            </div>
+            <a href="#" data-bs-toggle="collapse" data-bs-target="#Keuangan"><i class="fas fa-wallet"></i> Keuangan</a>
             <div id="Keuangan" class="collapse">
                 <ul>
-                    <li><a href="/dashboard/persembahan_bulanan">Persembahan Bulanan</a></li>
+                    <li><a href="/dashboard/bulanann">Persembahan Bulanan</a></li>
                     <li><a href="/dashboard/hamauliateon">Hamauliateon</a></li>
                     <li><a href="/dashboard/warta_keuangan">Warta Keuangan</a></li>
                 </ul>
-            </div> -->
-            <a href="/dashboard/bulanann"><i class="fas fa-church"></i>Bulanan</a>
+            </div>
+            <!-- <a href="/dashboard/bulanann"><i class="fas fa-church"></i>Bulanan</a> -->
             <a href="/dashboard/kegiatan_kebaktian"><i class="fas fa-church"></i> Kegiatan Kebaktian</a>
             <a href="/dashboard/data_pelayan"><i class="fas fa-user-shield"></i> Data Pelayan</a>
             <a href="/dashboard/warta"><i class="fas fa-newspaper"></i> Warta</a>
@@ -204,8 +204,27 @@
                                     <td>{{ user[11] }}</td>
                                     <td>{{ user[12] }}</td>
                                     <td class="text-center">
-                                        <a href="/lihat?id={{ user[0] }}&page=martumpol"><button class="btn btn-action">Lihat</button></a>
+                                        <!-- <a href="/lihat?id={{ user[0] }}&page=martumpol"><button class="btn btn-action">Lihat</button></a> -->
                                         <a href="/deletemartumpol?id={{ user[0] }}"><button class="btn btn-action">Hapus</button></a>
+                                        <button class="btn btn-action" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#editUserModal"
+                                                id = "{{ user[0] }}"
+                                                nama_lengkap_laki = "{{ user [1] }}"
+                                                nama_ayah_laki = "{{ user [2] }}"
+                                                nama_ibu_laki = "{{ user [3] }}"
+                                                tempat_lahir_laki = "{{ user [4] }}"
+                                                wijk_laki = "{{ user [5] }}"
+                                                nama_lengkap_perempuan = "{{ user [6] }}"
+                                                nama_ayah_perempuan = "{{ user [7] }}"
+                                                nama_ibu_perempuan = "{{ user [8] }}"
+                                                tempat_lahir_perempuan = "{{ user [9] }}"
+                                                wijk_perempuan = "{{ user [10] }}"
+                                                tanggal_martumpol = "{{ user [11] }}"
+                                                pukul_martumpol = "{{ user [12] }}"
+                                                onclick="modal(this)">
+                                        Edit Data
+                                        </button>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -312,11 +331,132 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="editserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addUserModalLabel">Tambah User Baru</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" action="/editmartumpol">
+                        <div class="modal-body">
+                            <!-- Calon Pengantin Laki-laki Section -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h6><strong>Calon Pengantin Laki-laki</strong></h6>
+                                    <div class="mb-3">
+                                        <label for="modal_nama_lengkap_laki" class="form-label">Nama Lengkap</label>
+                                        <input type="text" class="form-control" id="modal_nama_lengkap_laki" name="modal_nama_lengkap_laki" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modal_nama_ayah_laki" class="form-label">Nama Ayah</label>
+                                        <input type="text" class="form-control" id="modal_nama_ayah_laki" name="modal_nama_ayah_laki" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modal_nama_ibu_laki" class="form-label">Nama Ibu</label>
+                                        <input type="text" class="form-control" id="modal_nama_ibu_laki" name="modal_nama_ibu_laki" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modal_tempat_lahir_laki" class="form-label">Tempat Lahir</label>
+                                        <input type="text" class="form-control" id="modal_tempat_lahir_laki" name="modal_tempat_lahir_laki" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modal_wijk_laki" class="form-label">Wijk</label>
+                                        <select class="form-select" id="modal_wijk_laki" name="modal_wijk_laki" required>
+                                            <option value="" disabled selected>Wijk</option>
+                                            {% for w in wijk %}
+                                            <option value="{{ w }}">{{ w }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Calon Pengantin Perempuan Section -->
+                                <div class="col-md-6">
+                                    <h6><strong>Calon Pengantin Perempuan</strong></h6>
+                                    <div class="mb-3">
+                                        <label for="modal_nama_lengkap_perempuan" class="form-label">Nama Lengkap</label>
+                                        <input type="text" class="form-control" id="modal_nama_lengkap_perempuan" name="modal_nama_lengkap_perempuan" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modal_nama_ayah_perempuan" class="form-label">Nama Ayah</label>
+                                        <input type="text" class="form-control" id="modal_nama_ayah_perempuan" name="modal_nama_ayah_perempuan" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modal_nama_ibu_perempuan" class="form-label">Nama Ibu</label>
+                                        <input type="text" class="form-control" id="modal_nama_ibu_perempuan" name="modal_nama_ibu_perempuan" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modal_tempat_lahir_perempuan" class="form-label">Tempat Lahir</label>
+                                        <input type="text" class="form-control" id="modal_tempat_lahir_perempuan" name="modal_tempat_lahir_perempuan" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="modal_wijk_perempuan" class="form-label">Wijk</label>
+                                        <select class="form-select" id="modal_wijk_perempuan" name="modal_wijk_perempuan" required>
+                                            <option value="" disabled selected>Wijk</option>
+                                            {% for w in wijk %}
+                                            <option value="{{ w }}">{{ w }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Rencana Martumpol Section -->
+                            <h6 class="mt-4"><strong>Rencana Martumpol</strong></h6>
+                            <div class="mb-3">
+                                <label for="modal_tanggal_martumpol" class="form-label">Tanggal Martumpol</label>
+                                <input type="date" class="form-control" id="modal_tanggal_martumpol" name="modal_tanggal_martumpol" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_pukul_martumpol" class="form-label">Pukul</label>
+                                <input type="time" class="form-control" id="modal_pukul_martumpol" name="modal_pukul_martumpol" required>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary btn-primary-custom">Selesai</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- Bootstrap 5 JS and Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function modal(button){
+        const id = button.getAttribute("id");
+        const nama_lengkap_laki = button.getAttribute("nama_lengkap_laki")
+        const nama_ayah_laki = button.getAttribute("nama_ayah_laki")
+        const nama_ibu_laki = button.getAttribute("nama_ibu_laki")
+        const tempat_lahir_laki = button.getAttribute("tempat_lahir_laki")
+        const wijk_laki = button.getAttribute("    wijk_laki")
+        const nama_lengkap_perempuan = button.getAttribute("nama_lengkap_perempuan")
+        const nama_ayah_perempuan = button.getAttribute("nama_ayah_perempuan")
+        const nama_ibu_perempuan = button.getAttribute("nama_ibu_perempuan")
+        const tempat_lahir_perempuan = button.getAttribute("tempat_lahir_perempuan")
+        const wijk_perempuan = button.getAttribute("wijk_perempuan")
+        const tanggal_martumpol = button.getAttribute("tanggal_martumpol")
+        const pukul_martumpol = button.getAttribute("pukul_martumpol")
+        document.getElementById("modal_id").value = id
+        document.getElementById("modal_nama_lengkap_laki").value = nama_lengkap_laki
+        document.getElementById("modal_nama_ayah_laki").value = nama_ayah_laki
+        document.getElementById("modal_nama_ibu_laki").value = nama_ibu_laki
+        document.getElementById("modal_tempat_lahir_laki").value = tempat_lahir_laki
+        document.getElementById("modal_wijk_laki").value = wijk_laki
+        document.getElementById("modal_nama_lengkap_perempuan").value = nama_lengkap_perempuan
+        document.getElementById("modal_nama_ayah_perempuan").value = nama_ayah_perempuan
+        document.getElementById("modal_nama_ibu_perempuan").value = nama_ibu_perempuan
+        document.getElementById("modal_tempat_lahir_perempuan").value = tempat_lahir_perempuan
+        document.getElementById("modal_wijk_perempuan").value = wijk_perempuan
+        document.getElementById("modal_tanggal_martumpol").value = tanggal_martumpol
+        document.getElementById("modal_pukul_martumpol").value = pukul_martumpol
+    }
+</script>
 </body>
 </html>

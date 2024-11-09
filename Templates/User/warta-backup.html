@@ -240,17 +240,13 @@
                     {% if status %}
                     {% endif %}
                     <div class="pagination mt-3">
-                        {% if page > 1 %}
-                        <a href="{{ url_for('warta_user', page=page-1) }}">Prev</a>
-                        {% endif %}
-                    
-                        {% for p in range(1, total_pages + 1) %}
-                        <a href="{{ url_for('warta_user', page=p) }}" class="{% if page == p %}active{% endif %}">{{ p }}</a>
-                        {% endfor %}
-                    
-                        {% if page < total_pages %}
-                        <a href="{{ url_for('warta_user', page=page+1) }}">Next</a>
-                        {% endif %}
+                        <a href="#">Prev</a>
+                        <a href="#" class="active">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#">4</a>
+                        <a href="#">5</a>
+                        <a href="#">Next</a>
                     </div>
                 </section>
             </div>

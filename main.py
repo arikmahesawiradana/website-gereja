@@ -234,10 +234,22 @@ def index():
     else:
         return render_template("User/index.html", warta_jemaat=warta_jemaat, pelayanan=pelayanan, berita=berita, logged="Not Login")
 
+# def warta_user():
+#     with open("data/warta_jemaat.json", "r") as f:
+#         data = json.load(f)
+#     return render_template("User/warta.html", data=data)
+
 def warta_user():
+    # Load JSON data
     with open("data/warta_jemaat.json", "r") as f:
         data = json.load(f)
-    return render_template("User/warta.html", data=data)
+    page = request.args.get('page', 1, type=int)  # Get the current page number from query params
+    per_page = 5  # Number of items per page
+    total_pages = (len(data) + per_page - 1) // per_page  # Calculate total number of pages
+    start = (page - 1) * per_page
+    end = start + per_page
+    paginated_data = data[start:end]  # Get the data for the current page
+    return render_template("User/warta.html", data=paginated_data, page=page, total_pages=total_pages)
 
 def login():
     error = request.args.get("error") or ""
@@ -1533,6 +1545,15 @@ def user_berita():
     news = data[i]
     return render_template("User/berita.html", user=news)
 
+def koikonia():
+    return render_template("koikonia.html")
+def diakonia():
+    return render_template("diakonia.html")
+def marturia():
+    return render_template("marturia.html")
+def organisasi():
+    return render_template("organisasi.html")
+
 def url_rule_user():
     app.add_url_rule("/profile", "profile", profile)
     app.add_url_rule("/profile/keluarga", "user_keluarga", user_keluarga)
@@ -1549,6 +1570,10 @@ def url_rule_user():
     app.add_url_rule("/profile/pernikahan", "user_pernikahan", user_pernikahan)
     app.add_url_rule("/profile/jemaat_sidi", "user_sidi", user_sidi)
     app.add_url_rule("/berita", "user_berita", user_berita)
+    app.add_url_rule("/koikonia", "koikonia", koikonia)
+    app.add_url_rule("/diakonia", "diakonia", diakonia)
+    app.add_url_rule("/marturia", "marturia", marturia)
+    app.add_url_rule("/organisasi", "organisasi", organisasi)
 
 url_rule_admin()
 url_rule_user()

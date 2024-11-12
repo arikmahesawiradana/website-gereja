@@ -45,23 +45,13 @@
         .sidebar ul li:hover {
             background-color: #004080;
         }
-        .stat-box {
+        .card-content {
             background-color: #ffffff;
             border: 1px solid #dee2e6;
-            border-radius: 8px;
+            border-radius: 15px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            text-align: center;
-        }
-        .stat-box h3 {
-            font-size: 14px;
-            color: #666666;
-            margin-bottom: 5px;
-        }
-        .stat-box p {
-            font-size: 18px;
-            font-weight: bold;
-            color: #002855;
+            margin-top: 20px;
         }
         .btn-primary-custom {
             background-color: #002855;
@@ -84,7 +74,6 @@
             <a href="/profile/keluarga"><i class="fas fa-users"></i> Anggota Keluarga</a>
             <a href="/profile/bulanan"><i class="fas fa-envelope"></i> Persembahan Bulanan</a>
             <a href="/profile/hamauliateon"><i class="fas fa-book"></i> Hamauliateon</a>
-            <!-- <a href="/profile/layanan"><i class="fas fa-concierge-bell"></i> Layanan</a> -->
             <a data-bs-toggle="collapse" data-bs-target="#Peremajaan"><i class="fas fa-concierge-bell"></i> Peremajaan Data</a>
             <div id="Peremajaan" class="collapse">
                 <ul>
@@ -95,15 +84,13 @@
                     <li><a href="/profile/pernikahan">Pernikahan</a></li>
                 </ul>
             </div>
-            <!-- <a href="#"><i class="fas fa-hands-helping"></i> Diakonia</a> -->
-            <!-- <a href="#"><i class="fas fa-user"></i> Pelayananku</a> -->
             <a href="/signout"><i class="fas fa-sign-out-alt"></i> Keluar</a>
         </div>
         
-        <!-- Main Content -->
+        <!-- Main Content Card -->
         <div class="col-md-10 p-4">
-            <div class="container container-box text-center">
-                <h2 class="header-title mb-4">Sidi</h2>
+            <div class="card card-content">
+                <h2 class="header-title mb-4 text-center">Sidi</h2>
                 <form method="POST" action="/addsidi">
                     <div class="mb-3">
                         <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
@@ -129,7 +116,7 @@
                     <div class="mb-3">
                         <label for="tempat_lahir" class="form-label">Tempat Tanggal Lahir</label>
                         <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Tempat Lahir" required>
-                        <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required>
+                        <input type="date" class="form-control mt-2" id="tanggal_lahir" name="tanggal_lahir" required>
                     </div>
                     <div class="mb-3">
                         <label for="tanggal_baptis" class="form-label">Tanggal Baptis</label>
@@ -139,6 +126,7 @@
                         <label for="tanggal_sidi" class="form-label">Tanggal Sidi</label>
                         <input type="date" class="form-control" id="tanggal_sidi" name="tanggal_sidi" required>
                     </div>
+                    <button type="submit" class="btn btn-primary-custom">Submit</button>
                 </form>
             </div>
         </div>

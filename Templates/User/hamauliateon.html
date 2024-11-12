@@ -117,7 +117,7 @@
                         <!-- Upload Box -->
                         <div class="upload-box p-3 text-center" style="border: 1px dashed #ccc; border-radius: 8px;">
                             <input type="file" name="bukti" class="form-control-file" accept=".jpeg, .jpg, .png" style="display: none;" id="uploadBukti">
-                            <label for="uploadBukti" style="cursor: pointer;">
+                            <label for="uploadBukti" id="uploadLabel"  style="cursor: pointer;">
                                 <p>Pindahkan atau <a href="#">Upload Bukti Hamauliateon</a></p>
                                 <p><small>.jpeg, .jpg, .png</small></p>
                             </label>
@@ -202,7 +202,7 @@
 <script>
     document.getElementById('uploadBukti').addEventListener('change', function() {
         const fileName = this.files[0] ? this.files[0].name : "Pindahkan atau Upload Bukti hamauliateon";
-        document.getElementById('uploadLabel').innerHTML = `<p>${fileName}</p>`;
+        document.getElementById('uploadLabel').innerHTML = `<p>${fileName}</p>`; 
     });
 </script>
 </body>

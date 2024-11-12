@@ -182,16 +182,20 @@
             <div class="container container-box">
                 <h2 class="header-title mb-4">Tambah Data Warta</h2>
                 <div class="border rounded p-4">
-                    <form action="/submit_financial_data" method="post">
+                    <form action="/edit_financial_data" method="post">
+                        <div class="col-md-6">
+                            <label for="id" class="form-label">ID</label>
+                            <input type="text" class="form-control" id="id" name="id" placeholder="Masukkan Nama Minggu" value="{{ user[0] }}" required readonly>
+                        </div>
                         <div class="row mb-4">
                             <!-- Nama Minggu and Tanggal -->
                             <div class="col-md-6">
                                 <label for="namaMinggu" class="form-label">Nama Minggu</label>
-                                <input type="text" class="form-control" id="namaMinggu" name="namaMinggu" placeholder="Masukkan Nama Minggu" required>
+                                <input type="text" class="form-control" id="namaMinggu" name="namaMinggu" placeholder="Masukkan Nama Minggu" value="{{ user[1] }}" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="tanggal" class="form-label">Tanggal</label>
-                                <input type="date" class="form-control" id="tanggal" name="tanggal" placeholder="Masukkan Tanggal" required>
+                                <input type="date" class="form-control" id="tanggal" name="tanggal" placeholder="Masukkan Tanggal" value="{{ user[2] }}" required>
                             </div>
                         </div>
 
@@ -202,35 +206,35 @@
                                 <h5 class="fw-bold">Pemasukan</h5>
                                 <div class="mb-3">
                                     <label for="pemasukanPagi" class="form-label">Pelean Minggu Pagi</label>
-                                    <input type="number" class="form-control" id="pemasukanPagi" name="pemasukanPagi" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="pemasukanPagi" name="pemasukanPagi" placeholder="Rp" value="{{ user[3] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="pemasukanSore" class="form-label">Pelean Minggu Sore</label>
-                                    <input type="number" class="form-control" id="pemasukanSore" name="pemasukanSore" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="pemasukanSore" name="pemasukanSore" placeholder="Rp" value="{{ user[4] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="pemasukanSekolah" class="form-label">Pelean Sekolah Minggu</label>
-                                    <input type="number" class="form-control" id="pemasukanSekolah" name="pemasukanSekolah" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="pemasukanSekolah" name="pemasukanSekolah" placeholder="Rp" value="{{ user[5] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="pemasukanKasual" class="form-label">Pelean Kasual</label>
-                                    <input type="number" class="form-control" id="pemasukanKasual" name="pemasukanKasual" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="pemasukanKasual" name="pemasukanKasual" placeholder="Rp" value="{{ user[6] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="pemasukanPartangiangan" class="form-label">Pelean Partangiangan</label>
-                                    <input type="number" class="form-control" id="pemasukanPartangiangan" name="pemasukanPartangiangan" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="pemasukanPartangiangan" name="pemasukanPartangiangan" placeholder="Rp" value="{{ user[7] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="pemasukanKategori" class="form-label">Pelean Kategorial</label>
-                                    <input type="number" class="form-control" id="pemasukanKategori" name="pemasukanKategori" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="pemasukanKategori" name="pemasukanKategori" placeholder="Rp" value="{{ user[8] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="transitori" class="form-label">Transitori</label>
-                                    <input type="number" class="form-control" id="transitori" name="transitori" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="transitori" name="transitori" placeholder="Rp" value="{{ user[9] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="pemasukanLainnya" class="form-label">Pemasukan Lainnya</label>
-                                    <input type="number" class="form-control" id="pemasukanLainnya" name="pemasukanLainnya" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="pemasukanLainnya" name="pemasukanLainnya" placeholder="Rp" value="{{ user[10] }}" required>
                                 </div>
                             </div>
 
@@ -239,35 +243,35 @@
                                 <h5 class="fw-bold">Pengeluaran</h5>
                                 <div class="mb-3">
                                     <label for="konvenPendeta" class="form-label">Biaya Konven Pendeta</label>
-                                    <input type="number" class="form-control" id="konvenPendeta" name="konvenPendeta" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="konvenPendeta" name="konvenPendeta" placeholder="Rp" value="{{ user[11] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="transport" class="form-label">Transport Parjamita Na Ro</label>
-                                    <input type="number" class="form-control" id="transport" name="transport" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="transport" name="transport" placeholder="Rp" value="{{ user[12] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="rumahTangga" class="form-label">Biaya Rumah Tangga</label>
-                                    <input type="number" class="form-control" id="rumahTangga" name="rumahTangga" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="rumahTangga" name="rumahTangga" placeholder="Rp" value="{{ user[13] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="diakonia" class="form-label">Diakonia</label>
-                                    <input type="number" class="form-control" id="diakonia" name="diakonia" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="diakonia" name="diakonia" placeholder="Rp" value="{{ user[14] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="koinonia" class="form-label">Koinonia</label>
-                                    <input type="number" class="form-control" id="koinonia" name="koinonia" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="koinonia" name="koinonia" placeholder="Rp" value="{{ user[15] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="marturia" class="form-label">Marturia</label>
-                                    <input type="number" class="form-control" id="marturia" name="marturia" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="marturia" name="marturia" placeholder="Rp" value="{{ user[16] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="biayaOperasional" class="form-label">Biaya Operasional (Air, Listrik, dan Gaji Koster)</label>
-                                    <input type="number" class="form-control" id="biayaOperasional" name="biayaOperasional" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="biayaOperasional" name="biayaOperasional" placeholder="Rp" value="{{ user[17] }}" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="pengeluaranLainnya" class="form-label">Pengeluaran Lainnya</label>
-                                    <input type="number" class="form-control" id="pengeluaranLainnya" name="pengeluaranLainnya" placeholder="Rp" value="0" required>
+                                    <input type="number" class="form-control" id="pengeluaranLainnya" name="pengeluaranLainnya" placeholder="Rp" value="{{ user[18] }}" required>
                                 </div>
                             </div>
                         </div>

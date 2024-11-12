@@ -203,7 +203,7 @@
                                     <td>{{ user[1] }}</td>
                                     <td>{{ user[2] }}</td>
                                     <td>{{ user[7] }}</td>
-                                    <td class="text-center">
+                                    <td class="text-center"> 
                                         <!-- <a href="/lihat?id={{ user[0] }}&page=sidi"><button class="btn btn-action">Lihat</button></a> -->
                                         <a href="/deletesidi?id={{ user[0] }}"><button class="btn btn-action">Hapus</button></a>
                                         <button class="btn btn-action" 
@@ -217,9 +217,7 @@
                                                 tanggal_lahir = "{{ user[5] }}"
                                                 tanggal_baptis = "{{ user[6] }}"
                                                 tanggal_sidi = "{{ user[7] }}"
-                                                onclick="modal(this)">
-                                        Edit Data
-                                        </button>
+                                                onclick="modal(this)">Edit Data</button>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -235,7 +233,7 @@
         </div>
         <!-- Add User Modal -->
          <!-- Modal for adding new user -->
-         <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -286,108 +284,60 @@
                     </form>
                 </div>
             </div>
-            <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addUserModalLabel">Tambah User Baru</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <form method="POST" action="/addbaptis">
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
-                                    <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                                    <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
-                                        <option value="" disabled>Pilih Jenis Kelamin</option>
-                                        <option value="Laki - Laki">Laki-Laki</option>
-                                        <option value="Perempuan">Perempuan</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Wijk" class="form-label">Wijk</label>
-                                    <select class="form-select" id="wijk" name="wijk" required>
-                                        <option value="" disabled selected>Wijk</option>
-                                        {% for w in wijk %}
-                                        <option value="{{ w }}">{{ w }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="tempat_lahir" class="form-label">Tempat Tanggal Lahir</label>
-                                    <input type="text" class="form-control" id="tempat_lahir" name="tempat_lahir" placeholder="Tempat Lahir" required>
-                                    <input type="date" class="form-control" id="tanggal_lahir" name="tanggal_lahir" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="tanggal_baptis" class="form-label">Tanggal Baptis</label>
-                                    <input type="date" class="form-control" id="tanggal_baptis" name="tanggal_baptis" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary btn-primary-custom">Simpan</button>
-                            </div>
-                        </form>
+        </div>
+        <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addUserModalLabel">Edit User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-            </div>
-            <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addUserModalLabel">Edit Data</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <form method="POST" action="/editsidi">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="modal_id" class="form-label">ID</label>
+                                <input type="text" class="form-control" id="modal_id" name="modal_id" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_nama_lengkap" class="form-label">Nama Lengkap</label>
+                                <input type="text" class="form-control" id="modal_nama_lengkap" name="modal_nama_lengkap" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                                <select class="form-select" id="modal_jenis_kelamin" name="modal_jenis_kelamin" required>
+                                    <option value="" disabled>Pilih Jenis Kelamin</option>
+                                    <option value="Laki - Laki">Laki-Laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_Wijk" class="form-label">Wijk</label>
+                                <select class="form-select" id="modal_wijk" name="modal_wijk" required>
+                                    <option value="" disabled selected>Wijk</option>
+                                    {% for w in wijk %}
+                                    <option value="{{ w }}">{{ w }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_tempat_lahir" class="form-label">Tempat Tanggal Lahir</label>
+                                <input type="text" class="form-control" id="modal_tempat_lahir" name="modal_tempat_lahir" placeholder="Tempat Lahir" required>
+                                <input type="date" class="form-control" id="modal_tanggal_lahir" name="modal_tanggal_lahir" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_tanggal_baptis" class="form-label">Tanggal Baptis</label>
+                                <input type="date" class="form-control" id="modal_tanggal_baptis" name="modal_tanggal_baptis" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_tanggal_sidi" class="form-label">Tanggal Sidi</label>
+                                <input type="date" class="form-control" id="modal_tanggal_sidi" name="modal_tanggal_sidi" required>
+                            </div>
                         </div>
-                        <form method="POST" action="/editsidi">
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="modal_id" class="form-label">ID</label>
-                                    <input type="text" class="form-control" id="modal_id" name="modal_id" required readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="modal_nama_lengkap" class="form-label">Nama Lengkap</label>
-                                    <input type="text" class="form-control" id="modal_nama_lengkap" name="modal_nama_lengkap" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="modal_jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                                    <select class="form-select" id="modal_jenis_kelamin" name="modal_jenis_kelamin" required>
-                                        <option value="" disabled>Pilih Jenis Kelamin</option>
-                                        <option value="Laki - Laki">Laki-Laki</option>
-                                        <option value="Perempuan">Perempuan</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="modal_Wijk" class="form-label">Wijk</label>
-                                    <select class="form-select" id="modal_wijk" name="modal_wijk" required>
-                                        <option value="" disabled selected>Wijk</option>
-                                        {% for w in wijk %}
-                                        <option value="{{ w }}">{{ w }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="modal_tempat_lahir" class="form-label">Tempat Tanggal Lahir</label>
-                                    <input type="text" class="form-control" id="modal_tempat_lahir" name="modal_tempat_lahir" placeholder="Tempat Lahir" required>
-                                    <input type="date" class="form-control" id="modal_tanggal_lahir" name="modal_tanggal_lahir" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="modal_tanggal_baptis" class="form-label">Tanggal Baptis</label>
-                                    <input type="date" class="form-control" id="modal_tanggal_baptis" name="modal_tanggal_baptis" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="modal_tanggal_sidi" class="form-label">Tanggal Sidi</label>
-                                    <input type="date" class="form-control" id="modal_tanggal_sidi" name="modal_tanggal_sidi" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary btn-primary-custom">Simpan</button>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary btn-primary-custom">Simpan</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -413,6 +363,7 @@
         document.getElementById("modal_wijk").value = wijk
         document.getElementById("modal_tempat_lahir").value = tempat_lahir
         document.getElementById("modal_tanggal_lahir").value = tanggal_lahir
+        document.getElementById("modal_tanggal_baptis").value = tanggal_baptis
         document.getElementById("modal_tanggal_sidi").value = tanggal_sidi
     }
 </script>

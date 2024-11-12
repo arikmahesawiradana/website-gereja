@@ -228,6 +228,7 @@
                     <div class="mb-3">
                         <label for="wijk" class="form-label">Wijk</label>
                         <select id="wijk" name="wijk" class="form-select">
+                            <option value="">Pilih Wijk</option>
                             {% for w in wijk %}
                                 <option value="{{ w }}">{{ w }}</option>
                             {% endfor %}
@@ -259,7 +260,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama Jemaat</th>
-                                <th>Nomor Registrasi/th>
+                                <th>Nomor Registrasi</th>
                                 <th>Wijk</th>
                                 <th>Aksi</th>
                             </tr>
@@ -268,11 +269,11 @@
                             {% for row in results %}
                             <tr>
                                 <td>{{ loop.index }}</td>
-                                <td>{{ row[4] }}</td>
-                                <td>{{ row[5] }}</td>
-                                <td>{{ row[6] }}</td>
+                                <td>{{ row[2] }}</td>
+                                <td>{{ row[13] }}</td>
+                                <td>{{ row[12] }}</td>
                                 <td>
-                                    <a href="/dashboard/ubah_data_jemaat/keluarga?id={{ row[0] }}" class="btn btn-primary-custom w-100">Lihat</a>
+                                    <a href="/dashboard/ubah_data_jemaat/keluarga?id={{ row[1] }}" class="btn btn-primary-custom w-100">Lihat</a>
                                 </td>
                             </tr>
                             {% endfor %}

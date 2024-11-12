@@ -134,19 +134,18 @@
         .warta-table tr:nth-child(odd) {
             background-color: #e8ecf9;
         }
-        .download-btn {
-            color: #fff;
-            background-color: #2f3a6b;
-            border: none;
-            border-radius: 5px;
+        .btn-action {
+            background-color: #ffffff;
+            border: 1px solid #002855;
+            color: #002855;
+            border-radius: 20px;
             padding: 5px 15px;
-            text-decoration: none;
-            display: inline-block;
+            font-size: 14px;
         }
-        .download-btn:hover {
-            background-color: #1c2552;
+        .btn-action:hover {
+            background-color: #002855;
+            color: white;
         }
-
         /* Pagination */
         .pagination a {
             color: #2f3a6b;
@@ -196,15 +195,21 @@
           <h1>Gereja Kristen Batak Protestan <br> HKBP Purwokerto</h1>
         </div>
         <nav>
-          <ul>
-            <li><a href="/">Beranda</a></li>
-            <li><a href="/warta">Warta</a></li>
-            <li><a href="#">Koinonia</a></li>
-            <li><a href="#">Diakonia</a></li>
-            <li><a href="#">Marturia</a></li>
-            <li><a href="#">Organisasi</a></li>
-            <li><a href="#">Masuk</a></li>
-          </ul>
+            <ul>
+              <li><a href="/">Beranda</a></li>
+              <li><a href="/warta_user">Warta</a></li>
+              <li><a href="/koinonia">Koinonia</a></li>
+              <li><a href="/diakonia">Diakonia</a></li>
+              <li><a href="/marturia">Marturia</a></li>
+              <li><a href="/organisasi">Organisasi</a></li>
+              {% if logged == "Admin" %}
+                  <li><a href="/dashboard">Profile</a></li>
+              {% elif logged == "Peserta" %}
+                  <li><a href="/profile">Profile</a></li>
+              {% else %}
+                  <li><a href="/login">Masuk</a></li>
+              {% endif %}
+            </ul>
         </nav>
     </header>
 
@@ -227,7 +232,7 @@
                             {% for datum in data %}
                             <tr>
                                 <td>{{ datum.judul }}</td>
-                                <td><a href="#" class="{{ datum.file }}">Download</a></td>
+                                <td><a href="/{{ datum.file }}" class="btn btn-action">Download</a></td>
                             </tr>
                             {% endfor %}
                             {% else %}

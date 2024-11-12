@@ -243,12 +243,20 @@
                                         <tr>
                                             <td>{{ loop.index }}</td>
                                             <td>{{ name }}</td>
-                                            <td><button class="btn btn-action">Hapus</button></td>
+                                            <td><a href="/hapuswijk?nomor={{ loop.index }}" class="btn btn-action">Hapus</a></td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>
-                                <td><button class="btn btn-action">Add WIJK</button></td>
+                                <form method="POST" action="/addwijk">
+                                    <td>
+                                        <div class="mb-3">
+                                            <label for="namawijk" class="form-label">Nama Wijk</label>
+                                            <input type="text" class="form-control" id="namawijk" name="namawijk" required>
+                                        </div>
+                                    </td>
+                                    <td><button type="submit" class="btn btn-action">Add WIJK</button></td>
+                                </form>
                             </div>                            
                         </div>
                         <div class="modal-footer">

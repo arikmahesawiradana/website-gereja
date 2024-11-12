@@ -10,7 +10,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #ffffff;
+            background-color: #f8f9fa;
         }
         .sidebar {
             background-color: #002855;
@@ -45,24 +45,6 @@
         .sidebar ul li:hover {
             background-color: #004080;
         }
-        .stat-box {
-            background-color: #ffffff;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-        }
-        .stat-box h3 {
-            font-size: 14px;
-            color: #666666;
-            margin-bottom: 5px;
-        }
-        .stat-box p {
-            font-size: 18px;
-            font-weight: bold;
-            color: #002855;
-        }
         .btn-primary-custom {
             background-color: #002855;
             border: none;
@@ -70,6 +52,12 @@
         }
         .btn-primary-custom:hover {
             background-color: #004080;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .header-title {
+            color: #002855;
         }
     </style>
 </head>
@@ -84,7 +72,6 @@
             <a href="/profile/keluarga"><i class="fas fa-users"></i> Anggota Keluarga</a>
             <a href="/profile/bulanan"><i class="fas fa-envelope"></i> Persembahan Bulanan</a>
             <a href="/profile/hamauliateon"><i class="fas fa-book"></i> Hamauliateon</a>
-            <!-- <a href="/profile/layanan"><i class="fas fa-concierge-bell"></i> Layanan</a> -->
             <a data-bs-toggle="collapse" data-bs-target="#Peremajaan"><i class="fas fa-concierge-bell"></i> Peremajaan Data</a>
             <div id="Peremajaan" class="collapse">
                 <ul>
@@ -95,93 +82,107 @@
                     <li><a href="/profile/pernikahan">Pernikahan</a></li>
                 </ul>
             </div>
-            <!-- <a href="#"><i class="fas fa-hands-helping"></i> Diakonia</a> -->
-            <!-- <a href="#"><i class="fas fa-user"></i> Pelayananku</a> -->
             <a href="/signout"><i class="fas fa-sign-out-alt"></i> Keluar</a>
         </div>
-        
+
         <!-- Main Content -->
         <div class="col-md-10 p-4">
-            <div class="container container-box text-center">
-                <h2 class="header-title mb-4">Martumpol</h2>
-                <form method="POST" action="/addmartumpol">
-                    <!-- Calon Pengantin Laki-laki Section -->
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6><strong>Calon Pengantin Laki-laki</strong></h6>
-                            <div class="mb-3">
-                                <label for="nama_lengkap_laki" class="form-label">Nama Lengkap</label>
-                                <input type="text" class="form-control" id="nama_lengkap_laki" name="nama_lengkap_laki" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nama_ayah_laki" class="form-label">Nama Ayah</label>
-                                <input type="text" class="form-control" id="nama_ayah_laki" name="nama_ayah_laki" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nama_ibu_laki" class="form-label">Nama Ibu</label>
-                                <input type="text" class="form-control" id="nama_ibu_laki" name="nama_ibu_laki" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="tempat_lahir_laki" class="form-label">Tempat Lahir</label>
-                                <input type="text" class="form-control" id="tempat_lahir_laki" name="tempat_lahir_laki" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="wijk_laki" class="form-label">Wijk</label>
-                                <select class="form-select" id="wijk_laki" name="wijk_laki" required>
-                                    <option value="" disabled selected>Wijk</option>
-                                    {% for w in wijk %}
-                                    <option value="{{ w }}">{{ w }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+            <h2 class="header-title mb-4">Martumpol</h2>
+            <form method="POST" action="/addmartumpol">
+                <!-- Groom Card -->
+                <div class="card">
+                    <div class="card-header text-center">
+                        <strong>Calon Pengantin Laki-laki</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="nama_lengkap_laki" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="nama_lengkap_laki" name="nama_lengkap_laki" required>
                         </div>
-                        
-                        <!-- Calon Pengantin Perempuan Section -->
-                        <div class="col-md-6">
-                            <h6><strong>Calon Pengantin Perempuan</strong></h6>
-                            <div class="mb-3">
-                                <label for="nama_lengkap_perempuan" class="form-label">Nama Lengkap</label>
-                                <input type="text" class="form-control" id="nama_lengkap_perempuan" name="nama_lengkap_perempuan" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nama_ayah_perempuan" class="form-label">Nama Ayah</label>
-                                <input type="text" class="form-control" id="nama_ayah_perempuan" name="nama_ayah_perempuan" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="nama_ibu_perempuan" class="form-label">Nama Ibu</label>
-                                <input type="text" class="form-control" id="nama_ibu_perempuan" name="nama_ibu_perempuan" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="tempat_lahir_perempuan" class="form-label">Tempat Lahir</label>
-                                <input type="text" class="form-control" id="tempat_lahir_perempuan" name="tempat_lahir_perempuan" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="wijk_perempuan" class="form-label">Wijk</label>
-                                <select class="form-select" id="wijk_perempuan" name="wijk_perempuan" required>
-                                    <option value="" disabled selected>Wijk</option>
-                                    {% for w in wijk %}
-                                    <option value="{{ w }}">{{ w }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                        <div class="mb-3">
+                            <label for="nama_ayah_laki" class="form-label">Nama Ayah</label>
+                            <input type="text" class="form-control" id="nama_ayah_laki" name="nama_ayah_laki" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama_ibu_laki" class="form-label">Nama Ibu</label>
+                            <input type="text" class="form-control" id="nama_ibu_laki" name="nama_ibu_laki" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tempat_lahir_laki" class="form-label">Tempat Lahir</label>
+                            <input type="text" class="form-control" id="tempat_lahir_laki" name="tempat_lahir_laki" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="wijk_laki" class="form-label">Wijk</label>
+                            <select class="form-select" id="wijk_laki" name="wijk_laki" required>
+                                <option value="" disabled selected>Wijk</option>
+                                {% for w in wijk %}
+                                <option value="{{ w }}">{{ w }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
-                    
-                    <!-- Rencana Martumpol Section -->
-                    <h6 class="mt-4"><strong>Rencana Martumpol</strong></h6>
-                    <div class="mb-3">
-                        <label for="tanggal_martumpol" class="form-label">Tanggal Martumpol</label>
-                        <input type="date" class="form-control" id="tanggal_martumpol" name="tanggal_martumpol" required>
+                </div>
+
+                <!-- Bride Card -->
+                <div class="card">
+                    <div class="card-header text-center">
+                        <strong>Calon Pengantin Perempuan</strong>
                     </div>
-                    <div class="mb-3">
-                        <label for="pukul_martumpol" class="form-label">Pukul</label>
-                        <input type="time" class="form-control" id="pukul_martumpol" name="pukul_martumpol" required>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="nama_lengkap_perempuan" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="nama_lengkap_perempuan" name="nama_lengkap_perempuan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama_ayah_perempuan" class="form-label">Nama Ayah</label>
+                            <input type="text" class="form-control" id="nama_ayah_perempuan" name="nama_ayah_perempuan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama_ibu_perempuan" class="form-label">Nama Ibu</label>
+                            <input type="text" class="form-control" id="nama_ibu_perempuan" name="nama_ibu_perempuan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tempat_lahir_perempuan" class="form-label">Tempat Lahir</label>
+                            <input type="text" class="form-control" id="tempat_lahir_perempuan" name="tempat_lahir_perempuan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="wijk_perempuan" class="form-label">Wijk</label>
+                            <select class="form-select" id="wijk_perempuan" name="wijk_perempuan" required>
+                                <option value="" disabled selected>Wijk</option>
+                                {% for w in wijk %}
+                                <option value="{{ w }}">{{ w }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
-                </form>
-            </div>
+                </div>
+
+                <!-- Martumpol Schedule Card -->
+                <div class="card">
+                    <div class="card-header text-center">
+                        <strong>Rencana Martumpol</strong>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="tanggal_martumpol" class="form-label">Tanggal Martumpol</label>
+                            <input type="date" class="form-control" id="tanggal_martumpol" name="tanggal_martumpol" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pukul_martumpol" class="form-label">Pukul</label>
+                            <input type="time" class="form-control" id="pukul_martumpol" name="pukul_martumpol" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-primary-custom">Submit</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 <!-- Bootstrap 5 JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

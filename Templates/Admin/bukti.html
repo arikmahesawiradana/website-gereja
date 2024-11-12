@@ -6,7 +6,12 @@
     <title>Display Image</title>
 </head>
 <body>
+    {% if pdf %}
+    <h1>PDF Viewer</h1>
+    <embed src="{{ url_for('static', filename=filename) }}" width="600" height="500" type="application/pdf">
+    {% else %}
     <h1>Gambar dari Folder Static</h1>
     <img src="{{ url_for('static', filename=filename) }}" style="width: 400px; height: auto;">
+    {% endif %}
 </body>
 </html>

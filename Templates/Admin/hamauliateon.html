@@ -149,7 +149,7 @@
                     <li><a href="/dashboard/jemaat_sidi">Jemaat Sidi</a></li>
                     <li><a href="/dashboard/anak_lahir">Anak Lahir</a></li>
                     <li><a href="/dashboard/rpp">RPP</a></li>
-                    <li><a href="/dashboard/martumpal">Martumpal</a></li>
+                    <li><a href="/dashboard/martumpol">Martumpol</a></li>
                     <li><a href="/dashboard/pernikahan">Pernikahan</a></li>
                     <li><a href="/dashboard/meninggal_dunia">Meninggal Dunia</a></li>
                 </ul>
@@ -183,7 +183,19 @@
                 <h2 class="header-title mb-4">Pembayaran Hamauliateon</h2>
                 <div class="table-container">
                     <div class="d-flex justify-content-between mb-3">
-                        <input type="text" class="search-bar" placeholder="Cari User...">
+                        <input type="text" class="search-bar" id="searchInput" placeholder="Cari Hamauliateon...">
+                        <script>
+                            const searchInput = document.getElementById("searchInput");
+                            searchInput.addEventListener("keypress", function(event) {
+                                if (event.key === "Enter") {
+                                    event.preventDefault();
+                                    const query = searchInput.value;
+                                    if (query) {
+                                        window.location.href = `/dashboard/hamauliateon?query=${encodeURIComponent(query)}`;
+                                    }
+                                }
+                            });
+                        </script>
                     </div>
                     <table class="table table-striped table-bordered">
                         <thead>

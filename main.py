@@ -460,10 +460,15 @@ def dashboard():
 def management_user():
     if "status" in session:
         if session["status"] == "Admin":
+            with open("data/nama_wjik.txt", "r") as f:
+                wijk = f.read().split("\n")
             command = "SELECT * FROM user"
+            query = request.args.get("query")
+            if query:
+                command += f" WHERE username LIKE '%{query}%'"
             cursor.execute(command)
             users = cursor.fetchall()
-            return render_template("Admin/management_user.html", users=users)
+            return render_template("Admin/management_user.html", users=users, wijk=wijk)
     else:
         return redirect(url_for("index"))
 
@@ -472,8 +477,15 @@ def adduser():
         if session["status"] == "Admin":
             username = request.form.get("username")
             password = request.form.get("password")
+            registrasi = request.form.get("registrasi")
+            tanggal_registrasi = request.form.get("tanggal_registrasi")
+            tanggal_menikah = request.form.get("tanggal_menikah")
+            nama = request.form.get("nama")
+            Alamat = request.form.get("alamat")
+            wijk = request.form.get("wijk")
             status = "Peserta"
-            command = f"INSERT INTO user(username, password, status) VALUES('{username}', '{password}', '{status}')"
+            command = f"INSERT INTO user(username, password, status, registrasi, tanggal_registrasi, tanggal_menikah, nama, Alamat, wjik) VALUES('{username}', '{password}', '{status}', '{registrasi}', '{tanggal_registrasi}', '{tanggal_menikah}', '{nama}', '{Alamat}', '{wijk}')"
+            # command = f"INSERT INTO user(username, password, status) VALUES('{username}', '{password}', '{status}')"
             cursor.execute(command)
             db.commit()
             new_json = []
@@ -520,9 +532,12 @@ def keluarga():
                 wijk = f.read().split("\n")
             id = request.args.get("id")
             command = f"SELECT * FROM user WHERE id={id}"
+            query = request.args.get("query")
             cursor.execute(command)
             user = cursor.fetchone()
             command = f"SELECT * FROM keluarga WHERE myid={id}"
+            if query:
+                command += f" AND nama LIKE '%{query}%'"
             cursor.execute(command)
             keluarga = cursor.fetchall()
             return render_template("Admin/data_keluarga.html", user=user, wijk=wijk, families=keluarga)
@@ -550,6 +565,9 @@ def baptis():
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM baptis"
+            query = request.args.get("query")
+            if query:
+                command += f" WHERE nama_lengkap LIKE '%{query}%'"
             cursor.execute(command)
             users = cursor.fetchall()
             return render_template("Admin/baptis.html", users=users, wijk=wijk)
@@ -590,6 +608,9 @@ def sidi():
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM sidi"
+            query = request.args.get("query")
+            if query:
+                command += f" WHERE nama_lengkap LIKE '%{query}%'"
             cursor.execute(command)
             users = cursor.fetchall()
             return render_template("Admin/sidi.html", users=users, wijk=wijk)
@@ -632,7 +653,10 @@ def lahir():
         if session["status"] == "Admin":
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
+            query = request.args.get("query")
             command = "SELECT * FROM anak_lahir"
+            if query:
+                command += f" WHERE nama_lengkap LIKE '%{query}%' OR wijk LIKE '%{query}%'"
             cursor.execute(command)
             users = cursor.fetchall()
             return render_template("Admin/anak_lahir.html", users=users, wijk=wijk)
@@ -672,6 +696,9 @@ def rpp():
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM rpp"
+            query = request.args.get("query")
+            if query:
+                command += f" WHERE nama_lengkap LIKE '%{query}%' OR wijk LIKE '%{query}%'"
             cursor.execute(command)
             users = cursor.fetchall()
             return render_template("Admin/rpp.html", users=users, wijk=wijk)
@@ -709,6 +736,9 @@ def martumpol():
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM martumpol"
+            query = request.args.get("query")
+            if query:
+                command += f" WHERE nama_lengkap_laki LIKE '%{query}%' OR wijk_laki LIKE '%{query}%' OR nama_lengkap_perempuan LIKE '%{query}%' OR wijk_perempuan LIKE '%{query}%'"
             cursor.execute(command)
             users = cursor.fetchall()
             return render_template("Admin/martumpol.html", users=users, wijk=wijk)
@@ -755,6 +785,9 @@ def pernikahan():
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM pernikahan"
+            query = request.args.get("query")
+            if query:
+                command += f" WHERE nama_lengkap_laki LIKE '%{query}%' OR wijk_laki LIKE '%{query}%' OR nama_lengkap_perempuan LIKE '%{query}%' OR wijk_perempuan LIKE '%{query}%'"
             cursor.execute(command)
             users = cursor.fetchall()
             return render_template("Admin/pernikahan.html", users=users, wijk=wijk)
@@ -801,6 +834,9 @@ def meninggal_dunia():
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM meninggal"
+            query = request.args.get("query")
+            if query:
+                command += f" WHERE nama_lengkap LIKE '%{query}%' OR wijk LIKE '%{query}%' "
             cursor.execute(command)
             users = cursor.fetchall()
             return render_template("Admin/meninggal_dunia.html", users=users, wijk=wijk)
@@ -835,6 +871,9 @@ def kegiatan_kebaktian():
     if "status" in session:
         if session["status"] == "Admin":
             command = "SELECT * FROM kebaktian"
+            query = request.args.get("query")
+            if query:
+                command += f" WHERE nama_kebaktian LIKE '%{query}%' OR pengkhotbah LIKE '%{query}%' "
             cursor.execute(command)
             users = cursor.fetchall()
             return render_template("Admin/kegiatan_kebaktian.html", users=users)
@@ -879,6 +918,9 @@ def data_pelayanan():
             with open("data/nama_wjik.txt", "r") as f:
                 wijk = f.read().split("\n")
             command = "SELECT * FROM pelayanan"
+            query = request.args.get("query")
+            if query:
+                command += f" WHERE nama_lengkap LIKE '%{query}%' OR jenis_kelamin LIKE '%{query}%' OR status_pelayanan LIKE '%{query}%' OR jenis_pelayanan LIKE '%{query}%' "
             cursor.execute(command)
             users = cursor.fetchall()
             return render_template("Admin/pelayanan.html", users=users, wijk=wijk)
@@ -1014,6 +1056,10 @@ def pembayaran():
         if session["status"] == "Admin":
             command = f"SELECT * FROM bulanan"
             cursor.execute(command)
+            query = request.args.get("query")
+            if query:
+                command += f" WHERE username LIKE '%{query}%' OR nama LIKE '%{query}%' OR bulan LIKE '%{query}%'"
+            cursor.execute(command)
             users = cursor.fetchall()
             return render_template("Admin/bulanan.html", users=users)
     else:
@@ -1089,6 +1135,9 @@ def hamauliateon_admin():
     if "status" in session:
         if session["status"] == "Admin":
             command = f"SELECT * FROM hamauliateon"
+            query = request.args.get("query")
+            if query:
+                command += f" WHERE username LIKE '%{query}%' OR nama LIKE '%{query}%'"
             cursor.execute(command)
             users = cursor.fetchall()
             return render_template("Admin/hamauliateon.html", users=users)
@@ -1588,7 +1637,7 @@ def url_rule_admin():
     app.add_url_rule("/dashboard/rpp", "rpp", rpp)
     app.add_url_rule("/addrpp", "addrpp", addrpp, methods=["post"])
     app.add_url_rule("/deleterpp", "deleterpp", deleterpp)
-    app.add_url_rule("/dashboard/martumpal", "martumpol", martumpol)
+    app.add_url_rule("/dashboard/martumpol", "martumpol", martumpol)
     app.add_url_rule("/addmartumpol", "addmartumpol", addmartumpol, methods=["post"])
     app.add_url_rule("/deletemartumpol", "deletemartumpol", deletemartumpol)
     app.add_url_rule("/dashboard/pernikahan", "pernikahan", pernikahan)
@@ -1696,6 +1745,9 @@ def user_keluarga():
         cursor.execute(command)
         user = cursor.fetchone()
         command = f"SELECT * FROM keluarga WHERE myid={id}"
+        query = request.args.get("query")
+        if query:
+            command += f" AND nama LIKE '%{query}%' OR status LIKE '%{query}%'"
         cursor.execute(command)
         keluarga = cursor.fetchall()
         return render_template("User/keluarga.html", user=user, families=keluarga)

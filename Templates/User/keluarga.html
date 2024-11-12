@@ -243,7 +243,19 @@
                 <div class="table-container">
                     <div class="d-flex justify-content-between mb-3">
                         <button class="btn btn-primary btn-primary-custom" data-bs-toggle="modal" data-bs-target="#edit">Tambah Keluarga</button>
-                        <input type="text" class="search-bar" placeholder="Cari User...">
+                        <input type="text" class="search-bar" id="searchInput" placeholder="Cari Keluarga...">
+                        <script>
+                            const searchInput = document.getElementById("searchInput");
+                            searchInput.addEventListener("keypress", function(event) {
+                                if (event.key === "Enter") {
+                                    event.preventDefault();
+                                    const query = searchInput.value;
+                                    if (query) {
+                                        window.location.href = `/dashboard/keluarga?query=${encodeURIComponent(query)}`;
+                                    }
+                                }
+                            });
+                        </script>
                     </div>
                     <table class="table table-striped table-bordered">
                         <thead>

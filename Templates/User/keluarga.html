@@ -251,7 +251,7 @@
                                     event.preventDefault();
                                     const query = searchInput.value;
                                     if (query) {
-                                        window.location.href = `/dashboard/keluarga?query=${encodeURIComponent(query)}`;
+                                        window.location.href = `/profile/keluarga?query=${encodeURIComponent(query)}`;
                                     }
                                 }
                             });
@@ -281,7 +281,23 @@
                                         <p>Pendidikan: {{ family[10] }}</p>
                                     </td>
                                     <td>
-                                        <a href="/deletekeluarga?id={{ family[0] }}" class="btn btn-danger btn-sm">Hapus</a>
+                                        <a href="/deletekeluarga?id={{ family[0] }}" class="btn btn-action">Hapus</a>
+                                        <button class="btn btn-action" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#editUserModal"
+                                                id = "{{ family[0] }}"
+                                                nama = "{{ family[2] }}"
+                                                status = "{{ family[3] }}"
+                                                jenis_kelamin = "{{ family[4] }}"
+                                                tempat_lahir = "{{ family[5] }}"
+                                                tanggal_lahir = "{{ family[6] }}"
+                                                tanggal_baptis = "{{ family[7] }}"
+                                                tanggal_sidi = "{{ family[8] }}"
+                                                pekerjaan = "{{ family[9] }}"
+                                                pendidikan = "{{ family[10] }}"
+                                                onclick="modal(this)">
+                                        Edit Data
+                                        </button>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -300,7 +316,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addUserModalLabel">Tambah User Baru</h5>
+                        <h5 class="modal-title" id="addUserModalLabel">Tambah Keluarga Baru</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form method="POST" action="/addkeluarga">
@@ -314,10 +330,10 @@
                                 <label for="status" class="form-label">Status</label>
                                 <select class="form-select" id="status" name="status">
                                     <option selected disabled>Pilih Status</option>
-                                    <option value="kepala">Kepala Keluarga</option>
-                                    <option value="istri">Istri</option>
-                                    <option value="anak">Anak</option>
-                                    <option value="tanggungan">Tanggungan</option>
+                                    <option value="Kepala Keluarga">Kepala Keluarga</option>
+                                    <option value="Istri">Istri</option>
+                                    <option value="Anak">Anak</option>
+                                    <option value="Tanggungan">Tanggungan</option>
                                 </select>
                             </div>
                             
@@ -325,8 +341,8 @@
                                 <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
                                 <select class="form-select" id="jenis_kelamin" name="jenis_kelamin">
                                     <option selected>Jenis Kelamin</option>
-                                    <option value="laki-laki">Laki-laki</option>
-                                    <option value="perempuan">Perempuan</option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
                                 </select>
                             </div>
                             
@@ -378,11 +394,122 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addUserModalLabel">Edit Keluarga</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="POST" action="/editkeluarga">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="modal_id" class="form-label">ID</label>
+                                <input type="text" class="form-control" id="modal_id" name="modal_id" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modal_nama" class="form-label">Nama Lengkap</label>
+                                <input type="text" class="form-control" id="modal_nama" name="modal_nama" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="modal_status" class="form-label">Status</label>
+                                <select class="form-select" id="modal_status" name="modal_status">
+                                    <option selected disabled>Pilih Status</option>
+                                    <option value="Kepala Keluarga">Kepala Keluarga</option>
+                                    <option value="Istri">Istri</option>
+                                    <option value="Anak">Anak</option>
+                                    <option value="Tanggungan">Tanggungan</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="modal_jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                                <select class="form-select" id="modal_jenis_kelamin" name="modal_jenis_kelamin">
+                                    <option selected>Jenis Kelamin</option>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="modal_tempat_lahir" class="form-label">Tempat Lahir</label>
+                                <input type="text" class="form-control" id="modal_tempat_lahir" name="modal_tempat_lahir" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="modal_tanggal_lahir" class="form-label">Tanggal Lahir</label>
+                                <input type="date" class="form-control" id="modal_tanggal_lahir" name="modal_tanggal_lahir" required>
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="modal_tanggal_baptis" class="form-label">Tanggal Baptis</label>
+                                <input type="date" class="form-control" id="modal_tanggal_baptis" name="modal_tanggal_baptis">
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="modal_tanggal_sidi" class="form-label">Tanggal Sidi</label>
+                                <input type="date" class="form-control" id="modal_tanggal_sidi" name="modal_tanggal_sidi">
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="modal_pekerjaan" class="form-label">Pekerjaan</label>
+                                <input type="text" class="form-control" id="modal_pekerjaan" name="modal_pekerjaan">
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="modal_pendidikan" class="form-label">Pendidikan</label>
+                                <select class="form-select" id="modal_pendidikan" name="modal_pendidikan">
+                                    <option selected disabled>Pendidikan</option>
+                                    <option value="S3">S3</option>
+                                    <option value="S2">S2</option>
+                                    <option value="S1">S1</option>
+                                    <option value="SMA">SMA</option>
+                                    <option value="SMP">SMP</option>
+                                    <option value="SD">SD</option>
+                                    <option value="PAUD">PAUD</option>
+                                    <option value="Tidak Bersekolah">Tidak Bersekolah</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <!-- Bootstrap 5 JS and Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function modal(button){
+        const id = button.getAttribute("id");
+        const nama = button.getAttribute("nama")
+        const status = button.getAttribute("status")
+        const jenis_kelamin = button.getAttribute("jenis_kelamin")
+        const tempat_lahir = button.getAttribute("tempat_lahir")
+        const tanggal_lahir = button.getAttribute("tanggal_lahir")
+        const tanggal_baptis = button.getAttribute("tanggal_baptis")
+        const tanggal_sidi = button.getAttribute("tanggal_sidi")
+        const pekerjaan = button.getAttribute("pekerjaan")
+        const pendidikan = button.getAttribute("pendidikan")
+        document.getElementById("modal_id").value = id
+        document.getElementById("modal_nama").value = nama
+        document.getElementById("modal_status").value = status
+        document.getElementById("modal_jenis_kelamin").value = jenis_kelamin
+        document.getElementById("modal_tempat_lahir").value = tempat_lahir
+        document.getElementById("modal_tanggal_lahir").value = tanggal_lahir
+        document.getElementById("modal_tanggal_baptis").value = tanggal_baptis
+        document.getElementById("modal_tanggal_sidi").value = tanggal_sidi
+        document.getElementById("modal_pekerjaan").value = pekerjaan
+        document.getElementById("modal_pendidikan").value = pendidikan
+    }
+</script>
 </body>
 </html>

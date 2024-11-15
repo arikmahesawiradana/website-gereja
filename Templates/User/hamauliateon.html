@@ -126,66 +126,75 @@
                     <div class="col-md-8">
                         <!-- Form Fields -->
                         <div class="mb-3">
-                            <label for="nama" class="form-label">Nama/Keluarga</label>
-                            <input type="text" class="form-control" id="nama" name="nama" required>
+                            <label for="nama_keluarga" class="form-label">Nama Keluarga</label>
+                            <input type="text" class="form-control" id="nama_keluarga" name="nama_keluarga" value="{{ nama }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nama" class="form-label">Nama</label>
+                            <select id="nama" name="nama" class="form-select" required>
+                                <option selected disabled>Pilih Nama...</option>
+                                {% for ke in keluarga %}
+                                <option value="{{ ke[2] }}">{{ ke[2] }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                         <!-- Pos Hamauliateon Fields -->
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label>Huria</label>
-                                <input type="number" class="form-control" name="huria" value="0" required>
+                                <input type="number" class="form-control" name="huria" placeholder="Rp">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Pembangunan</label>
-                                <input type="number" class="form-control" name="pembangunan" value="0" required>
+                                <input type="number" class="form-control" name="pembangunan" placeholder="Rp">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Diakonia</label>
-                                <input type="number" class="form-control" name="diakonia" value="0" required>
+                                <input type="number" class="form-control" name="diakonia" placeholder="Rp">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Pendeta</label>
-                                <input type="number" class="form-control" name="pendeta" value="0" required>
+                                <input type="number" class="form-control" name="pendeta" placeholder="Rp">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Sintua</label>
-                                <input type="number" class="form-control" name="sintua" value="0" required>
+                                <input type="number" class="form-control" name="sintua" placeholder="Rp">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Parhalado</label>
-                                <input type="number" class="form-control" name="parhalado" value="0" required>
+                                <input type="number" class="form-control" name="parhalado" placeholder="Rp">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Ama</label>
-                                <input type="number" class="form-control" name="ama" value="0" required>
+                                <input type="number" class="form-control" name="ama" placeholder="Rp">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Ina</label>
-                                <input type="number" class="form-control" name="ina" value="0" required>
+                                <input type="number" class="form-control" name="ina" placeholder="Rp">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>NHKBP</label>
-                                <input type="number" class="form-control" name="nhkbp" value="0" required>
+                                <input type="number" class="form-control" name="nhkbp" placeholder="Rp">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Remaja</label>
-                                <input type="number" class="form-control" name="remaja" value="0" required>
+                                <input type="number" class="form-control" name="remaja" placeholder="Rp">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Sekolah Minggu</label>
-                                <input type="number" class="form-control" name="sekolah_minggu" value="0" required>
+                                <input type="number" class="form-control" name="sekolah_minggu" placeholder="Rp">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Pemusik</label>
-                                <input type="number" class="form-control" name="pemusik" value="0" required>
+                                <input type="number" class="form-control" name="pemusik" placeholder="Rp">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Multimedia</label>
-                                <input type="number" class="form-control" name="multimedia" value="0" required>
+                                <input type="number" class="form-control" name="multimedia" placeholder="Rp">
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Song Leader</label>
-                                <input type="number" class="form-control" name="song_leader" value="0" required>
+                                <input type="number" class="form-control" name="song_leader" placeholder="Rp">
                             </div>
                         </div>
                     </div>

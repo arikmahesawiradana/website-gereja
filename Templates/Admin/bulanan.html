@@ -183,7 +183,7 @@
                 <h2 class="header-title mb-4">Pembayaran Bulanan</h2>
                 <div class="table-container">
                     <div class="d-flex justify-content-between mb-3">
-                        <button class="btn btn-primary btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addUserModal">Tambah Data</button>
+                        <button class="btn btn-primary btn-primary-custom" data-bs-toggle="modal" data-bs-target="#offeringModal">Tambah Data</button>
                         <input type="text" class="search-bar" id="searchInput" placeholder="Cari Bulanan...">
                         <script>
                             const searchInput = document.getElementById("searchInput");
@@ -242,8 +242,119 @@
     </div>
 </div>
 
+<div class="modal fade" id="offeringModal" tabindex="-1" aria-labelledby="offeringModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="offeringModalLabel">Tambah Data Persembahan Bulanan Keluarga</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="/dashboard/bulanann/add" method="post" enctype="multipart/form-data">
+            <div class="mb-3 p-3 border border-2 rounded text-center" style="border-style: dashed;">
+                <input type="file" name="bukti" class="form-control-file" accept=".jpeg, .jpg, .png" style="display: none;" id="uploadBukti">
+                <label for="uploadBukti" id="uploadLabel" style="cursor: pointer;">
+                    <p>Pindahkan atau <a href="#">Upload Bukti bulanan</a></p>
+                    <p><small>.jpeg, .jpg, .png</small></p>
+                </label>
+            </div>
+            <div class="mb-3">
+              <label for="nama" class="form-label">Nama Keluarga</label>
+              <input type="text" class="form-control" id="nama" name="nama" required>
+            </div>
+            <div class="mb-3">
+              <label for="nominal" class="form-label">Nominal Persembahan</label>
+              <input type="number" class="form-control" id="nominal" name="nominal">
+            </div>
+            <div class="mb-3">
+              <label for="status" class="form-label">Status</label>
+              <select class="form-select" id="status" name="status">
+                <option selected>Pilih Status</option>
+                <option value="verified">Diterima</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
+            <div class="mb-3">
+                <label for="bulan" class="form-label">Persembahan Bulan</label>
+                <select id="bulan" name="bulan" class="form-select">
+                    <option selected disabled>Pilih Bulan...</option>
+                    <option value="Januari">Januari</option>
+                    <option value="Februari">Februari</option>
+                    <option value="Maret">Maret</option>
+                    <option value="April">April</option>
+                    <option value="Mei">Mei</option>
+                    <option value="Juni">Juni</option>
+                    <option value="Juli">Juli</option>
+                    <option value="Agustus">Agustus</option>
+                    <option value="September">September</option>
+                    <option value="Oktober">Oktober</option>
+                    <option value="November">November</option>
+                    <option value="Desember">Desember</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Simpan</button>
+            <!-- <div class="row mb-3">
+                <div class="col-md-4">
+                    <div class="upload-box p-3 text-center" style="border: 1px dashed #ccc; border-radius: 8px;">
+                        <input type="file" name="bukti" class="form-control-file" accept=".jpeg, .jpg, .png" style="display: none;" id="uploadBukti">
+                        <label for="uploadBukti" id="uploadLabel" style="cursor: pointer;">
+                            <p>Pindahkan atau <a href="#">Upload Bukti bulanan</a></p>
+                            <p><small>.jpeg, .jpg, .png</small></p>
+                        </label>
+                    </div>
+                </div> 
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <label for="nama" class="form-label">Nama Keluarga</label>
+                        <input type="text" class="form-control" id="nama" name="nama" value="{{ nama }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nominal" class="form-label">Nominal Persembahan</label>
+                        <input type="number" class="form-control" id="nominal" name="nominal" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status">
+                          <option selected disabled>Pilih Status</option>
+                          <option value="verified">Diterima</option>
+                          <option value="pending">Pending</option>
+                        </select>
+                      </div>
+                    <div class="mb-3">
+                        <label for="bulan" class="form-label">Persembahan Bulan</label>
+                        <select id="bulan" name="bulan" class="form-select">
+                            <option selected disabled>Pilih Bulan...</option>
+                            <option value="Januari">Januari</option>
+                            <option value="Februari">Februari</option>
+                            <option value="Maret">Maret</option>
+                            <option value="April">April</option>
+                            <option value="Mei">Mei</option>
+                            <option value="Juni">Juni</option>
+                            <option value="Juli">Juli</option>
+                            <option value="Agustus">Agustus</option>
+                            <option value="September">September</option>
+                            <option value="Oktober">Oktober</option>
+                            <option value="November">November</option>
+                            <option value="Desember">Desember</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Persembahan</button> -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <!-- Bootstrap 5 JS and Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.getElementById('uploadBukti').addEventListener('change', function() {
+        const fileName = this.files[0] ? this.files[0].name : "Pindahkan atau Upload Bukti bulanan";
+        document.getElementById('uploadLabel').innerHTML = `<p>${fileName}</p>`;
+    });
+</script>
 </body>
 </html>

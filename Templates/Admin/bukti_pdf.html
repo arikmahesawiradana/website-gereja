@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display PDF</title>
+    <title>Display Image</title>
 </head>
 <body>
-    <h1>PDF Viewer</h1>
-    <embed src="{{ url_for('serve_pdf', filename=filename) }}" width="600" height="500" type="application/pdf">
+    <h1>PDF Viewer {{ filename }}</h1>
+    <embed src="{{ url_for('static', filename=filename) }}" width="600" height="500" type="application/pdf">
 </body>
 </html>

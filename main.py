@@ -4,6 +4,7 @@ import json
 import os
 from datetime import datetime
 import locale
+from fpdf import FPDF
 
 locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
 
@@ -207,6 +208,19 @@ command = """ CREATE TABLE IF NOT EXISTS financial_data (
         )"""
 cursor.execute(command)
 
+tanggal = {
+    "user":"registrasi",
+    "baptis":"tanggal_baptis",
+    "sidi":"tanggal_sidi",
+    "anak_lahir":"tanggal_lahir",
+    "rpp":"tanggal_rpp",
+    "martumpol":"tanggal_martumpol",
+    "pernikahan":"tanggal_pernikahan",
+    "meninggal":"monding",
+    "kebaktian":"tanggal",
+    "pelayanan":"tanggal_tahbisan"
+}
+
 app = Flask(__name__, static_folder="Static", template_folder="Templates")
 UPLOAD_FOLDER = 'static/pdf'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -220,6 +234,7 @@ def index():
         warta_jemaat = data[-3:]
     else:
         warta_jemaat = data
+    warta_jemaat = list(reversed(warta_jemaat))
     command = "SELECT * FROM pelayanan"
     cursor.execute(command)
     myData = cursor.fetchall()
@@ -235,6 +250,7 @@ def index():
         berita = beritadata[-3:]
     else:
         berita = beritadata
+    berita = list(reversed(berita))
     if "status" in session:
         if session["status"] == "Admin":
             return render_template("User/index.html", warta_jemaat=warta_jemaat, pelayanan=pelayanan, berita=berita, logged="Admin")
@@ -1060,12 +1076,28 @@ def pembayaran():
         if session["status"] == "Admin":
             command = f"SELECT * FROM bulanan"
             cursor.execute(command)
+            users = cursor.fetchall()
+            nominal = 0
+            pending = 0
+            count = 0
+            # print(len(bulanan))
+            if len(users) > 0:
+                for i in users:
+                    if i[6] == "verified":
+                        nominal += int(i[3])
+                        count += 1
+                    else:
+                        pending += 1
+            str_nominal = locale.currency(nominal, grouping=True)[:-3]
             query = request.args.get("query")
             if query:
                 command += f" WHERE username LIKE '%{query}%' OR nama LIKE '%{query}%' OR bulan LIKE '%{query}%'"
             cursor.execute(command)
             users = cursor.fetchall()
-            return render_template("Admin/bulanan.html", users=users)
+            command = "SELECT * FROM user"
+            cursor.execute(command)
+            data = cursor.fetchall()
+            return render_template("Admin/bulanan.html", users=users, verified=count, pending=pending, total=str_nominal, data=data)
     else:
         return redirect(url_for("index"))
     
@@ -1212,12 +1244,26 @@ def hamauliateon_admin():
     if "status" in session:
         if session["status"] == "Admin":
             command = f"SELECT * FROM hamauliateon"
+            cursor.execute(command)
+            users = cursor.fetchall()
+            nominal = 0
+            pending = 0
+            count = 0
+            # print(len(bulanan))
+            if len(users) > 0:
+                for i in users:
+                    if i[19] == "verified":
+                        nominal += int(i[17])
+                        count += 1
+                    else:
+                        pending += 1
+            str_nominal = locale.currency(nominal, grouping=True)[:-3]
             query = request.args.get("query")
             if query:
                 command += f" WHERE username LIKE '%{query}%' OR nama LIKE '%{query}%'"
             cursor.execute(command)
             users = cursor.fetchall()
-            return render_template("Admin/hamauliateon.html", users=users)
+            return render_template("Admin/hamauliateon.html", users=users, verified=count, pending=pending, total=str_nominal)
     else:
         return redirect(url_for("index"))
 
@@ -1748,6 +1794,54 @@ def addwijk():
     else:
         return redirect(url_for("index"))
 
+def laporan():
+    if session and session["status"] == "Admin":
+        return render_template("Admin/laporan.html")
+    else:
+        return redirect(url_for("index"))
+
+def rekap_data():
+    pdf_name = ""
+    if request.method == 'POST':
+        from_date = request.form.get('from_date')
+        to_date = request.form.get('to_date')
+        data = request.form.get("data")
+        print(data)
+        from_date = datetime.strptime(from_date, "%Y-%m-%d")
+        to_date = datetime.strptime(to_date, "%Y-%m-%d")
+        if data not in tanggal:
+            return jsonify({"error": "Jenis data tidak valid"}), 400
+        table_column = tanggal[data]  # Kolom tanggal yang sesuai
+        query = f"""
+                SELECT *
+                FROM {data}
+                WHERE DATE({table_column}) BETWEEN ? AND ?
+            """
+        cursor.execute(query, (from_date.strftime('%Y-%m-%d'), to_date.strftime('%Y-%m-%d')))
+        results = cursor.fetchall()
+        column_names = [description[0] for description in cursor.description]
+        folder_path = "Static/laporan/"
+        nama_file = f"report_{data}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+        pdf_file_path = os.path.join(folder_path, nama_file)
+        pdf = FPDF(orientation="L")
+        pdf.set_auto_page_break(auto=True, margin=15)
+        pdf.add_page()
+        pdf.set_font("Arial", size=12)
+        pdf.set_font("Arial", style='B', size=12)
+        for column in column_names:
+            pdf.cell(40, 10, column, border=1)
+        pdf.ln()
+        pdf.set_font("Arial", size=12)
+        for row in results:
+            for item in row:
+                pdf.cell(40, 10, str(item), border=1)
+            pdf.ln()
+        pdf.output(pdf_file_path)
+        print(f"PDF saved at: {pdf_file_path}")
+        pdf_name = "laporan/" + nama_file
+    return render_template("Admin/bukti_pdf.html", filename=pdf_name)
+
+
 def url_rule_admin():
     app.add_url_rule("/", "index", index)
     app.add_url_rule("/warta_user", "warta_user", warta_user    )
@@ -1823,7 +1917,9 @@ def url_rule_admin():
     app.add_url_rule("/addwijk", "addwijk", addwijk, methods=["post", "get"])
     app.add_url_rule("/login/admin", "login_admin", login_admin)
     app.add_url_rule("/signin/admin", "signin_admin", signin_admin, methods=["post", "get"])
-    app.add_url_rule("//dashboard/bulanann/add", "addbulanan_admin", addbulanan_admin, methods=["post"])
+    app.add_url_rule("/dashboard/bulanann/add", "addbulanan_admin", addbulanan_admin, methods=["post"])
+    app.add_url_rule("/dashboard/laporan", "laporan", laporan)
+    app.add_url_rule("/dashboard/laporan/lihat", "lihat laporan", rekap_data, methods=["post", "get"])
 
 #ini untuk user
 def profile():

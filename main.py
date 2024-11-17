@@ -4,7 +4,8 @@ import json
 import os
 from datetime import datetime
 import locale
-from fpdf import FPDF
+from openpyxl import Workbook
+import pandas as pd
 
 locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
 
@@ -1801,7 +1802,7 @@ def laporan():
         return redirect(url_for("index"))
 
 def rekap_data():
-    pdf_name = ""
+    html_table = "<p> File tidak ditemukan </p>"
     if request.method == 'POST':
         from_date = request.form.get('from_date')
         to_date = request.form.get('to_date')
@@ -1821,26 +1822,23 @@ def rekap_data():
         results = cursor.fetchall()
         column_names = [description[0] for description in cursor.description]
         folder_path = "Static/laporan/"
-        nama_file = f"report_{data}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
-        pdf_file_path = os.path.join(folder_path, nama_file)
-        pdf = FPDF(orientation="L")
-        pdf.set_auto_page_break(auto=True, margin=15)
-        pdf.add_page()
-        pdf.set_font("Arial", size=12)
-        pdf.set_font("Arial", style='B', size=12)
-        for column in column_names:
-            pdf.cell(40, 10, column, border=1)
-        pdf.ln()
-        pdf.set_font("Arial", size=12)
+        nama_file = f"report_{data}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+        excel_file_path = os.path.join(folder_path, nama_file)
+        workbook = Workbook()
+        sheet = workbook.active
+        sheet.title = "Report Data"
+        sheet.append(column_names)
         for row in results:
-            for item in row:
-                pdf.cell(40, 10, str(item), border=1)
-            pdf.ln()
-        pdf.output(pdf_file_path)
-        print(f"PDF saved at: {pdf_file_path}")
-        pdf_name = "laporan/" + nama_file
-    return render_template("Admin/bukti_pdf.html", filename=pdf_name)
+            sheet.append(row)
+        workbook.save(excel_file_path)
+        excel_name = "Static/laporan/" + nama_file
+        df = pd.read_excel(excel_name)
+        html_table = df.to_html(classes='table table-striped', index=False)
+    return render_template("Admin/bukti_pdf.html", html_table=html_table, path=excel_name)
 
+def download_rekap():
+    path = request.args.get("path")
+    return send_file(path, as_attachment=True)
 
 def url_rule_admin():
     app.add_url_rule("/", "index", index)
@@ -1920,6 +1918,7 @@ def url_rule_admin():
     app.add_url_rule("/dashboard/bulanann/add", "addbulanan_admin", addbulanan_admin, methods=["post"])
     app.add_url_rule("/dashboard/laporan", "laporan", laporan)
     app.add_url_rule("/dashboard/laporan/lihat", "lihat laporan", rekap_data, methods=["post", "get"])
+    app.add_url_rule("/dashboard/laporan/download", "laporan_download", download_rekap)
 
 #ini untuk user
 def profile():

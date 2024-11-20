@@ -228,8 +228,12 @@
                   </div>                  
                 <div class="table-container" style="margin-top: 20px;">
                     <div class="d-flex justify-content-between mb-3">
-                        <a href="/dashboard/warta_keuangan/add" class="btn btn-primary btn-primary-custom">Tambah Data</a>
-                        <input type="text" class="search-bar" id="searchInput" placeholder="Cari Warta...">
+                        <div class="d-flex justify-content-between mb-3">
+                            <button class="btn btn-primary btn-primary-custom" data-bs-toggle="modal" data-bs-target="#pemasukan" style="margin-right: 20px;">Tambah Data Pemasukan</button>
+                            <button class="btn btn-primary btn-primary-custom" data-bs-toggle="modal" data-bs-target="#pengeluaran">Tambah Data Pengeluaran</button>
+                        </div>                        
+                        <!-- <a href="/dashboard/warta_keuangan/add" class="btn btn-primary btn-primary-custom">Tambah Data</a> -->
+                        <input type="text" class="search-bar" id="searchInput" id="Cari Warta...">
                         <script>
                             const searchInput = document.getElementById("searchInput");
                             searchInput.addEventListener("keypress", function(event) {
@@ -246,7 +250,7 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>Nama Minggu</th>
+                                <th>Keterangan</th>
                                 <th>Pemasukan</th>
                                 <th>Pengeluaran</th>
                                 <th>Aksi</th>
@@ -256,25 +260,207 @@
                             <!-- Sample rows to replicate the example -->
                             {% if users %}
                                 {% for user in users %}
-                                <tr>
-                                    <td>{{ user[1] }}</td>
-                                    <td>{{ user[19] }}</td>
-                                    <td>{{ user[20] }}</td>
-                                    <td class="text-center"> 
-                                        <!-- <a href="/lihat?id={{ user[0] }}&page=sidi"><button class="btn btn-action">Lihat</button></a> -->
-                                        <a href="/dashboard/warta_keuangan/edit?id={{ user[0] }}"><button class="btn btn-action">Lihat</button></a>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td>{{ user[2] }}</td>
+                                        <td>{{ user[4] }}</td>
+                                        <td>{{ user[5] }}</td>
+                                        <td class="text-center">
+                                            {% if user[2] == "Hamauliateon" %}
+                                            <a href="/lihat?id={{ user[1] }}&page=hamauliateon" target="_blank"><button class="btn btn-action">Detail</button></a>
+                                                <!-- <button class="btn btn-action" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#hamauliateon" 
+                                                        {% for key, value in hamauliateon|dictsort %}
+                                                            {{ key }}="{{ value }}"
+                                                        {% endfor %}
+                                                        onclick="hamauliateon(this)">
+                                                    Edit Data
+                                                </button> -->
+                                            {% elif user[2] == "Bulanan" %}
+                                            <a href="/lihat?id={{ user[1] }}&page=bulanan" target="_blank"><button class="btn btn-action">Detail</button></a>
+                                                <!-- <button class="btn btn-action" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#editUserModal" 
+                                                        {% for key, value in bulanan|dictsort %}
+                                                            {{ key }}="{{ value }}"
+                                                        {% endfor %}
+                                                        onclick="bulanan(this)">
+                                                    Edit Data
+                                                </button> -->
+                                            {% else %}
+                                                {% if user[5] == 0 %}
+                                                <a href="/lihat?id={{ user[1] }}&page=pemasukan" target="_blank"><button class="btn btn-action">Detail</button></a>
+                                                <!-- <button class="btn btn-action" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#editUserModal"
+                                                        {% for key, value in user|dictsort %}
+                                                            {{ key }}="{{ value }}"
+                                                        {% endfor %}
+                                                        onclick="modal(this)">
+                                                    Edit Data
+                                                </button> -->
+                                                {% else %}
+                                                <a href="/lihat?id={{ user[1] }}&page=pengeluaran" target="_blank"><button class="btn btn-action">Detail</button></a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
                                 {% endfor %}
                             {% else %}
-                            <tr>
-                                <td colspan="3" class="text-center">Tidak ada data user</td>
-                            </tr>
+                                <tr>
+                                    <td colspan="4" class="text-center">No users available</td>
+                                </tr>
                             {% endif %}
+
                         </tbody>
                     </table>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="hamauliateon" tabindex="-1" aria-labelledby="hamauliateonModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="hamauliateonModalLabel">Data Hamauliateon/Persembahan Ucapan Syukur</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Form -->
+                <form id="hamauliateon">
+                    <!-- Nama/Keluarga -->
+                    <div class="mb-3">
+                        <label for="keluarga" class="form-label">Nama/Keluarga</label>
+                        <input type="text" class="form-control" id="nama_keluarga">
+                    </div>
+
+                    <!-- Nama -->
+                    <div class="mb-3">
+                        <label for="nama" class="form-label">Nama</label>
+                        <input type="text" class="form-control" id="nama">
+                    </div>
+
+                    <!-- Total Persembahan -->
+                    <div class="mb-3">
+                        <label for="total" class="form-label">Total Persembahan</label>
+                        <input type="text" class="form-control" id="total">
+                    </div>
+
+                    <!-- Bukti Pembayaran -->
+                    <div class="mb-3">
+                        <label for="bukti" class="form-label">Bukti Pembayaran</label>
+                        <input type="file" class="form-control" id="bukti">
+                    </div>
+
+                    <!-- Pos Hamauliateon -->
+                    <div class="fw-bold mb-3">Pos Hamauliateon</div>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="huria">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="pembangunan">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="diakonia">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="pendeta">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="sintua">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="parhalado">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="ama">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="ina">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="nhkbp">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="remaja">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="sekolah_minggu">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="pemusik">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="multimedia">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" id="song_leader">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary">Simpan</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="bulanan" tabindex="-1" aria-labelledby="persembahanModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="persembahanModalLabel">Data Persembahan Bulanan Keluarga</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row g-3">
+                        <!-- Nama Keluarga -->
+                        <div class="col-md-6">
+                            <label for="namaKeluarga" class="form-label">Nama Keluarga</label>
+                            <input type="text" class="form-control" id="nama">
+                        </div>
+
+                        <!-- Nominal Persembahan -->
+                        <div class="col-md-6">
+                            <label for="nominalPersembahan" class="form-label">Nominal Persembahan</label>
+                            <input type="text" class="form-control" id="nominal">
+                        </div>
+
+                        <!-- Status -->
+                        <div class="col-md-6">
+                            <label for="status" class="form-label">Status</label>
+                            <input type="text" class="form-control" id="status">
+                        </div>
+
+                        <!-- Bulan -->
+                        <div class="col-md-6">
+                            <label for="bulan" class="form-label">Bulan</label>
+                            <input type="text" class="form-control" id="bulan">
+                        </div>
+
+                        <!-- Bukti Pembayaran -->
+                        <div class="col-md-6">
+                            <label for="buktiPembayaran" class="form-label">Bukti Pembayaran</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="bukti" readonly>
+                                <button class="btn btn-outline-secondary" type="button">
+                                    <i class="bi bi-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary">Simpan</button>
+            </div> -->
         </div>
     </div>
 </div>

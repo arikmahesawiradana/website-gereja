@@ -1,3 +1,9 @@
+#ngerombbak verify dan pengeluaran agar semua duit masuk ke json finansial, pemasukan, json
+#verify masuk ke data pemasukan juga
+#lihat itu masuk ke modal bukan page
+#laporan sheet di keuangan masukin ke laporan
+#pemasukan dan pengeluaran juga masuk ke finansial data
+
 from flask import *
 import sqlite3
 import json
@@ -157,7 +163,8 @@ command = """CREATE TABLE IF NOT EXISTS bulanan(
     nominal INTEGER,
     bulan TEXT,
     bukti TEXT,
-    status TEXT
+    status TEXT,
+    tanggal TEXT
     )"""
 cursor.execute(command)
 command = """CREATE TABLE IF NOT EXISTS hamauliateon(
@@ -181,34 +188,35 @@ command = """CREATE TABLE IF NOT EXISTS hamauliateon(
     total INTEGER,
     bukti TEXT,
     status TEXT,
-    nama_keluarga TEXT
+    nama_keluarga TEXT,
+    tanggal TEXT
     )"""
 cursor.execute(command)
-command = """ CREATE TABLE IF NOT EXISTS financial_data (
+command = """ CREATE TABLE IF NOT EXISTS pemasukan (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nama_minggu TEXT,
+            keterangan TEXT,
             tanggal TEXT,
-            pemasukan_pagi INTEGER,
-            pemasukan_sore INTEGER,
-            pemasukan_sekolah INTEGER,
-            pemasukan_kasual INTEGER,
-            pemasukan_partangiangan INTEGER,
-            pemasukan_kategori INTEGER,
-            transitori INTEGER,
-            pemasukan_lainnya INTEGER,
-            konven_pendeta INTEGER,
-            transport INTEGER,
-            rumah_tangga INTEGER,
-            diakonia INTEGER,
-            koinonia INTEGER,
-            marturia INTEGER,
-            biaya_operasional INTEGER,
-            pengeluaran_lainnya INTEGER,
-            total_pemasukan INTEGER,
-            total_pengeluaran INTEGER
+            jenis_pemasukan TEXT,
+            nominal INTEGER
         )"""
 cursor.execute(command)
-
+command = """ CREATE TABLE IF NOT EXISTS pengeluaran (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            keterangan TEXT,
+            tanggal TEXT,
+            jenis_pengeluaran TEXT,
+            nominal INTEGER
+        )"""
+cursor.execute(command)
+command = """ CREATE TABLE IF NOT EXISTS finansial(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_pembayaran INTEGER,
+            keterangan TEXT,
+            tanggal TEXT,
+            pemasukan INTEGER,
+            pengeluaran INTEGER
+        )"""
+cursor.execute(command)
 tanggal = {
     "user":"registrasi",
     "baptis":"tanggal_baptis",
@@ -1111,21 +1119,23 @@ def verify_pembayaran():
         command = f"SELECT * FROM bulanan WHERE id={id}"
         cursor.execute(command)
         user = cursor.fetchone()
+        with open("data/finansial.json", "r") as file:
+            finansial = json.load(file)
+        finansial["bulanan"] += user[3]
+        with open("data/finansial.json", "w") as file:
+            json.dump(finansial, file)
+        id_pembayaran = user[0]
         nama = "Bulanan"
-        tanggal = datetime.now().strftime("%Y-%m-%d")
+        tanggal = user[7]
         total_pemasukan = user[3]
-        data = (nama, tanggal, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0, total_pemasukan, 0)
+        data = (id_pembayaran, nama, tanggal, total_pemasukan, 0)
         command = """
-                INSERT INTO financial_data (
-                nama_minggu, tanggal, pemasukan_pagi, pemasukan_sore,
-                pemasukan_sekolah, pemasukan_kasual, pemasukan_partangiangan,
-                pemasukan_kategori, transitori, pemasukan_lainnya,
-                konven_pendeta, transport, rumah_tangga, diakonia, koinonia,
-                marturia, biaya_operasional, pengeluaran_lainnya, total_pemasukan, total_pengeluaran
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO financial (id_pembayaran, keterangan, tanggal, pemasukan, pengeluaran
+                ) VALUES (?, ?, ?, ?, ?)
             """
         cursor.execute(command, data)
         db.commit()
+        
         return redirect(url_for("pembayaran"))
     else:
         return redirect(url_for("index"))
@@ -1138,7 +1148,7 @@ def more_info():
         cursor.execute(command)
         user = cursor.fetchone()
         print(user)
-        return render_template("more_info.html", user=user, page=page)
+        return render_template("Admin/lihat_keuangan.html", user=user, page=page)
     else:
         return redirect(url_for("index"))
 
@@ -1173,28 +1183,32 @@ def addbulanan_admin():
         persembahan_bulan = request.form.get('bulan')
         status = request.form.get("status")
         bukti_persembahan = request.files.get('bukti')
+        tanggal = datetime.today()
         file_path = None
         print(bukti_persembahan)
         if bukti_persembahan:
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], bukti_persembahan.filename)
             bukti_persembahan.save(file_path)
-        
-        command = f"INSERT INTO bulanan (username, nama, nominal, bulan, bukti, status) VALUES ('{username}', '{nama_keluarga}', {nominal_persembahan}, '{persembahan_bulan}', '{file_path}', '{status}') "
+        command = f"INSERT INTO bulanan (username, nama, nominal, bulan, bukti, status, tanggal) VALUES ('{username}', '{nama_keluarga}', {nominal_persembahan}, '{persembahan_bulan}', '{file_path}', '{status}', '{tanggal}') "
         cursor.execute(command)
         db.commit()
+        with open("data/finansial.json", "r") as file:
+            finansial = json.load(file)
+        finansial["bulanan"] += nominal_persembahan
+        with open("data/finansial.json", "w") as file:
+            json.dump(finansial, file)
         if status == "verified":
-            nama = "Bulanan bulan " + persembahan_bulan
-            tanggal = datetime.now().strftime("%Y-%m-%d")
+            command = "SELECT * FROM bulanan"
+            cursor.execute(command)
+            bulanan = cursor.fetchall()
+            id_pembayaran = len(bulanan) + 1
+            nama = "Bulanan"
+            tanggal = tanggal
             total_pemasukan = nominal_persembahan
-            data = (nama, tanggal, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0, total_pemasukan, 0)
+            data = (id_pembayaran, nama, tanggal, total_pemasukan, 0)
             command = """
-                    INSERT INTO financial_data (
-                    nama_minggu, tanggal, pemasukan_pagi, pemasukan_sore,
-                    pemasukan_sekolah, pemasukan_kasual, pemasukan_partangiangan,
-                    pemasukan_kategori, transitori, pemasukan_lainnya,
-                    konven_pendeta, transport, rumah_tangga, diakonia, koinonia,
-                    marturia, biaya_operasional, pengeluaran_lainnya, total_pemasukan, total_pengeluaran
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO financial (id_pembayaran, keterangan, tanggal, pemasukan, pengeluaran
+                    ) VALUES (?, ?, ?, ?, ?)
                 """
             cursor.execute(command, data)
             db.commit()
@@ -1212,18 +1226,32 @@ def verify_hamauliateon():
         command = f"SELECT * FROM hamauliateon WHERE id={id}"
         cursor.execute(command)
         user = cursor.fetchone()
+        with open("data/finansial.json", "r") as file:
+            finansial = json.load(file)
+        finansial["huria"] += user[3]
+        finansial["pembangunan"] += user[4]
+        finansial["diakonia"] += user[5]
+        finansial["pendeta"] += user[6]
+        finansial["sintua"] += user[7]
+        finansial["perhalado"] += user[8]
+        finansial["ama"] += user[9]
+        finansial["ina"] += user[10]
+        finansial["nhkbp"] += user[11]
+        finansial["remaja"] += user[12]
+        finansial["sekolah_minggu"] += user[13]
+        finansial["pemusik"] += user[14]
+        finansial["multimedia"] += user[15]
+        finansial["song_leader"] += user[16]
+        with open("data/finansial.json", "w") as file:
+            json.dump(finansial, file)
+        id_pembayaran = user[0]
         nama = "Hamauliateon"
-        tanggal = datetime.now().strftime("%Y-%m-%d")
+        tanggal = user[21]
         total_pemasukan = user[17]
-        data = (nama, tanggal, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0, total_pemasukan, 0)
+        data = (id_pembayaran, nama, tanggal, total_pemasukan, 0)
         command = """
-                INSERT INTO financial_data (
-                nama_minggu, tanggal, pemasukan_pagi, pemasukan_sore,
-                pemasukan_sekolah, pemasukan_kasual, pemasukan_partangiangan,
-                pemasukan_kategori, transitori, pemasukan_lainnya,
-                konven_pendeta, transport, rumah_tangga, diakonia, koinonia,
-                marturia, biaya_operasional, pengeluaran_lainnya, total_pemasukan, total_pengeluaran
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO financial (id_pembayaran, keterangan, tanggal, pemasukan, pengeluaran
+                ) VALUES (?, ?, ?, ?, ?)
             """
         cursor.execute(command, data)
         db.commit()
@@ -1267,24 +1295,17 @@ def hamauliateon_admin():
             return render_template("Admin/hamauliateon.html", users=users, verified=count, pending=pending, total=str_nominal)
     else:
         return redirect(url_for("index"))
-
-def finansial_data():
-    if "status" in session:
-        if session["status"] == "Admin":
-            return render_template("Admin/warta_keuangan.html")
-    else:
-        return redirect(url_for("index"))
     
 def finansial_page():
     if session and session["status"] == "Admin":
-        command = f"SELECT * FROM financial_data"
+        command = f"SELECT * FROM financial"
         cursor.execute(command)
         users = cursor.fetchall()
         pemasukan = 0
         pengeluaran = 0
         for i in users:
-            pemasukan += int(i[19])
-            pengeluaran += int(i[20])
+            pemasukan += int(i[4])
+            pengeluaran += int(i[5])
         total = pemasukan - pengeluaran
         str_pemasukan = locale.currency(pemasukan, grouping=True)[:-3]
         str_pengeluaran = locale.currency(pengeluaran, grouping=True)[:-3]
@@ -1294,114 +1315,172 @@ def finansial_page():
             command += f" WHERE nama_minggu LIKE '%{query}%'"
         cursor.execute(command)
         users = cursor.fetchall()
-        return render_template("Admin/warta_keuangan_page.html", users=users, pemasukan=str_pemasukan, pengeluaran=str_pengeluaran, total=str_total)
-    else:
-        return redirect(url_for("index"))
-
-def finansial_edit():
-    if session and session["status"] == "Admin":
-        req = request.args.get("id")
-        command = f"SELECT * FROM financial_data WHERE id={req}"
+        command = f"SELECT * FROM bulanan"
         cursor.execute(command)
-        user = cursor.fetchone()
-        return render_template("Admin/warta_keuangan_edit.html", user=user)
+        bulanan = cursor.fetchall()
+        command = f"SELECT * FROM hamauliateon"
+        cursor.execute(command)
+        hamauliateon = cursor.fetchall()
+        return render_template("Admin/warta_keuangan_page.html", users=users, bulanan=bulanan, hamauliateon=hamauliateon, pemasukan=str_pemasukan, pengeluaran=str_pengeluaran, total=str_total)
     else:
         return redirect(url_for("index"))
 
-def submit_financial_data():
-    if "status" in session:
-        if session["status"] == "Admin":
-            nama = request.form['namaMinggu']
-            tanggal = request.form['tanggal']
-            aa = request.form.get('pemasukanPagi', 0)
-            ab = request.form.get('pemasukanSore', 0)
-            ac = request.form.get('pemasukanSekolah', 0)
-            ad = request.form.get('pemasukanKasual', 0)
-            ae = request.form.get('pemasukanPartangiangan', 0)
-            af = request.form.get('pemasukanKategori', 0)
-            ag = request.form.get('transitori', 0)
-            ai = request.form.get('pemasukanLainnya', 0)
-            ba = request.form.get('konvenPendeta', 0)
-            bb = request.form.get('transport', 0)
-            bc = request.form.get('rumahTangga', 0)
-            bd = request.form.get('diakonia', 0)
-            be = request.form.get('koinonia', 0)
-            bf = request.form.get('marturia', 0)
-            bg = request.form.get('biayaOperasional', 0)
-            bh = request.form.get('pengeluaranLainnya', 0)
-            total_pemasukan = int(aa) + int(ab) + int(ac) + int(ad) + int(ae) + int(af) + int(ag) + int(ai)
-            total_pengeluaran = int(ba) + int(bb) + int(bc) + int(bd) + int(be) + int(bf) + int(bg) + int(bh)
-            data = (nama, tanggal, aa, ab, ac, ad,ae,af,ag,ai,ba,bb,bc,bd,be,bf,bg,bh, total_pemasukan, total_pengeluaran)
-            command = """
-                INSERT INTO financial_data (
-                nama_minggu, tanggal, pemasukan_pagi, pemasukan_sore,
-                pemasukan_sekolah, pemasukan_kasual, pemasukan_partangiangan,
-                pemasukan_kategori, transitori, pemasukan_lainnya,
-                konven_pendeta, transport, rumah_tangga, diakonia, koinonia,
-                marturia, biaya_operasional, pengeluaran_lainnya, total_pemasukan, total_pengeluaran
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """
-            cursor.execute(command, data)
-            db.commit()
-            return(redirect(url_for("warta_keuangan")))
+# def finansial_edit():
+#     if session and session["status"] == "Admin":
+#         req = request.args.get("id")
+#         command = f"SELECT * FROM financial_data WHERE id={req}"
+#         cursor.execute(command)
+#         user = cursor.fetchone()
+#         return render_template("Admin/warta_keuangan_edit.html", user=user)
+#     else:
+#         return redirect(url_for("index"))
+def submit_pemasukan():
+    if session and session["status"] == "Admin":
+        keterangan = request.form.get("keterangan")
+        tanggal = request.form.get("tanggal")
+        jenis_pemasukan = request.form.get("jenis_pemasukan")
+        nominal = request.form.get("nominal")
+        data = (keterangan, tanggal, jenis_pemasukan, nominal)
+        command = """
+            INSERT INTO pemasukan (
+            keterangan, tanggal, jenis_pemasukan, nominal
+            ) VALUES (?,?,?,?)
+        """
+        cursor.execute(command, data)
+        db.commit()
+        command = "SELECT * FROM pemasukan"
+        cursor.execute(command)
+        users = cursor.fetchall()
+        id = len(users) + 1
+        data = (id, keterangan, tanggal, nominal, 0)
+        command = "INSERT INTO finansial(id_pembayaran, keterangan, tanggal, pemasukan, pengeluaran) VALUES (?,?,?,?,?)"
+        cursor.execute(command, data)
+        db.commit()
+        return redirect(url_for("warta_keuangan"))
     else:
         return redirect(url_for("index"))
 
-def edit_financial_data():
-    if "status" in session:
-        if session["status"] == "Admin":
-            id = request.form['id']
-            nama = request.form['namaMinggu']
-            tanggal = request.form['tanggal']
-            aa = request.form.get('pemasukanPagi', 0)
-            ab = request.form.get('pemasukanSore', 0)
-            ac = request.form.get('pemasukanSekolah', 0)
-            ad = request.form.get('pemasukanKasual', 0)
-            ae = request.form.get('pemasukanPartangiangan', 0)
-            af = request.form.get('pemasukanKategori', 0)
-            ag = request.form.get('transitori', 0)
-            ai = request.form.get('pemasukanLainnya', 0)
-            ba = request.form.get('konvenPendeta', 0)
-            bb = request.form.get('transport', 0)
-            bc = request.form.get('rumahTangga', 0)
-            bd = request.form.get('diakonia', 0)
-            be = request.form.get('koinonia', 0)
-            bf = request.form.get('marturia', 0)
-            bg = request.form.get('biayaOperasional', 0)
-            bh = request.form.get('pengeluaranLainnya', 0)
-            total_pemasukan = int(aa) + int(ab) + int(ac) + int(ad) + int(ae) + int(af) + int(ag) + int(ai)
-            total_pengeluaran = int(ba) + int(bb) + int(bc) + int(bd) + int(be) + int(bf) + int(bg) + int(bh)
-            data = (nama, tanggal, aa, ab, ac, ad,ae,af,ag,ai,ba,bb,bc,bd,be,bf,bg,bh, total_pemasukan, total_pengeluaran, id)
-            #make command UPDATE data finansial_data where id is id
-            command = f"""
-                        UPDATE financial_data
-                        SET nama_minggu = ?,
-                            tanggal = ?,
-                            pemasukan_pagi = ?,
-                            pemasukan_sore = ?,
-                            pemasukan_sekolah = ?,
-                            pemasukan_kasual = ?,
-                            pemasukan_partangiangan = ?,
-                            pemasukan_kategori = ?,
-                            transitori = ?,
-                            pemasukan_lainnya = ?,
-                            konven_pendeta = ?,
-                            transport = ?,
-                            rumah_tangga = ?,
-                            diakonia = ?,
-                            koinonia = ?,
-                            marturia = ?,
-                            biaya_operasional = ?,
-                            pengeluaran_lainnya = ?,
-                            total_pemasukan = ?,
-                            total_pengeluaran = ?
-                            WHERE id = ?
-                            """
-            cursor.execute(command, data)
-            db.commit()
-            return(redirect(url_for("warta_keuangan")))
+def submit_pengeluaran():
+    if session and session["status"] == "Admin":
+        keterangan = request.form.get("keterangan")
+        tanggal = request.form.get("tanggal")
+        jenis_pemasukan = request.form.get("jenis_pemasukan")
+        nominal = request.form.get("nominal")
+        data = (keterangan, tanggal, jenis_pemasukan, nominal)
+        command = """
+            INSERT INTO pemasukan (
+            keterangan, tanggal, jenis_pemasukan, nominal
+            ) VALUES (?,?,?,?)
+        """
+        cursor.execute(command, data)
+        db.commit()
+        command = "SELECT * FROM pemasukan"
+        cursor.execute(command)
+        users = cursor.fetchall()
+        id = len(users) + 1
+        data = (id, keterangan, tanggal, nominal, 0)
+        command = "INSERT INTO finansial(id_pembayaran, keterangan, tanggal, pemasukan, pengeluaran) VALUES (?,?,?,?,?)"
+        cursor.execute(command, data)
+        db.commit()
+        return redirect(url_for("warta_keuangan"))
     else:
         return redirect(url_for("index"))
+
+
+# def submit_financial_data():
+#     if "status" in session:
+#         if session["status"] == "Admin":
+#             nama = request.form['namaMinggu']
+#             tanggal = request.form['tanggal']
+#             aa = request.form.get('pemasukanPagi', 0)
+#             ab = request.form.get('pemasukanSore', 0)
+#             ac = request.form.get('pemasukanSekolah', 0)
+#             ad = request.form.get('pemasukanKasual', 0)
+#             ae = request.form.get('pemasukanPartangiangan', 0)
+#             af = request.form.get('pemasukanKategori', 0)
+#             ag = request.form.get('transitori', 0)
+#             ai = request.form.get('pemasukanLainnya', 0)
+#             ba = request.form.get('konvenPendeta', 0)
+#             bb = request.form.get('transport', 0)
+#             bc = request.form.get('rumahTangga', 0)
+#             bd = request.form.get('diakonia', 0)
+#             be = request.form.get('koinonia', 0)
+#             bf = request.form.get('marturia', 0)
+#             bg = request.form.get('biayaOperasional', 0)
+#             bh = request.form.get('pengeluaranLainnya', 0)
+#             total_pemasukan = int(aa) + int(ab) + int(ac) + int(ad) + int(ae) + int(af) + int(ag) + int(ai)
+#             total_pengeluaran = int(ba) + int(bb) + int(bc) + int(bd) + int(be) + int(bf) + int(bg) + int(bh)
+#             data = (nama, tanggal, aa, ab, ac, ad,ae,af,ag,ai,ba,bb,bc,bd,be,bf,bg,bh, total_pemasukan, total_pengeluaran)
+#             command = """
+#                 INSERT INTO financial_data (
+#                 nama_minggu, tanggal, pemasukan_pagi, pemasukan_sore,
+#                 pemasukan_sekolah, pemasukan_kasual, pemasukan_partangiangan,
+#                 pemasukan_kategori, transitori, pemasukan_lainnya,
+#                 konven_pendeta, transport, rumah_tangga, diakonia, koinonia,
+#                 marturia, biaya_operasional, pengeluaran_lainnya, total_pemasukan, total_pengeluaran
+#                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+#             """
+#             cursor.execute(command, data)
+#             db.commit()
+#             return(redirect(url_for("warta_keuangan")))
+#     else:
+#         return redirect(url_for("index"))
+
+# def edit_financial_data():
+#     if "status" in session:
+#         if session["status"] == "Admin":
+#             id = request.form['id']
+#             nama = request.form['namaMinggu']
+#             tanggal = request.form['tanggal']
+#             aa = request.form.get('pemasukanPagi', 0)
+#             ab = request.form.get('pemasukanSore', 0)
+#             ac = request.form.get('pemasukanSekolah', 0)
+#             ad = request.form.get('pemasukanKasual', 0)
+#             ae = request.form.get('pemasukanPartangiangan', 0)
+#             af = request.form.get('pemasukanKategori', 0)
+#             ag = request.form.get('transitori', 0)
+#             ai = request.form.get('pemasukanLainnya', 0)
+#             ba = request.form.get('konvenPendeta', 0)
+#             bb = request.form.get('transport', 0)
+#             bc = request.form.get('rumahTangga', 0)
+#             bd = request.form.get('diakonia', 0)
+#             be = request.form.get('koinonia', 0)
+#             bf = request.form.get('marturia', 0)
+#             bg = request.form.get('biayaOperasional', 0)
+#             bh = request.form.get('pengeluaranLainnya', 0)
+#             total_pemasukan = int(aa) + int(ab) + int(ac) + int(ad) + int(ae) + int(af) + int(ag) + int(ai)
+#             total_pengeluaran = int(ba) + int(bb) + int(bc) + int(bd) + int(be) + int(bf) + int(bg) + int(bh)
+#             data = (nama, tanggal, aa, ab, ac, ad,ae,af,ag,ai,ba,bb,bc,bd,be,bf,bg,bh, total_pemasukan, total_pengeluaran, id)
+#             #make command UPDATE data finansial_data where id is id
+#             command = f"""
+#                         UPDATE financial_data
+#                         SET nama_minggu = ?,
+#                             tanggal = ?,
+#                             pemasukan_pagi = ?,
+#                             pemasukan_sore = ?,
+#                             pemasukan_sekolah = ?,
+#                             pemasukan_kasual = ?,
+#                             pemasukan_partangiangan = ?,
+#                             pemasukan_kategori = ?,
+#                             transitori = ?,
+#                             pemasukan_lainnya = ?,
+#                             konven_pendeta = ?,
+#                             transport = ?,
+#                             rumah_tangga = ?,
+#                             diakonia = ?,
+#                             koinonia = ?,
+#                             marturia = ?,
+#                             biaya_operasional = ?,
+#                             pengeluaran_lainnya = ?,
+#                             total_pemasukan = ?,
+#                             total_pengeluaran = ?
+#                             WHERE id = ?
+#                             """
+#             cursor.execute(command, data)
+#             db.commit()
+#             return(redirect(url_for("warta_keuangan")))
+#     else:
+#         return redirect(url_for("index"))
 
 def editlahir():
     if "status" in session:
@@ -1896,10 +1975,12 @@ def url_rule_admin():
     app.add_url_rule("/deletehamauliateon", "deletehamauliateon", deletehamauliateon)
     app.add_url_rule("/dashboard/hamauliateon", "hamauliateon_admin", hamauliateon_admin)
     app.add_url_rule("/dashboard/warta_keuangan", "warta_keuangan", finansial_page)
-    app.add_url_rule("/dashboard/warta_keuangan/edit", "warta_keuangan_edit", finansial_edit)
-    app.add_url_rule("/dashboard/warta_keuangan/add", "warta_keuangan_add", finansial_data)
-    app.add_url_rule("/submit_financial_data", "submit_financial_data", submit_financial_data, methods=["post"])
-    app.add_url_rule("/edit_financial_data", "edit_financial_data", edit_financial_data, methods=["post"])
+    # app.add_url_rule("/dashboard/warta_keuangan/edit", "warta_keuangan_edit", finansial_edit)
+    # app.add_url_rule("/dashboard/warta_keuangan/add", "warta_keuangan_add", finansial_data)
+    # app.add_url_rule("/submit_financial_data", "submit_financial_data", submit_financial_data, methods=["post"])
+    # app.add_url_rule("/edit_financial_data", "edit_financial_data", edit_financial_data, methods=["post"])
+    app.add_url_rule("/submit_pemasukan", "submit_pemasukan", submit_pemasukan, methods=["post", "get"])
+    app.add_url_rule("/submit_pengeluaran", "submit_pengeluaran", submit_pengeluaran, methods=["post", "get"])
     app.add_url_rule("/editlahir", "editlahir", editlahir, methods=["post"])
     app.add_url_rule("/editbaptis", "editbaptis", editbaptis, methods=["post"])
     app.add_url_rule("/editmartumpol", "editmartumpol", editmartumpol, methods=["post"])
@@ -2062,11 +2143,12 @@ def addbulanan():
         nominal_persembahan = request.form.get('nominal')
         persembahan_bulan = request.form.get('bulan')
         bukti_persembahan = request.files.get('bukti')
+        tanggal = datetime.today()
         file_path = None
         if bukti_persembahan:
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], bukti_persembahan.filename)
             bukti_persembahan.save(file_path)
-        command = f"INSERT INTO bulanan (username, nama, nominal, bulan, bukti, status) VALUES ('{username}', '{nama_keluarga}', {nominal_persembahan}, '{persembahan_bulan}', '{file_path}', 'pending') "
+        command = f"INSERT INTO bulanan (username, nama, nominal, bulan, bukti, status, tanggal) VALUES ('{username}', '{nama_keluarga}', {nominal_persembahan}, '{persembahan_bulan}', '{file_path}', 'pending', '{tanggal}') "
         cursor.execute(command)
         db.commit()
         return redirect(url_for("bulanan_user"))
@@ -2114,6 +2196,7 @@ def addhamauliateon():
         pemusik = request.form.get("pemusik") or 0
         multimedia = request.form.get("multimedia") or 0
         song_leader = request.form.get("song_leader") or 0
+        tanggal = datetime.today()
         total = int(huria) + int(pembangunan) + int(diakonia) + int(pendeta) + int(sintua) + int(perhalado) + int(ama) + int(ina) + int(nhkbp) + int(remaja) + int(sekolah_minggu) + int(pemusik) + int(multimedia) + int(song_leader)
         status = "pending"
         bukti_persembahan = request.files.get('bukti')
@@ -2121,7 +2204,7 @@ def addhamauliateon():
         if bukti_persembahan:
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], bukti_persembahan.filename)
             bukti_persembahan.save(file_path)
-        command = f"INSERT INTO hamauliateon (username, nama, huria, pembangunan, diakonia, pendeta, sintua, perhalado, ama, ina, nhkbp, remaja, sekolah_minggu, pemusik, multimedia, song_leader, total, status, bukti, nama_keluarga) VALUES ('{username}', '{nama}', {huria}, {pembangunan}, {diakonia}, {pendeta}, {sintua}, {perhalado}, {ama}, {ina}, {nhkbp}, {remaja}, {sekolah_minggu}, {pemusik}, {multimedia}, {song_leader}, {total}, '{status}', '{file_path}', '{nama_keluarga}')"
+        command = f"INSERT INTO hamauliateon (username, nama, huria, pembangunan, diakonia, pendeta, sintua, perhalado, ama, ina, nhkbp, remaja, sekolah_minggu, pemusik, multimedia, song_leader, total, status, bukti, nama_keluarga, tanggal) VALUES ('{username}', '{nama}', {huria}, {pembangunan}, {diakonia}, {pendeta}, {sintua}, {perhalado}, {ama}, {ina}, {nhkbp}, {remaja}, {sekolah_minggu}, {pemusik}, {multimedia}, {song_leader}, {total}, '{status}', '{file_path}', '{nama_keluarga}', '{tanggal}')"
         cursor.execute(command)
         db.commit()
         return redirect(url_for("hamauliateon_user"))

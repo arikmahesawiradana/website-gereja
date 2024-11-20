@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamauliateon & Persembahan</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+          margin-top: 50px;
+        }
+        .form-container {
+          border: 2px dashed #dee2e6;
+          padding: 20px;
+          border-radius: 8px;
+          background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Hamauliateon -->
+    {% if page == "hamauliateon" %}
+    <section class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="fw-bold">Data Hamauliateon/Persembahan Ucapan Syukur</h5>
+            </div>
+            <div class="card-body">
+                <!-- Form -->
+                <form id="hamauliateon">
+                    <!-- Nama/Keluarga -->
+                    <div class="mb-3">
+                        <label for="keluarga" class="form-label">Nama/Keluarga</label>
+                        <input type="text" class="form-control" value="{{ user[20] }}" id="nama_keluarga">
+                    </div>
+
+                    <!-- Nama -->
+                    <div class="mb-3">
+                        <label for="nama" class="form-label">Nama</label>
+                        <input type="text" class="form-control" value="{{ user[2] }}" id="nama">
+                    </div>
+
+                    <!-- Total Persembahan -->
+                    <div class="mb-3">
+                        <label for="total" class="form-label">Total Persembahan</label>
+                        <input type="text" class="form-control" value="{{ user[17] }}" id="total">
+                    </div>
+
+                    <!-- Bukti Pembayaran -->
+                    <div class="mb-3">
+                        <label for="bukti" class="form-label">Bukti Pembayaran</label>
+                        <input type="file" class="form-control" value="{{ user[18] }}" id="bukti">
+                    </div>
+
+                    <!-- Pos Hamauliateon -->
+                    <div class="fw-bold mb-3">Pos Hamauliateon</div>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[3] }}" id="huria">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[4] }}" id="pembangunan">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[5] }}" id="diakonia">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[6] }}" id="pendeta">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[7] }}" id="sintua">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[8] }}" id="parhalado">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[9] }}" id="ama">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[10] }}" id="ina">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[11] }}" id="nhkbp">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[12] }}" id="remaja">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[13] }}" id="sekolah_minggu">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[14] }}" id="pemusik">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[15] }}" id="multimedia">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" value="{{ user[16] }}" id="song_leader">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    {% elif page == "bulanan" %}
+    <!-- Page Persembahan Bulanan -->
+    <section class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="fw-bold">Data Persembahan Bulanan Keluarga</h5>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="row g-3">
+                        <!-- Nama Keluarga -->
+                        <div class="col-md-6">
+                            <label for="namaKeluarga" class="form-label">Nama Keluarga</label>
+                            <input type="text" class="form-control" value="{{ user[2] }}" id="namaKeluarga">
+                        </div>
+
+                        <!-- Nominal Persembahan -->
+                        <div class="col-md-6">
+                            <label for="nominalPersembahan" class="form-label">Nominal Persembahan</label>
+                            <input type="text" class="form-control" value="{{ user[3] }}" id="nominal">
+                        </div>
+
+                        <!-- Status -->
+                        <div class="col-md-6">
+                            <label for="status" class="form-label">Status</label>
+                            <input type="text" class="form-control" value="{{ user[6] }}" id="status">
+                        </div>
+
+                        <!-- Bulan -->
+                        <div class="col-md-6">
+                            <label for="bulan" class="form-label">Bulan</label>
+                            <input type="text" class="form-control" value="{{ user[4] }}" id="bulan">
+                        </div>
+
+                        <!-- Bukti Pembayaran -->
+                        <div class="col-md-6">
+                            <label for="buktiPembayaran" class="form-label">Bukti Pembayaran</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="{{ user[5] }}" id="bukti" readonly>
+                                <button class="btn btn-outline-secondary" type="button">
+                                    <i class="bi bi-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    {% elif page == "pemasukan" %}
+    <div class="container">
+        <div class="form-container">
+          <h3>Tambah Data Pemasukan</h3>
+          <form>
+            <div class="mb-3">
+              <label for="keterangan" class="form-label">Keterangan</label>
+              <input type="text" class="form-control" value="{{ user[1] }}" id="keterangan">
+            </div>
+    
+            <div class="mb-3">
+              <label for="jenisPemasukan" class="form-label">Jenis Pemasukan</label>
+              <input type="text" class="form-control" value="{{ user[3] }}" id="pemasukan">
+            </div>
+            
+            <div class="mb-3">
+                <label for="jenisPemasukan" class="form-label">Nominal</label>
+                <input type="text" class="form-control" value="{{ user[4] }}" id="nominal">
+            </div>
+
+            <div class="mb-3">
+              <label for="tanggal" class="form-label">Tanggal</label>
+              <input type="date" class="form-control" value="{{ user[2] }}" id="tanggal">
+            </div>
+          </form>
+        </div>
+    </div>
+    {% elif page == "pengeluaran" %}
+    <div class="container">
+        <div class="form-container">
+          <h3>Tambah Data Pengeluaran</h3>
+          <form>
+            <div class="mb-3">
+              <label for="keterangan" class="form-label">Keterangan</label>
+              <input type="text" class="form-control" value="{{ user[1] }}" id="keterangan">
+            </div>
+    
+            <div class="mb-3">
+              <label for="jenisPemasukan" class="form-label">Jenis Pengeluaran</label>
+              <input type="text" class="form-control" value="{{ user[3] }}" id="pengeluaran">
+            </div>
+            
+            <div class="mb-3">
+                <label for="jenisPemasukan" class="form-label">Nominal</label>
+                <input type="text" class="form-control" value="{{ user[4] }}" id="nominal">
+            </div>
+
+            <div class="mb-3">
+              <label for="tanggal" class="form-label">Tanggal</label>
+              <input type="date" class="form-control" value="{{ user[2] }}" id="tanggal">
+            </div>
+          </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="container">
+        <div class="form-container">
+          <h3>Tambah Data Pemasukan</h3>
+            <div class="mb-3">
+              <p> Tidak ada data </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

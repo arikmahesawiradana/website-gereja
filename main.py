@@ -1915,6 +1915,71 @@ def rekap_data():
         html_table = df.to_html(classes='table table-striped', index=False)
     return render_template("Admin/bukti_pdf.html", html_table=html_table, path=excel_name)
 
+def tambah_data():
+    if session and session["status"] == "Admin":
+        id = request.form.get("id")
+        return render_template("Admin/tambah_data.html", id=id)
+    else:
+        return redirect("/")
+
+def tambah_pemasukan():
+    if session and session["status"] == "Admin":
+        keterangan = request.form.get("keterangan")
+        tanggal = request.form.get("tanggal")
+        jenis_pemasukan = request.form.get("jenis_pemasukan")
+        nominal = request.form.get("nominal")
+        data = (keterangan, tanggal, jenis_pemasukan, nominal)
+        command = """
+            INSERT INTO pemasukan (
+            keterangan, tanggal, jenis_pemasukan, nominal
+            ) VALUES (?,?,?,?)
+        """
+        cursor.execute(command, data)
+        db.commit()
+        command = "SELECT * FROM pemasukan"
+        cursor.execute(command)
+        pemasukan_data = cursor.fetchall()
+        my_id = len(pemasukan_data) + 1
+        data = (my_id, keterangan, tanggal, nominal, 0)
+        command = """
+            INSERT INTO finansial (
+            id_pembayaran, keterangan, tanggal, pemasukan, pengeluaran
+            ) VALUES (?,?,?,?,?)
+        """
+        cursor.execute(command, data)
+        db.commit()
+        return redirect(url_for("tambah_data"))
+
+def tambah_pengeluaran():
+    if session and session["status"] == "Admin":
+        keterangan = request.form.get("keterangan")
+        tanggal = request.form.get("tanggal")
+        jenis_pemasukan = request.form.get("jenis_pengeluaran")
+        nominal = request.form.get("nominal")
+        data = (keterangan, tanggal, jenis_pemasukan, nominal)
+        command = """
+            INSERT INTO pengeluaran (
+            keterangan, tanggal, jenis_pengeluaran, nominal
+            ) VALUES (?,?,?,?)
+        """
+        cursor.execute(command, data)
+        db.commit()
+        command = "SELECT * FROM pengeluaran"
+        cursor.execute(command)
+        pemasukan_data = cursor.fetchall()
+        my_id = len(pemasukan_data) + 1
+        data = (my_id, keterangan, tanggal, 0, nominal)
+        command = """
+            INSERT INTO finansial (
+            id_pembayaran, keterangan, tanggal, pemasukan, pengeluaran
+            ) VALUES (?,?,?,?,?)
+        """
+        cursor.execute(command, data)
+        db.commit()
+        return redirect(url_for("tambah_data"))
+
+
+
 def download_rekap():
     path = request.args.get("path")
     return send_file(path, as_attachment=True)
@@ -2000,6 +2065,9 @@ def url_rule_admin():
     app.add_url_rule("/dashboard/laporan", "laporan", laporan)
     app.add_url_rule("/dashboard/laporan/lihat", "lihat laporan", rekap_data, methods=["post", "get"])
     app.add_url_rule("/dashboard/laporan/download", "laporan_download", download_rekap)
+    app.add_url_rule("/dashboard/add-finansial", "tambah_data", tambah_data)
+    app.add_url_rule("/dashboard/add/pemasukan", "tambah_pemasukan", tambah_pemasukan, methods=["post", "get"])
+    app.add_url_rule("/dashboard/add/pengeluaran", "tambah_pengeluaran", tambah_pengeluaran, methods=["post", "get"])
 
 #ini untuk user
 def profile():
